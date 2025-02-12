@@ -168,6 +168,10 @@ describe('utils/String', () => {
       expect(getInitials('')).toBe('');
     });
 
+    it('should return an empty string if input is only spaces', () => {
+      expect(getInitials('   ')).toBe('');
+    });
+
     it('Should remove leading/trailing spaces', () => {
       expect(getInitials('   Gabriel Alvez  ')).toBe('GA');
     });
