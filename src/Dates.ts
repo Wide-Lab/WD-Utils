@@ -22,14 +22,19 @@ export const getToday = () => {
  * @returns {string} A string representing yesterday's date in the format YYYY-MM-DD.
  */
 export const getYesterday = () => {
-  let date = new Date();
-  let day = date.getDate() - 1;
+  const today = new Date();
+  const beforeToday = today.getDate() - 1;
 
-  date = new Date(date.getFullYear(), date.getMonth(), day);
+  const yesterdayDate = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    beforeToday,
+    12
+  );
 
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  day = date.getDate();
+  const year = yesterdayDate.getFullYear();
+  const month = yesterdayDate.getMonth() + 1;
+  const day = yesterdayDate.getDate();
 
   const smonth = String(month).padStart(2, '0');
   const sday = String(day).padStart(2, '0');
@@ -54,13 +59,14 @@ export const getFirstDayOfMonth = () => {
 };
 
 export const getLastDayPreviousMonth = () => {
-  const date = new Date();
-  const datePrev = new Date(date.getFullYear(), date.getMonth(), 0);
+  const date = new Date(); // current date
+  date.setDate(1); // going to 1st of the month
+  date.setHours(-1); // going to last hour before this date even started.
 
-  const year = datePrev.getFullYear();
-  const month = datePrev.getMonth() + 1;
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
   const smonth = String(month).padStart(2, '0');
-  const day = String(datePrev.getDate()).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${smonth}-${day}`;
 };
@@ -118,12 +124,12 @@ export const dateToBR = (date: string) => {
 
   const [year, month, day] = dateParts;
 
-  return `${day}/${month}/${year}`;
+  return `${padTo2Digits(Number(day))}/${padTo2Digits(Number(month))}/${year}`;
 };
 
 export const dateToBRDate = (
   date: string,
-  showSeconds?: boolean,
+  showSeconds = true,
   showTime: boolean = true
 ) => {
   if (!date) {
