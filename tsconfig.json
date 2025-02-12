@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "outDir": "./dist"
+  },
+  "include": ["./src/**/*.ts", "src/*.ts", "index.ts"],
+  "exclude": ["**/*/*.test.*", "**/*.fixture.*"]
+}
