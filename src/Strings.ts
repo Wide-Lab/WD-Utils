@@ -175,57 +175,35 @@ export const ucwords = (text: string) =>
  * @param name - The full name.
  * @returns The initial letters of the first name and last name, or an empty string if the name is invalid.
  */
-export const getNameInitialLetters = (name: string) => {
-  const nameParts = name.toUpperCase().trim().split(' ');
-
-  const firstLetter = nameParts[0][0];
-
-  if (nameParts.length < 2) {
-    return firstLetter || '';
+export const getInitials = (fullName: string) => {
+  if (!fullName) {
+    return '';
   }
 
-  const lastName = nameParts[nameParts.length - 1];
-  const lastLetter = lastName[0];
+  const nameParts = fullName.trim().split(/\s+/);
+  const [firstName, ...rest] = nameParts;
+  const lastName = rest.pop() || '';
+  const firstLetter = firstName[0] ?? '';
+  const lastLetter = lastName[0] ?? '';
 
-  return firstLetter + lastLetter;
+  return (firstLetter + lastLetter).toUpperCase();
 };
 
 /**
- * Get the first name followed by the first letter of the last name from a full name.
+ * Extracts and formats the first and second names from a given full name string.
  *
- * @param name - The full name.
- * @returns The first name and the first letter of the last name, or an empty string if the name is invalid.
- */
-export const getFirstName = (name: string) => {
-  const nameParts = name.trim().split(' ');
-
-  if (nameParts.length < 2) {
-    return nameParts[0] || '';
-  }
-
-  const firstName = nameParts[0];
-  const lastName = nameParts[nameParts.length - 1];
-  let lastLetter = lastName[0];
-
-  if (!/[a-zA-Z]/g.test(lastLetter)) {
-    const previousName = nameParts[nameParts.length - 2];
-    lastLetter =
-      previousName && previousName !== firstName ? previousName[0] : '';
-  }
-
-  lastLetter = lastLetter.toUpperCase();
-
-  return `${firstName} ${lastLetter}.`;
-};
-
-/**
- * Get the first and second name followed by the first letter of the last name from a full name.
- * If there is just two names get the first name followed  by the first letter of the last name from a full name.
+ * @param name - The full name string to process.
+ * @returns A formatted string containing the first name and either the second name or the initial of the last name.
  *
- * @param name - The full name.
- * @returns The first and second name and the first letter of the last name, or an empty string if the name is invalid.
+ * @example
+ * ```typescript
+ * getFirstSecondName("John Doe Smith"); // "John Doe S."
+ * getFirstSecondName("Jane"); // "Jane"
+ * getFirstSecondName("Alice Bob"); // "Alice Bob B."
+ * getFirstSecondName("Charlie Brown Brown"); // "Charlie B."
+ * ```
  */
-export const getFirstSecondName = (name: string) => {
+export const extractFormattedName = (name: string) => {
   const nameParts = name.trim().replace(/\s+/g, ' ').split(' ');
 
   if (nameParts.length < 2) {
@@ -237,7 +215,7 @@ export const getFirstSecondName = (name: string) => {
   const lastLetter = lastName[0];
 
   if (secondName === lastName) {
-    return `${firstName} ${lastLetter}.`;
+    return `${ucfirst(firstName)} ${lastLetter.toUpperCase()}.`;
   }
 
   return `${firstName} ${secondName} ${lastLetter}.`;
@@ -275,32 +253,46 @@ export const compareStrings = <T extends string>(a: T, b: T) => {
   return convertString(a) === convertString(b);
 };
 
+/**
+ * Returns the appropriate form of a word based on the given count.
+ *
+ * @param singularWord - The singular form of the word.
+ * @param pluralWord - The plural form of the word.
+ * @param count - The count to determine which form to use.
+ * @returns The singular form if the count is 1, otherwise the plural form.
+ */
 export const pluralizeWord = (
   singularWord: string,
   pluralWord: string,
   count: number
 ) => (count > 1 ? pluralWord : singularWord);
 
-export const getInitials = (fullName: string) => {
-  if (!fullName) {
-    return '';
-  }
-
-  const nameParts = fullName.trim().split(/\s+/);
-  const [firstName, ...rest] = nameParts;
-  const lastName = rest.pop() || '';
-  const firstLetter = firstName[0] ?? '';
-  const lastLetter = lastName[0] ?? '';
-
-  return (firstLetter + lastLetter).toUpperCase();
-};
-
+/**
+ * Replaces a portion of a string between the specified start and end indices with a new value.
+ *
+ * @param text - The original string.
+ * @param selection - An object containing the start and end indices of the portion to be replaced.
+ * @param selection.start - The starting index of the portion to be replaced.
+ * @param selection.end - The ending index of the portion to be replaced.
+ * @param value - The new value to insert between the specified indices.
+ * @returns The modified string with the specified portion replaced by the new value.
+ */
 export const replaceBetween = (
   text: string,
   selection: { start: number; end: number },
   value: string
 ) => text.substring(0, selection.start) + value + text.substring(selection.end);
 
+/**
+ * Checks if the given text is a valid web link.
+ *
+ * This function uses a regular expression to validate the format of the input string
+ * as a web link. It supports protocols such as HTTP, HTTPS, and FTP, and includes
+ * validation for IP addresses, hostnames, domain names, and optional port numbers.
+ *
+ * @param text - The input string to be validated as a web link.
+ * @returns `true` if the input string is a valid web link, `false` otherwise.
+ */
 export const isStringWebLink = (text: string): boolean => {
   const regexValidator = new RegExp(
     '^' +

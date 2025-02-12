@@ -2,10 +2,8 @@ import {
   accentsRemove,
   compareStrings,
   convertString,
-  getFirstName,
-  getFirstSecondName,
+  extractFormattedName,
   getInitials,
-  getNameInitialLetters,
   isContentMatchingSearch,
   isStringWebLink,
   pluralizeWord,
@@ -157,75 +155,53 @@ describe('utils/String', () => {
       ));
   });
 
-  describe('getNameInitialLetters', () => {
+  describe('getInitials', () => {
     it('should return first name and initial of last name', () => {
-      expect(getNameInitialLetters('John Doe')).toBe('JD');
+      expect(getInitials('John Doe')).toBe('JD');
     });
 
     it('should return one initial of single names', () => {
-      expect(getNameInitialLetters('Alice')).toBe('A');
+      expect(getInitials('Alice')).toBe('A');
     });
 
     it('should return an empty string for an empty input', () => {
-      expect(getNameInitialLetters('')).toBe('');
+      expect(getInitials('')).toBe('');
     });
 
     it('Should remove leading/trailing spaces', () => {
-      expect(getNameInitialLetters('   Gabriel Alvez  ')).toBe('GA');
+      expect(getInitials('   Gabriel Alvez  ')).toBe('GA');
     });
 
     it('Should remove leading/trailing spaces in single name', () => {
-      expect(getNameInitialLetters('   Jonathan  ')).toBe('J');
+      expect(getInitials('   Jonathan  ')).toBe('J');
     });
   });
 
-  describe('getFirstName', () => {
-    it('should return first name and initial of last name', () => {
-      expect(getFirstName('John Doe')).toBe('John D.');
-    });
-
-    it('should return one name for single names', () => {
-      expect(getFirstName('Alice')).toBe('Alice');
-    });
-
-    it('should return an empty string for an empty input', () => {
-      expect(getFirstName('')).toBe('');
-    });
-
-    it('Should remove leading/trailing spaces', () => {
-      expect(getFirstName('   John Doe  ')).toBe('John D.');
-    });
-
-    it('Should remove leading/trailing spaces in single name', () => {
-      expect(getFirstName('   Anderson  ')).toBe('Anderson');
-    });
-  });
-
-  describe('getFirstSecondName', () => {
+  describe('extractFormattedName', () => {
     it('should return the first name if there is only one part', () => {
-      expect(getFirstSecondName('John')).toBe('John');
-      expect(getFirstSecondName('  John  ')).toBe('John');
+      expect(extractFormattedName('John')).toBe('John');
+      expect(extractFormattedName('  John  ')).toBe('John');
     });
 
     it('should return the first and second name followed by the last letter of the last name', () => {
-      expect(getFirstSecondName('John Doe Smith')).toBe('John Doe S.');
-      expect(getFirstSecondName('Jane Mary Doe')).toBe('Jane Mary D.');
-      expect(getFirstSecondName('John Doe')).toBe('John D.');
+      expect(extractFormattedName('John Doe Smith')).toBe('John Doe S.');
+      expect(extractFormattedName('Jane Mary Doe')).toBe('Jane Mary D.');
+      expect(extractFormattedName('John Doe')).toBe('John D.');
     });
 
     it('should return the first name followed by the first letter of the last name if the second name is the same as the last name', () => {
-      expect(getFirstSecondName('John John')).toBe('John J.');
-      expect(getFirstSecondName('Jane Jane')).toBe('Jane J.');
+      expect(extractFormattedName('John John')).toBe('John J.');
+      expect(extractFormattedName('Jane Jane')).toBe('Jane J.');
     });
 
     it('should handle edge cases with extra spaces', () => {
-      expect(getFirstSecondName('  John  Doe  ')).toBe('John D.');
-      expect(getFirstSecondName('  Jane   Doe  ')).toBe('Jane D.');
+      expect(extractFormattedName('  John  Doe  ')).toBe('John D.');
+      expect(extractFormattedName('  Jane   Doe  ')).toBe('Jane D.');
     });
 
     it('should return an empty string for an empty input', () => {
-      expect(getFirstSecondName('')).toBe('');
-      expect(getFirstSecondName('    ')).toBe('');
+      expect(extractFormattedName('')).toBe('');
+      expect(extractFormattedName('    ')).toBe('');
     });
   });
 
