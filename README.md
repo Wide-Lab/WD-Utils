@@ -22,16 +22,19 @@ npm install @widelab/utils
 Aqui está um exemplo de como utilizar a biblioteca em seu projeto:
 
 ```typescript
-import { formatData, validateInput, calculateSum } from '@widelab/utils';
+import { Formatters, Validators, Numbers } from '@widelab/utils';
 
-// Exemplo de formatação de data
-const formattedDate = formatData(new Date());
+// Exemplo de formatação de CPF
+const formattedDate = Formatters.formatCPF('12345678900');
+// Resultado: 123.456.789-00
 
 // Exemplo de validação de entrada
-const isValid = validateInput('example@domain.com');
+const isValid = Validators.validateEmail('example@domain.com');
+// Resultado: true
 
-// Exemplo de cálculo de soma
-const sum = calculateSum([1, 2, 3, 4, 5]);
+// Exemplo de cálculo de par
+const sum = Numbers.isEven(4);
+// Resultado: true
 
 console.log(formattedDate, isValid, sum);
 ```
