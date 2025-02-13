@@ -37,10 +37,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LeonardoNoroWidelab/WD-Utils.git"
+    "url": "git+https://github.com/Wide-Lab/WD-Utils.git"
   },
   "bugs": {
-    "url": "https://github.com/LeonardoNoroWidelab/WD-Utils/issues"
+    "url": "https://github.com/Wide-Lab/WD-Utils/issues"
   },
-  "homepage": "https://github.com/LeonardoNoroWidelab/WD-Utils#readme"
+  "homepage": "https://github.com/Wide-Lab/WD-Utils#readme"
 }
