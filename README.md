@@ -14,7 +14,7 @@ A **Widelab Utils** é uma coleção abrangente de funções utilitárias desenv
 Para instalar a biblioteca, execute o seguinte comando:
 
 ```bash
-npm install @widelab/utils
+npm install widelab-utils
 ```
 
 ## Uso
@@ -22,7 +22,7 @@ npm install @widelab/utils
 Aqui está um exemplo de como utilizar a biblioteca em seu projeto:
 
 ```typescript
-import { Formatters, Validators, Numbers } from '@widelab/utils';
+import { Formatters, Validators, Numbers } from 'widelab-utils';
 
 // Exemplo de formatação de CPF
 const formattedDate = Formatters.formatCPF('12345678900');
