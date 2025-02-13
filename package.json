@@ -2,9 +2,14 @@
   "name": "@widelab/utils",
   "version": "1.0.0",
   "description": "Biblioteca utilitária da Widelab com funções de formatação, manipulação de dados, cálculos e validações.",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "compile": "npx tsc src/index.ts",
+    "build": "tsup",
     "test": "jest"
   },
   "keywords": [
@@ -21,7 +26,11 @@
   "author": "Leonardo Noro - Widelab",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
+    "tsup": "^8.3.6",
     "typescript": "^5.7.3"
   }
 }
