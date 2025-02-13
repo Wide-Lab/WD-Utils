@@ -1,6 +1,6 @@
 {
   "name": "widelab-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Biblioteca utilitária da Widelab com funções de formatação, manipulação de dados, cálculos e validações.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "tsup && npm publish"
   },
   "private": false,
   "keywords": [
