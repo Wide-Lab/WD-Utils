@@ -133,3 +133,16 @@ export const formatPhone = (value?: string) =>
     .replace(/(\d{2})(\d)/, '($1) $2') // Insere parênteses e espaço após os primeiros 2 dígitos
     .replace(/(\d{4})(\d+)/, '$1-$2') // Insere traço após os próximos 4 dígitos
     .replace(/-(\d)(\d{4})/, '$1-$2'); // Mantém o traço e insere traço após os 2 últimos dígitos
+
+/**
+ * Formats a numeric value for Brazilian currency in `R$ #.###,##` format
+ * @param value - The value to be formatted
+ * @returns The value formatted as Brazilian currency
+ */
+export const formatCurrency = (value: number) =>
+  value
+    .toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    })
+    .replace(/\s/g, ' '); // Remove espaços em branco adicionais

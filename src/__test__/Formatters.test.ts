@@ -2,6 +2,7 @@ import {
   formatCEP,
   formatCNPJ,
   formatCPF,
+  formatCurrency,
   formatDate,
   formatDateTime,
   formatHourMinute,
@@ -143,6 +144,18 @@ describe('utils/Masks', () => {
     it('should format a JavaScript Date object', () => {
       const date = new Date(1687804798229);
       expect(formatDateTime(date)).toBe('26/06/2023 15:39:58');
+    });
+  });
+
+  describe('formatCurrency', () => {
+    it('should format currency values correctly', () => {
+      expect(formatCurrency(0)).toBe('R$ 0,00');
+      expect(formatCurrency(2)).toBe('R$ 2,00');
+      expect(formatCurrency(10)).toBe('R$ 10,00');
+      expect(formatCurrency(0.65)).toBe('R$ 0,65');
+      expect(formatCurrency(0.123)).toBe('R$ 0,12');
+      expect(formatCurrency(0.13)).toBe('R$ 0,13');
+      expect(formatCurrency(1_165_799.9985)).toBe('R$ 1.165.800,00');
     });
   });
 });
