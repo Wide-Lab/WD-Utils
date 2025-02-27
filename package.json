@@ -1,6 +1,6 @@
 {
   "name": "widelab-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Biblioteca utilitária da Widelab com funções de formatação, manipulação de dados, cálculos e validações.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
