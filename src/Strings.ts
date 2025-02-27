@@ -158,6 +158,8 @@ export const specialCharactersConvert = (value: string): string => {
 export const ucfirst = (word: string) =>
   !word ? '' : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 
+export const capitalizeFirstLetter = ucfirst;
+
 /**
  * Capitalizes the first letter of each word in a text.
  *
@@ -168,6 +170,8 @@ export const ucwords = (text: string) =>
   (text || '')
     .toLowerCase()
     .replace(/(^|[ -])[a-záàâãéèêíïóôõöúçñ]/g, (s) => s.toUpperCase());
+
+export const capitalizeAllFirstLetter = ucwords;
 
 /**
  * Get the initial letters of the first name and last name from a full name.
