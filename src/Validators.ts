@@ -79,6 +79,15 @@ export const validateCNPJ = (cnpj: string): boolean => {
   return numbers.slice(-2) === cnpj.slice(-2);
 };
 
+/**
+ * Validates if the given email string is in a proper email format.
+ *
+ * The email format is checked against a regular expression pattern that ensures
+ * the email contains valid characters, an '@' symbol, and a domain.
+ *
+ * @param email - The email string to validate.
+ * @returns `true` if the email is in a valid format, `false` otherwise.
+ */
 export const validateEmail = (email: string) =>
   !!email.match(
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/

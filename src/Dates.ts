@@ -58,6 +58,17 @@ export const getFirstDayOfMonth = () => {
   return `${year}-${smonth}-01`;
 };
 
+/**
+ * Gets the last day of the previous month in the format YYYY-MM-DD.
+ *
+ * This function creates a new `Date` object representing the current date,
+ * then sets the date to the 1st of the current month and adjusts the hours
+ * to the last hour of the previous day, effectively moving the date to the
+ * last day of the previous month. It then formats the date as a string in
+ * the format YYYY-MM-DD.
+ *
+ * @returns {string} The last day of the previous month in the format YYYY-MM-DD.
+ */
 export const getLastDayPreviousMonth = () => {
   const date = new Date(); // current date
   date.setDate(1); // going to 1st of the month
@@ -127,6 +138,14 @@ export const dateToBR = (date: string) => {
   return `${padTo2Digits(Number(day))}/${padTo2Digits(Number(month))}/${year}`;
 };
 
+/**
+ * Converts a date string to a Brazilian date format (DD/MM/YYYY) with optional time.
+ *
+ * @param date - The date string to be converted.
+ * @param showSeconds - Optional. Whether to include seconds in the time. Defaults to true.
+ * @param showTime - Optional. Whether to include time in the output. Defaults to true.
+ * @returns The formatted date string in Brazilian format.
+ */
 export const dateToBRDate = (
   date: string,
   showSeconds = true,
