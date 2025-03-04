@@ -208,21 +208,21 @@ export const getInitials = (fullName: string) => {
  * ```
  */
 export const extractFormattedName = (name: string) => {
-  const nameParts = name.trim().replace(/\s+/g, ' ').split(' ');
+  const nameParts = name.replace(/\s+/g, ' ').trim().split(' ');
 
   if (nameParts.length < 2) {
     return nameParts[0] || '';
   }
 
   const [firstName, secondName] = nameParts;
+  const secondNameLetter = secondName[0];
   const lastName = nameParts[nameParts.length - 1];
-  const lastLetter = lastName[0];
 
   if (secondName === lastName) {
-    return `${ucfirst(firstName)} ${lastLetter.toUpperCase()}.`;
+    return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}.`;
   }
 
-  return `${firstName} ${secondName} ${lastLetter}.`;
+  return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}. ${lastName}`;
 };
 
 /**

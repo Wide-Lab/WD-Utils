@@ -188,8 +188,8 @@ describe('utils/String', () => {
     });
 
     it('should return the first and second name followed by the last letter of the last name', () => {
-      expect(extractFormattedName('John Doe Smith')).toBe('John Doe S.');
-      expect(extractFormattedName('Jane Mary Doe')).toBe('Jane Mary D.');
+      expect(extractFormattedName('John Doe Smith')).toBe('John D. Smith');
+      expect(extractFormattedName('Jane Mary Doe')).toBe('Jane M. Doe');
       expect(extractFormattedName('John Doe')).toBe('John D.');
     });
 
