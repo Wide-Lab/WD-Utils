@@ -1,4 +1,4 @@
-import { isEven, numberClamp, padTo2Digits } from '../Numbers';
+import { interpolate, isEven, numberClamp, padTo2Digits } from '../Numbers';
 
 describe('utils/Numbers', () => {
   describe('isEven', () => {
@@ -51,6 +51,49 @@ describe('utils/Numbers', () => {
     it('should handle numbers with more than two digits', () => {
       expect(padTo2Digits(100)).toBe('100');
       expect(padTo2Digits(1234)).toBe('1234');
+    });
+
+    describe('interpolate', () => {
+      it('should interpolate a number within the given range', () => {
+        expect(interpolate(5, 0, 10, 0, 100)).toBe(50);
+        expect(interpolate(0, 0, 10, 0, 100)).toBe(0);
+        expect(interpolate(10, 0, 10, 0, 100)).toBe(100);
+      });
+
+      it('should clamp the input out of the input range', () => {
+        expect(interpolate(-5, 0, 10, 0, 100)).toBe(0);
+        expect(interpolate(15, 0, 10, 0, 100)).toBe(100);
+      });
+
+      test('interpolates correctly within the range', () => {
+        expect(interpolate(5, 0, 10, 0, 100)).toBe(50);
+        expect(interpolate(2.5, 0, 10, 0, 100)).toBe(25);
+        expect(interpolate(7.5, 0, 10, 0, 100)).toBe(75);
+      });
+
+      test('handles floating-point numbers', () => {
+        expect(interpolate(0.5, 0, 1, 0, 10)).toBe(5);
+        expect(interpolate(0.25, 0, 1, 0, 10)).toBe(2.5);
+        expect(interpolate(0.75, 0, 1, 0, 10)).toBe(7.5);
+      });
+
+      test('throws an error if inputStart and inputEnd are the same', () => {
+        expect(() => interpolate(5, 10, 10, 0, 100)).toThrow(
+          'entrada inicial e entrada final não podem ter o mesmo valor'
+        );
+      });
+
+      test('interpolates correctly with negative ranges', () => {
+        expect(interpolate(-5, -10, 0, 0, 100)).toBe(50);
+        expect(interpolate(-7.5, -10, 0, 0, 100)).toBe(25);
+        expect(interpolate(-2.5, -10, 0, 0, 100)).toBe(75);
+      });
+
+      test('interpolates correctly with mixed positive and negative ranges', () => {
+        expect(interpolate(0, -10, 10, -100, 100)).toBe(0);
+        expect(interpolate(-5, -10, 10, -100, 100)).toBe(-50);
+        expect(interpolate(5, -10, 10, -100, 100)).toBe(50);
+      });
     });
   });
 });

@@ -25,3 +25,41 @@ export const numberClamp = (value: number, min: number, max: number) =>
  */
 export const padTo2Digits = (num: number, maxLength = 2) =>
   num.toString().padStart(maxLength, '0');
+
+/**
+ * Interpolates a given input number from one range to another.
+ *
+ * @param input - The input number to be interpolated.
+ * @param inputStart - The start of the input range.
+ * @param inputEnd - The end of the input range.
+ * @param outputStart - The start of the output range.
+ * @param outputEnd - The end of the output range.
+ * @returns The interpolated number within the output range.
+ * @throws Will throw an error if the inputStart and inputEnd are the same.
+ */
+export const interpolate = (
+  input: number,
+  inputStart: number,
+  inputEnd: number,
+  outputStart: number,
+  outputEnd: number
+) => {
+  if (inputStart === inputEnd) {
+    throw new Error(
+      'entrada inicial e entrada final não podem ter o mesmo valor'
+    );
+  }
+
+  // Clamp the input to be within the input range
+  const clampedInput = numberClamp(input, inputStart, inputEnd);
+
+  // Calculate the differences
+  const inputRange = inputEnd - inputStart;
+  const outputRange = outputEnd - outputStart;
+
+  // Calculate the normalized input
+  const normalizedInput = (clampedInput - inputStart) / inputRange;
+
+  // Calculate the interpolated output
+  return normalizedInput * outputRange + outputStart;
+};
