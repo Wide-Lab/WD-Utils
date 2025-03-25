@@ -201,9 +201,9 @@ export const getInitials = (fullName: string) => {
  *
  * @example
  * ```typescript
- * getFirstSecondName("John Doe Smith"); // "John Doe S."
+ * getFirstSecondName("John Doe Smith"); // "John D. Smith"
  * getFirstSecondName("Jane"); // "Jane"
- * getFirstSecondName("Alice Bob"); // "Alice Bob B."
+ * getFirstSecondName("Alice Bob"); // "Alice B."
  * getFirstSecondName("Charlie Brown Brown"); // "Charlie B."
  * ```
  */
@@ -218,7 +218,7 @@ export const extractFormattedName = (name: string) => {
   const secondNameLetter = secondName[0];
   const lastName = nameParts[nameParts.length - 1];
 
-  if (secondName === lastName) {
+  if (nameParts.length < 3) {
     return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}.`;
   }
 

@@ -239,7 +239,7 @@ const compareColorLuminance = (colorA: string, colorB: string): number =>
  *
  * @param backgroundColor - The background color string (HEX, RGB, or RGBA).
  * @param active - The active color string (HEX, RGB, or RGBA).
- * @returns The best active color to use, either the contrasting text color or the original active color.
+ * @returns The best active color to use, either the contrasting text color (black or white) or the original active color.
  */
 export const getBestActiveColor = (
   backgroundColor: string,
