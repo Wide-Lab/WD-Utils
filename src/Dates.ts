@@ -1,3 +1,4 @@
+import { WDNumbers } from '.';
 import { padTo2Digits } from './Numbers';
 
 /**
@@ -256,7 +257,7 @@ export const dayNamesShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
  * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
  * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
  */
-export const formatTime = (date: Date, hideSecond = false) => {
+export const dateToTime = (date: Date, hideSecond = false) => {
   const dateArray = [
     padTo2Digits(date.getHours()),
     padTo2Digits(date.getMinutes()),
@@ -268,4 +269,19 @@ export const formatTime = (date: Date, hideSecond = false) => {
   }
 
   return dateArray.join(':');
+};
+
+export const formatTime = dateToTime;
+
+/**
+ * Converts a JavaScript `Date` object to a string in the format `YYYY-MM-DD`.
+ *
+ * @param date - The `Date` object to be converted.
+ * @returns A string representing the date in `YYYY-MM-DD` format.
+ */
+export const dateToJS = (date: Date) => {
+  const year = date.getFullYear();
+  const month = WDNumbers.padTo2Digits(date.getMonth() + 1);
+  const day = WDNumbers.padTo2Digits(date.getDate());
+  return `${year}-${month}-${day}`;
 };

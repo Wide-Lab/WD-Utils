@@ -1,4 +1,3 @@
-import { Numbers } from '.';
 import { numberClamp } from './Numbers';
 
 /**
@@ -195,9 +194,9 @@ export const getHexColorLuminance = (color: string) => {
  * @returns The luminance of the color.
  */
 export const getColorLuminance = (r: number, g: number, b: number): number => {
-  const clampedR = Numbers.numberClamp(r, 0, 255);
-  const clampedG = Numbers.numberClamp(g, 0, 255);
-  const clampedB = Numbers.numberClamp(b, 0, 255);
+  const clampedR = numberClamp(r, 0, 255);
+  const clampedG = numberClamp(g, 0, 255);
+  const clampedB = numberClamp(b, 0, 255);
 
   const redLuminance = 0.299 * clampedR;
   const greenLuminance = 0.587 * clampedG;

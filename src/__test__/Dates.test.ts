@@ -2,8 +2,9 @@ import {
   dateBRToJS,
   dateToBR,
   dateToBRDate,
+  dateToJS,
+  dateToTime,
   dateUSAtoBR,
-  formatTime,
   getFirstDayOfMonth,
   getLastDayPreviousMonth,
   getToday,
@@ -77,33 +78,33 @@ describe('utils/Date', () => {
       expect(dateBRToJS('02/02/2023')).toBe('2023-02-02'));
   });
 
-  describe('formatTime', () => {
+  describe('dateToTime', () => {
     it('should format the time correctly without hiding seconds', () => {
       const date = new Date(2022, 0, 1, 14, 30, 15); // 14:30:15
-      expect(formatTime(date)).toBe('14:30:15');
+      expect(dateToTime(date)).toBe('14:30:15');
     });
 
     it('should format the time correctly and hide seconds', () => {
       const date = new Date(2022, 0, 1, 14, 30, 15); // 14:30:15
-      expect(formatTime(date, true)).toBe('14:30');
+      expect(dateToTime(date, true)).toBe('14:30');
     });
 
     it('should handle single digit hours, minutes, and seconds correctly', () => {
       const date = new Date(2022, 0, 1, 8, 5, 7); // 08:05:07
-      expect(formatTime(date)).toBe('08:05:07');
-      expect(formatTime(date, true)).toBe('08:05');
+      expect(dateToTime(date)).toBe('08:05:07');
+      expect(dateToTime(date, true)).toBe('08:05');
     });
 
     it('should handle edge cases for midnight correctly', () => {
       const date = new Date(2022, 0, 1, 0, 59, 59); // 00:59:59
-      expect(formatTime(date)).toBe('00:59:59');
-      expect(formatTime(date, true)).toBe('00:59');
+      expect(dateToTime(date)).toBe('00:59:59');
+      expect(dateToTime(date, true)).toBe('00:59');
     });
 
     it('should handle edge cases for noon correctly', () => {
       const date = new Date(2022, 0, 1, 12, 0, 0); // 12:00:00
-      expect(formatTime(date)).toBe('12:00:00');
-      expect(formatTime(date, true)).toBe('12:00');
+      expect(dateToTime(date)).toBe('12:00:00');
+      expect(dateToTime(date, true)).toBe('12:00');
     });
   });
 
@@ -333,6 +334,38 @@ describe('utils/Date', () => {
       expect(dateToBRDate(date)).toBe('14/10/2023  12:00:00');
       expect(dateToBRDate(date, false)).toBe('14/10/2023  12:00');
       expect(dateToBRDate(date, true, false)).toBe('14/10/2023');
+    });
+
+    describe('dateToJS', () => {
+      it('should return the correct date in YYYY-MM-DD format', () => {
+        const date = new Date(2023, 9, 14); // October 14, 2023
+        const result = dateToJS(date);
+        expect(result).toBe('2023-10-14');
+      });
+
+      it('should handle single-digit months and days correctly', () => {
+        const date = new Date(2023, 0, 5); // January 5, 2023
+        const result = dateToJS(date);
+        expect(result).toBe('2023-01-05');
+      });
+
+      it('should handle edge cases for the end of the year', () => {
+        const date = new Date(2023, 11, 31); // December 31, 2023
+        const result = dateToJS(date);
+        expect(result).toBe('2023-12-31');
+      });
+
+      it('should handle edge cases for the start of the year', () => {
+        const date = new Date(2023, 0, 1); // January 1, 2023
+        const result = dateToJS(date);
+        expect(result).toBe('2023-01-01');
+      });
+
+      it('should handle leap years correctly', () => {
+        const date = new Date(2024, 1, 29); // February 29, 2024 (leap year)
+        const result = dateToJS(date);
+        expect(result).toBe('2024-02-29');
+      });
     });
   });
 });
