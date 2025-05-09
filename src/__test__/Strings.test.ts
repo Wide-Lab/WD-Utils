@@ -153,6 +153,31 @@ describe('utils/String', () => {
       expect(ucwords('palavras não bastam, não dá pra entender')).toBe(
         'Palavras Não Bastam, Não Dá Pra Entender'
       ));
+
+    it('should capitalize the first letter of each word in a text with dots in the name', () => {
+      expect(ucwords('a.m.c textil-ltda')).toBe('A.M.C Textil-Ltda');
+      expect(ucwords('j.r.r tolkien')).toBe('J.R.R Tolkien');
+      expect(ucwords('u.s.a corporation')).toBe('U.S.A Corporation');
+    });
+
+    it('should handle mixed cases with dots and hyphens', () => {
+      expect(ucwords('a.b.c-d.e.f')).toBe('A.B.C-D.E.F');
+      expect(ucwords('x.y.z company-ltd')).toBe('X.Y.Z Company-Ltd');
+    });
+
+    it('should handle edge cases with multiple spaces and dots', () => {
+      expect(ucwords('  a.b.c   textil-ltda  ')).toBe('  A.B.C   Textil-Ltda  ');
+      expect(ucwords('  j.r.r   tolkien  ')).toBe('  J.R.R   Tolkien  ');
+    });
+
+    it('should return an empty string for an empty input', () => {
+      expect(ucwords('')).toBe('');
+    });
+
+    it('should handle single words with dots', () => {
+      expect(ucwords('a.b.c')).toBe('A.B.C');
+      expect(ucwords('x.y.z')).toBe('X.Y.Z');
+    });
   });
 
   describe('getInitials', () => {
