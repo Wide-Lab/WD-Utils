@@ -1,5 +1,5 @@
 const verifierDigitCPF = (digits: string) => {
-  const numbers = digits.split('').map((number) => {
+  const numbers = digits.split("").map((number) => {
     return parseInt(number, 10);
   });
 
@@ -21,7 +21,7 @@ const verifierDigitCPF = (digits: string) => {
  * @returns - Returns true if the CPF is valid, false otherwise
  */
 export const validateCPF = (cpf: string): boolean => {
-  cpf = cpf.replace(/\D/g, '');
+  cpf = cpf.replace(/\D/g, "");
 
   if (cpf.length !== 11) {
     return false;
@@ -42,10 +42,10 @@ export const validateCPF = (cpf: string): boolean => {
 const verifierDigitCNPJ = (digits: string) => {
   let index = 2;
   const reverse = digits
-    .split('')
+    .split("")
     .reduce(
       (previous, value) => [parseInt(value, 10)].concat(previous),
-      [] as number[]
+      [] as number[],
     );
 
   const sum = reverse.reduce((previous, value) => {
@@ -63,7 +63,7 @@ const verifierDigitCNPJ = (digits: string) => {
  * @returns - Returns true if the CNPJ is valid, false otherwise
  */
 export const validateCNPJ = (cnpj: string): boolean => {
-  cnpj = cnpj.replace(/\D/g, '');
+  cnpj = cnpj.replace(/\D/g, "");
 
   if (cnpj.length !== 14) {
     return false;
@@ -90,7 +90,7 @@ export const validateCNPJ = (cnpj: string): boolean => {
  */
 export const validateEmail = (email: string) =>
   !!email.match(
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/,
   );
 
 /**
@@ -111,7 +111,7 @@ export const validateBirthDate = (dateString: string) => {
   }
 
   // Pega cada parte da data
-  const parts = dateString.split('/');
+  const parts = dateString.split("/");
   const day = parseInt(parts[0], 10);
   const month = parseInt(parts[1], 10);
   const year = parseInt(parts[2], 10);

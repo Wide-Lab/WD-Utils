@@ -1,5 +1,5 @@
-import { WDNumbers } from '.';
-import { padTo2Digits } from './Numbers';
+import { WDNumbers } from ".";
+import { padTo2Digits } from "./Numbers";
 
 /**
  * Get the current date in the 'YYYY-MM-DD' format.
@@ -9,8 +9,8 @@ import { padTo2Digits } from './Numbers';
 export const getToday = () => {
   const date = new Date();
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -30,15 +30,15 @@ export const getYesterday = () => {
     today.getFullYear(),
     today.getMonth(),
     beforeToday,
-    12
+    12,
   );
 
   const year = yesterdayDate.getFullYear();
   const month = yesterdayDate.getMonth() + 1;
   const day = yesterdayDate.getDate();
 
-  const smonth = String(month).padStart(2, '0');
-  const sday = String(day).padStart(2, '0');
+  const smonth = String(month).padStart(2, "0");
+  const sday = String(day).padStart(2, "0");
 
   return `${year}-${smonth}-${sday}`;
 };
@@ -55,7 +55,7 @@ export const getFirstDayOfMonth = () => {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const smonth = String(month).padStart(2, '0');
+  const smonth = String(month).padStart(2, "0");
   return `${year}-${smonth}-01`;
 };
 
@@ -77,8 +77,8 @@ export const getLastDayPreviousMonth = () => {
 
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const smonth = String(month).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const smonth = String(month).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${smonth}-${day}`;
 };
@@ -99,10 +99,10 @@ export const getTodayBR = () => dateToBR(getToday());
  */
 export const dateUSAtoBR = (date: string) => {
   if (!date) {
-    return '';
+    return "";
   }
 
-  const dateParts = date.split('/');
+  const dateParts = date.split("/");
 
   if (!dateParts.length || dateParts.length !== 3) {
     throw new Error(`Invalid date ${date}`);
@@ -125,13 +125,13 @@ export const dateUSAtoBR = (date: string) => {
  */
 export const dateToBR = (date: string) => {
   if (!date) {
-    return '';
+    return "";
   }
 
-  const dateParts = date.split('-');
+  const dateParts = date.split("-");
 
   if (dateParts.length !== 3) {
-    return '';
+    return "";
   }
 
   const [year, month, day] = dateParts;
@@ -150,17 +150,17 @@ export const dateToBR = (date: string) => {
 export const dateToBRDate = (
   date: string,
   showSeconds = true,
-  showTime: boolean = true
+  showTime: boolean = true,
 ) => {
   if (!date) {
-    return '';
+    return "";
   }
 
   const dateTime = new Date(date);
 
   const year = dateTime.getFullYear();
-  const month = String(dateTime.getMonth() + 1).padStart(2, '0');
-  const day = String(dateTime.getDate()).padStart(2, '0');
+  const month = String(dateTime.getMonth() + 1).padStart(2, "0");
+  const day = String(dateTime.getDate()).padStart(2, "0");
 
   const time = formatTime(dateTime, !showSeconds);
 
@@ -179,19 +179,19 @@ export const dateToBRDate = (
  */
 export const dateBRToJS = (date: string) => {
   if (!date) {
-    return '';
+    return "";
   }
 
-  const dateParts = date.split('/');
+  const dateParts = date.split("/");
 
   if (dateParts.length !== 3) {
-    return '';
+    return "";
   }
 
   const [day, month, year] = dateParts;
 
   if (!day || !month || !year) {
-    return '';
+    return "";
   }
 
   return `${year}-${month}-${day}`;
@@ -209,46 +209,46 @@ export const ONE_HOUR = ONE_MINUTE * 60;
 export const ONE_DAY = ONE_HOUR * 24;
 
 export const monthNames = [
-  'Janeiro',
-  'Fevereiro',
-  'Março',
-  'Abril',
-  'Maio',
-  'Junho',
-  'Julho',
-  'Agosto',
-  'Setembro',
-  'Outubro',
-  'Novembro',
-  'Dezembro',
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
 ] as const;
 
 export const monthNamesShort = [
-  'Jan',
-  'Fev',
-  'Mar',
-  'Abr',
-  'Mai',
-  'Jun',
-  'Jul',
-  'Ago',
-  'Set',
-  'Out',
-  'Nov',
-  'Dec',
+  "Jan",
+  "Fev",
+  "Mar",
+  "Abr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Set",
+  "Out",
+  "Nov",
+  "Dec",
 ];
 
 export const dayNames = [
-  'Domingo',
-  'Segunda',
-  'Terça',
-  'Quarta',
-  'Quinta',
-  'Sexta',
-  'Sábado',
+  "Domingo",
+  "Segunda",
+  "Terça",
+  "Quarta",
+  "Quinta",
+  "Sexta",
+  "Sábado",
 ];
 
-export const dayNamesShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+export const dayNamesShort = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 /**
  * Formats a given Date object into a time string.
@@ -268,7 +268,7 @@ export const dateToTime = (date: Date, hideSecond = false) => {
     dateArray.pop();
   }
 
-  return dateArray.join(':');
+  return dateArray.join(":");
 };
 
 export const formatTime = dateToTime;

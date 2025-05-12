@@ -24,7 +24,7 @@ export const numberClamp = (value: number, min: number, max: number) =>
  * @returns The padded string representation of the number.
  */
 export const padTo2Digits = (num: number, maxLength = 2) =>
-  num.toString().padStart(maxLength, '0');
+  num.toString().padStart(maxLength, "0");
 
 /**
  * Interpolates a given input number from one range to another.
@@ -42,11 +42,11 @@ export const interpolate = (
   inputStart: number,
   inputEnd: number,
   outputStart: number,
-  outputEnd: number
+  outputEnd: number,
 ) => {
   if (inputStart === inputEnd) {
     throw new Error(
-      'entrada inicial e entrada final não podem ter o mesmo valor'
+      "entrada inicial e entrada final não podem ter o mesmo valor",
     );
   }
 
