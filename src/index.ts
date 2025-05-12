@@ -10,7 +10,9 @@ export { Colors, Dates, Formatters, Numbers, Strings, Validators };
 
 export {
   Colors as WDColors,
-  Dates as WDDates, Files as WDFiles, Formatters as WDFormatters,
+  Dates as WDDates,
+  Files as WDFiles,
+  Formatters as WDFormatters,
   Numbers as WDNumbers,
   Strings as WDStrings,
   Validators as WDValidators

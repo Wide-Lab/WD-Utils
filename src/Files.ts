@@ -155,3 +155,62 @@ export const mimeTypeToExtension = (mimeType: string): string => {
 
   return ext;
 };
+
+/**
+ * Gets a extension of a file name
+ * @param fileName - The name of the file to be converted
+ * @returns The file extension (without the dot), or an empty string if there is no extension
+ */
+export const getFileNameExtension = (fileName: string) => {
+  const fileNameParts = fileName.split('.');
+
+  if (fileNameParts.length < 2) {
+    return '';
+  }
+
+  const ext = fileNameParts.pop();
+  return ext || '';
+};
+
+/**
+ * Converts a file extension to its corresponding Uniform Type Identifier (UTI).
+ *
+ * @param extension - The file extension (e.g., 'pdf', 'doc', 'xlsx').
+ * @returns The corresponding UTI string if the extension is recognized, otherwise `undefined`.
+ *
+ * @example
+ * ```typescript
+ * const uti = extensionToUTI('pdf');
+ * console.log(uti); // Output: 'com.adobe.pdf'
+ * ```
+ */
+export const extensionToUTI = (extension: string) => {
+  const UTItypes = {
+    pdf: 'com.adobe.pdf',
+    doc: 'com.microsoft.word.doc',
+    docx: 'com.microsoft.word.document',
+    xls: 'com.microsoft.excel.xls',
+    xlsx: 'com.microsoft.excel.spreadsheet',
+    ppt: 'com.microsoft.powerpoint.ppt',
+    pptx: 'com.microsoft.powerpoint.presentation',
+    mobi: 'com.amazon.mobi'
+  };
+
+  const extensionTyped = extension as keyof typeof UTItypes
+
+  const typeValue = UTItypes[extensionTyped];
+
+  if (typeValue) {
+    return typeValue;
+  }
+};
+
+/**
+ * Gets a Blob object from the URI of a file
+ * @param fileUri - The URI of the file to be converted to Blob
+ * @returns A Blob object representing the file
+ */
+export const getBlob = async (fileUri: string) => {
+  const resp = await fetch(fileUri);
+  return await resp.blob();
+};

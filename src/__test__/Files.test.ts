@@ -1,4 +1,4 @@
-import { extensionToMimeType, mimeTypeToExtension } from "../Files";
+import { extensionToMimeType, extensionToUTI, getFileNameExtension, mimeTypeToExtension } from "../Files";
 
 describe('extensionToMimeType', () => {
   it('should return the correct MIME type for known extensions', () => {
@@ -35,5 +35,53 @@ describe('mimeTypeToExtension', () => {
   it('should handle edge cases', () => {
     expect(mimeTypeToExtension('')).toBeUndefined();
     expect(mimeTypeToExtension('invalid')).toBeUndefined();
+  });
+
+  describe('getFileNameExtension', () => {
+    it('should return the correct extension for a file name with a single extension', () => {
+      expect(getFileNameExtension('document.pdf')).toBe('pdf');
+      expect(getFileNameExtension('image.jpeg')).toBe('jpeg');
+      expect(getFileNameExtension('archive.zip')).toBe('zip');
+    });
+
+    it('should return the correct extension for a file name with multiple dots', () => {
+      expect(getFileNameExtension('archive.tar.gz')).toBe('gz');
+      expect(getFileNameExtension('photo.edit.v2.png')).toBe('png');
+    });
+
+    it('should return an empty string for a file name with no extension', () => {
+      expect(getFileNameExtension('README')).toBe('');
+      expect(getFileNameExtension('Makefile')).toBe('');
+    });
+
+    it('should handle edge cases', () => {
+      expect(getFileNameExtension('.gitignore')).toBe('gitignore');
+      expect(getFileNameExtension('.hiddenfile')).toBe('hiddenfile');
+      expect(getFileNameExtension('')).toBe('');
+      expect(getFileNameExtension('.')).toBe('');
+    });
+
+    describe('extensionToUTI', () => {
+      it('should return the correct UTI for known extensions', () => {
+        expect(extensionToUTI('pdf')).toBe('com.adobe.pdf');
+        expect(extensionToUTI('doc')).toBe('com.microsoft.word.doc');
+        expect(extensionToUTI('docx')).toBe('com.microsoft.word.document');
+        expect(extensionToUTI('xls')).toBe('com.microsoft.excel.xls');
+        expect(extensionToUTI('xlsx')).toBe('com.microsoft.excel.spreadsheet');
+        expect(extensionToUTI('ppt')).toBe('com.microsoft.powerpoint.ppt');
+        expect(extensionToUTI('pptx')).toBe('com.microsoft.powerpoint.presentation');
+        expect(extensionToUTI('mobi')).toBe('com.amazon.mobi');
+      });
+
+      it('should return undefined for unknown extensions', () => {
+        expect(extensionToUTI('unknown')).toBeUndefined();
+        expect(extensionToUTI('random')).toBeUndefined();
+      });
+
+      it('should handle edge cases', () => {
+        expect(extensionToUTI('')).toBeUndefined();
+        expect(extensionToUTI('.')).toBeUndefined();
+      });
+    });
   });
 });
