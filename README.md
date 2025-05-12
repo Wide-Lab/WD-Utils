@@ -4,10 +4,14 @@ A **Widelab Utils** é uma coleção abrangente de funções utilitárias desenv
 
 ## Funcionalidades
 
-- **Formatadores**: Conjuntos de funções para formatação de texto, números e datas.
-- **Manipuladores de dados**: Funções para transformar, filtrar e agrupar dados de maneira eficiente.
-- **Cálculos**: Algoritmos para operações matemáticas comuns e complexas.
-- **Validações**: Ferramentas para verificação e validação de dados de entrada.
+- **Formatadores**: Funções para formatação de texto, números, datas e outros tipos de dados, como CPF, CNPJ, CEP, moedas e horários.
+- **Manipuladores de dados**: Ferramentas para transformar, filtrar, agrupar e manipular strings, arrays e objetos de maneira eficiente.
+- **Cálculos**: Algoritmos para operações matemáticas comuns, como interpolação, arredondamento e verificação de números pares ou ímpares.
+- **Validações**: Ferramentas para validação de dados, como e-mails, CPFs, CNPJs, datas e URLs.
+- **Cores**: Utilitários para manipulação de cores, como conversão entre formatos, geração de paletas e cálculo de contraste.
+- **Arquivos**: Funções para lidar com extensões de arquivos e tipos MIME.
+- **Strings**: Métodos para remoção de acentos, conversão de caracteres especiais, capitalização e manipulação de substrings.
+- **Datas**: Funções para formatação, conversão e manipulação de datas e horários.
 
 ## Instalação
 
@@ -22,21 +26,47 @@ npm install widelab-utils
 Aqui está um exemplo de como utilizar a biblioteca em seu projeto:
 
 ```typescript
-import { Formatters, Validators, Numbers } from "widelab-utils";
+import {
+  Formatters,
+  Validators,
+  Numbers,
+  Colors,
+  Strings,
+  Dates,
+} from 'widelab-utils';
 
 // Exemplo de formatação de CPF
-const formattedDate = Formatters.formatCPF("12345678900");
+const formattedCPF = Formatters.formatCPF('12345678900');
 // Resultado: 123.456.789-00
 
-// Exemplo de validação de entrada
-const isValid = Validators.validateEmail("example@domain.com");
+// Exemplo de validação de e-mail
+const isValidEmail = Validators.validateEmail('example@domain.com');
 // Resultado: true
 
-// Exemplo de cálculo de par
-const sum = Numbers.isEven(4);
+// Exemplo de cálculo de número par
+const isEven = Numbers.isEven(4);
 // Resultado: true
 
-console.log(formattedDate, isValid, sum);
+// Exemplo de manipulação de cores
+const hexToRgb = Colors.hexToRgb('#FF5733');
+// Resultado: [255, 87, 51]
+
+// Exemplo de remoção de acentos
+const noAccents = Strings.accentsRemove('Olá, mundo!');
+// Resultado: Ola, mundo!
+
+// Exemplo de formatação de data
+const formattedDate = Dates.dateBRToJS('12/05/2025');
+// Resultado: 2025-05-12
+
+console.log(
+  formattedCPF,
+  isValidEmail,
+  isEven,
+  hexToRgb,
+  noAccents,
+  formattedDate
+);
 ```
 
 ## Contribuição
