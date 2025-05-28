@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsup",
     "test": "jest",
-    "deploy": "tsup && npm publish"
+    "deploy": "tsup && npm publish",
+    "prepare": "husky"
   },
   "private": false,
   "keywords": [
@@ -30,6 +31,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.5.14",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
