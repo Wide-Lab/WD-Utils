@@ -230,7 +230,7 @@ export const getContrastingTextColor = (color: string): string =>
  * @param colorB - The second color string (HEX, RGB, or RGBA).
  * @returns The absolute difference in luminance between the two colors.
  */
-const compareColorLuminance = (colorA: string, colorB: string): number =>
+export const compareColorLuminance = (colorA: string, colorB: string): number =>
   Math.abs(getHexColorLuminance(colorA) - getHexColorLuminance(colorB));
 
 /**
