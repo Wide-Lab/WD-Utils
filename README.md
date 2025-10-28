@@ -65,7 +65,7 @@ console.log(
   isEven,
   hexToRgb,
   noAccents,
-  formattedDate
+  formattedDate,
 );
 ```
 

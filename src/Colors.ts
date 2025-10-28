@@ -1,4 +1,4 @@
-import { numberClamp } from "./Numbers";
+import { numberClamp } from './Numbers';
 
 /**
  * Converts a hexadecimal color to its RGB component
@@ -25,7 +25,7 @@ export const hexToRgb = (hex: string): [number, number, number] => {
 export const decColorToHex = (component: number): string => {
   const clampedComponent = numberClamp(component, 0, 255);
   const hex = clampedComponent.toString(16).toLocaleUpperCase();
-  return hex.length === 1 ? "0" + hex : hex;
+  return hex.length === 1 ? '0' + hex : hex;
 };
 
 /**
@@ -91,7 +91,7 @@ export const parseRgbToArray = (rgb: string): [number, number, number] => {
   const result = rgb.match(/-?\d+/g);
 
   if (!result || result.length < 3) {
-    throw new Error("Invalid RGB color");
+    throw new Error('Invalid RGB color');
   }
 
   const rgbValues = result.map(Number);
@@ -99,7 +99,7 @@ export const parseRgbToArray = (rgb: string): [number, number, number] => {
   const [r, g, b] = rgbValues;
 
   if (![r, g, b].every((value) => value >= 0 && value <= 255)) {
-    throw new Error("Invalid RGB color values");
+    throw new Error('Invalid RGB color values');
   }
 
   return [r, g, b];
@@ -179,7 +179,7 @@ export const getHexColorLuminance = (color: string) => {
   } else if (isRgbColor(color) || isRgbaColor(color)) {
     rgb = parseRgbToArray(color);
   } else {
-    throw new Error("Invalid color format. Expected HEX, RGB or RGBA.");
+    throw new Error('Invalid color format. Expected HEX, RGB or RGBA.');
   }
 
   return getColorLuminance(...rgb);
@@ -221,7 +221,7 @@ export const isLightColor = (color: string): boolean =>
  * @returns The contrasting text color, either black or white.
  */
 export const getContrastingTextColor = (color: string): string =>
-  isLightColor(color) ? "#000000" : "#FFFFFF";
+  isLightColor(color) ? '#000000' : '#FFFFFF';
 
 /**
  * Compares the luminance of two colors and returns the absolute difference.

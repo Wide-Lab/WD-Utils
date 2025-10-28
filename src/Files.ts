@@ -22,96 +22,96 @@
  * @constant
  */
 const mimeTypesExtensions = {
-  "3g2": "video/3gpp2",
-  "3gp": "video/3gpp",
-  "7z": "application/x-7z-compressed",
-  aac: "audio/aac",
-  abw: "application/x-abiword",
-  arc: "application/x-freearc",
-  avi: "video/x-msvideo",
-  avif: "image/avif",
-  azw: "application/vnd.amazon.ebook",
-  bin: "application/octet-stream",
-  bmp: "image/bmp",
-  bz: "application/x-bzip",
-  bz2: "application/x-bzip2",
-  cda: "application/x-cdf",
-  cmx: "image/x-cmx",
-  cod: "image/cis-cod",
-  csh: "application/x-csh",
-  css: "text/css",
-  csv: "text/csv",
-  doc: "application/msword",
-  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  eot: "application/vnd.ms-fontobject",
-  epub: "application/epub+zip",
-  gif: "image/gif",
-  gz: "application/gzip",
-  html: "text/html",
-  htm: "text/html",
-  ico: "image/x-icon",
-  ics: "text/calendar",
-  ief: "image/ief",
-  jar: "application/java-archive",
-  jfi: "image/pipeg",
-  jpg: "image/jpeg",
-  jpe: "image/jpeg",
-  jpeg: "image/jpeg",
-  js: "text/javascript",
-  json: "application/json",
-  jsonld: "application/ld+json",
-  mid: "audio/midi",
-  midi: "audio/midi",
-  mjs: "text/javascript",
-  mp3: "audio/mpeg",
-  mp4: "video/mp4",
-  mpeg: "video/mpeg",
-  mpkg: "application/vnd.apple.installer+xml",
-  odp: "application/vnd.oasis.opendocument.presentation",
-  ods: "application/vnd.oasis.opendocument.spreadsheet",
-  odt: "application/vnd.oasis.opendocument.text",
-  oga: "audio/ogg",
-  ogv: "video/ogg",
-  ogx: "application/ogg",
-  opus: "audio/opus",
-  otf: "font/otf",
-  pbm: "image/x-portable-bitmap",
-  pdf: "application/pdf",
-  pgm: "image/x-portable-graymap",
-  php: "application/x-httpd-php",
-  png: "image/png",
-  pnm: "image/x-portable-anymap",
-  ppm: "image/x-portable-pixmap",
-  ppt: "application/vnd.ms-powerpoint",
-  pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  rar: "application/vnd.rar",
-  ras: "image/x-cmu-raster",
-  rgb: "image/x-rgb",
-  rtf: "application/rtf",
-  sh: "application/x-sh",
-  svg: "image/svg+xml",
-  tar: "application/x-tar",
-  tif: "image/tiff",
-  tiff: "image/tiff",
-  ts: "video/mp2t",
-  ttf: "font/ttf",
-  txt: "text/plain",
-  vsd: "application/vnd.visio",
-  wav: "audio/wav",
-  weba: "audio/webm",
-  webm: "video/webm",
-  webp: "image/webp",
-  woff: "font/woff",
-  woff2: "font/woff2",
-  xbm: "image/x-xbitmap",
-  xhtml: "application/xhtml+xml",
-  xls: "application/vnd.ms-excel",
-  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  xml: "application/xml",
-  xpm: "image/x-xpixmap",
-  xul: "application/vnd.mozilla.xul+xml",
-  xwd: "image/x-xwindowdump",
-  zip: "application/zip",
+  '3g2': 'video/3gpp2',
+  '3gp': 'video/3gpp',
+  '7z': 'application/x-7z-compressed',
+  aac: 'audio/aac',
+  abw: 'application/x-abiword',
+  arc: 'application/x-freearc',
+  avi: 'video/x-msvideo',
+  avif: 'image/avif',
+  azw: 'application/vnd.amazon.ebook',
+  bin: 'application/octet-stream',
+  bmp: 'image/bmp',
+  bz: 'application/x-bzip',
+  bz2: 'application/x-bzip2',
+  cda: 'application/x-cdf',
+  cmx: 'image/x-cmx',
+  cod: 'image/cis-cod',
+  csh: 'application/x-csh',
+  css: 'text/css',
+  csv: 'text/csv',
+  doc: 'application/msword',
+  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  eot: 'application/vnd.ms-fontobject',
+  epub: 'application/epub+zip',
+  gif: 'image/gif',
+  gz: 'application/gzip',
+  html: 'text/html',
+  htm: 'text/html',
+  ico: 'image/x-icon',
+  ics: 'text/calendar',
+  ief: 'image/ief',
+  jar: 'application/java-archive',
+  jfi: 'image/pipeg',
+  jpg: 'image/jpeg',
+  jpe: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  js: 'text/javascript',
+  json: 'application/json',
+  jsonld: 'application/ld+json',
+  mid: 'audio/midi',
+  midi: 'audio/midi',
+  mjs: 'text/javascript',
+  mp3: 'audio/mpeg',
+  mp4: 'video/mp4',
+  mpeg: 'video/mpeg',
+  mpkg: 'application/vnd.apple.installer+xml',
+  odp: 'application/vnd.oasis.opendocument.presentation',
+  ods: 'application/vnd.oasis.opendocument.spreadsheet',
+  odt: 'application/vnd.oasis.opendocument.text',
+  oga: 'audio/ogg',
+  ogv: 'video/ogg',
+  ogx: 'application/ogg',
+  opus: 'audio/opus',
+  otf: 'font/otf',
+  pbm: 'image/x-portable-bitmap',
+  pdf: 'application/pdf',
+  pgm: 'image/x-portable-graymap',
+  php: 'application/x-httpd-php',
+  png: 'image/png',
+  pnm: 'image/x-portable-anymap',
+  ppm: 'image/x-portable-pixmap',
+  ppt: 'application/vnd.ms-powerpoint',
+  pptx: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  rar: 'application/vnd.rar',
+  ras: 'image/x-cmu-raster',
+  rgb: 'image/x-rgb',
+  rtf: 'application/rtf',
+  sh: 'application/x-sh',
+  svg: 'image/svg+xml',
+  tar: 'application/x-tar',
+  tif: 'image/tiff',
+  tiff: 'image/tiff',
+  ts: 'video/mp2t',
+  ttf: 'font/ttf',
+  txt: 'text/plain',
+  vsd: 'application/vnd.visio',
+  wav: 'audio/wav',
+  weba: 'audio/webm',
+  webm: 'video/webm',
+  webp: 'image/webp',
+  woff: 'font/woff',
+  woff2: 'font/woff2',
+  xbm: 'image/x-xbitmap',
+  xhtml: 'application/xhtml+xml',
+  xls: 'application/vnd.ms-excel',
+  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  xml: 'application/xml',
+  xpm: 'image/x-xpixmap',
+  xul: 'application/vnd.mozilla.xul+xml',
+  xwd: 'image/x-xwindowdump',
+  zip: 'application/zip',
 };
 
 /**
@@ -129,7 +129,7 @@ export const extensionToMimeType = (extension: string): string => {
     return typeValue;
   }
 
-  return "text/plain";
+  return 'text/plain';
 };
 
 /**
@@ -151,7 +151,7 @@ export const mimeTypeToExtension = (mimeType: string): string => {
     }
   }
 
-  const [mime, ext] = mimeType.split("/");
+  const [mime, ext] = mimeType.split('/');
 
   return ext;
 };
@@ -162,14 +162,14 @@ export const mimeTypeToExtension = (mimeType: string): string => {
  * @returns The file extension (without the dot), or an empty string if there is no extension
  */
 export const getFileNameExtension = (fileName: string) => {
-  const fileNameParts = fileName.split(".");
+  const fileNameParts = fileName.split('.');
 
   if (fileNameParts.length < 2) {
-    return "";
+    return '';
   }
 
   const ext = fileNameParts.pop();
-  return ext || "";
+  return ext || '';
 };
 
 /**
@@ -186,14 +186,14 @@ export const getFileNameExtension = (fileName: string) => {
  */
 export const extensionToUTI = (extension: string) => {
   const UTItypes = {
-    pdf: "com.adobe.pdf",
-    doc: "com.microsoft.word.doc",
-    docx: "com.microsoft.word.document",
-    xls: "com.microsoft.excel.xls",
-    xlsx: "com.microsoft.excel.spreadsheet",
-    ppt: "com.microsoft.powerpoint.ppt",
-    pptx: "com.microsoft.powerpoint.presentation",
-    mobi: "com.amazon.mobi",
+    pdf: 'com.adobe.pdf',
+    doc: 'com.microsoft.word.doc',
+    docx: 'com.microsoft.word.document',
+    xls: 'com.microsoft.excel.xls',
+    xlsx: 'com.microsoft.excel.spreadsheet',
+    ppt: 'com.microsoft.powerpoint.ppt',
+    pptx: 'com.microsoft.powerpoint.presentation',
+    mobi: 'com.amazon.mobi',
   };
 
   const extensionTyped = extension as keyof typeof UTItypes;
