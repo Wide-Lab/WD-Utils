@@ -6,6 +6,7 @@ import {
   dateToTime,
   dateUSAtoBR,
   getFirstDayOfMonth,
+  getLastDayNumberOfMonth,
   getLastDayPreviousMonth,
   getToday,
   getYesterday,
@@ -249,56 +250,41 @@ describe('utils/Date', () => {
   describe('getLastDayPreviousMonth', () => {
     it('should return correct first day of 2021-01', () => {
       const mockDateObject = new Date('2021-02-26T02:42:16.652Z');
-      const spy = jest
-        .spyOn(global, 'Date')
-        .mockImplementation(() => mockDateObject);
+      jest.useFakeTimers().setSystemTime(new Date(mockDateObject));
 
       const mocketYesterday = getLastDayPreviousMonth();
-      spy.mockRestore();
       expect(mocketYesterday).toBe('2021-01-31');
     });
 
     it('should return correct first day of 2022-12', () => {
       const mockDateObject = new Date('2023-01-14T01:00:00.000Z');
-      const spy = jest
-        .spyOn(global, 'Date')
-        .mockImplementation(() => mockDateObject);
+      jest.useFakeTimers().setSystemTime(new Date(mockDateObject));
 
       const mocketYesterday = getLastDayPreviousMonth();
-      spy.mockRestore();
       expect(mocketYesterday).toBe('2022-12-31');
     });
 
     it('should return correct first day of 2021-02 (non-leap year)', () => {
       const mockDateObject = new Date('2021-03-12T01:00:00.000Z');
-      const spy = jest
-        .spyOn(global, 'Date')
-        .mockImplementation(() => mockDateObject);
+      jest.useFakeTimers().setSystemTime(new Date(mockDateObject));
 
       const mocketYesterday = getLastDayPreviousMonth();
-      spy.mockRestore();
       expect(mocketYesterday).toBe('2021-02-28');
     });
 
     it('should return correct first day of 2021-12', () => {
       const mockDateObject = new Date('2021-12-10T01:00:00.000Z');
-      const spy = jest
-        .spyOn(global, 'Date')
-        .mockImplementation(() => mockDateObject);
+      jest.useFakeTimers().setSystemTime(new Date(mockDateObject));
 
       const mocketYesterday = getLastDayPreviousMonth();
-      spy.mockRestore();
       expect(mocketYesterday).toBe('2021-11-30');
     });
 
     it('should return correct first day of 2024-03', () => {
       const mockDateObject = new Date('2024-03-10T01:00:00.000Z');
-      const spy = jest
-        .spyOn(global, 'Date')
-        .mockImplementation(() => mockDateObject);
+      jest.useFakeTimers().setSystemTime(new Date(mockDateObject));
 
       const mocketYesterday = getLastDayPreviousMonth();
-      spy.mockRestore();
       expect(mocketYesterday).toBe('2024-02-29');
     });
   });
@@ -366,6 +352,44 @@ describe('utils/Date', () => {
         const result = dateToJS(date);
         expect(result).toBe('2024-02-29');
       });
+    });
+  });
+
+  describe('getLastDayOfMonth', () => {
+    it('should return "31" for December 2023', () => {
+      expect(getLastDayNumberOfMonth(2023, 12)).toBe('31');
+    });
+
+    it('should return "29" for February 2024 (leap year)', () => {
+      expect(getLastDayNumberOfMonth(2024, 2)).toBe('29');
+    });
+
+    it('should return "28" for February 2023 (non-leap year)', () => {
+      expect(getLastDayNumberOfMonth(2023, 2)).toBe('28');
+    });
+
+    it('should return "30" for April 2023', () => {
+      expect(getLastDayNumberOfMonth(2023, 4)).toBe('30');
+    });
+
+    it('should return "31" for July 2023', () => {
+      expect(getLastDayNumberOfMonth(2023, 7)).toBe('31');
+    });
+
+    it('should pad single-digit days with a leading zero', () => {
+      // February 2021 has 28 days, so output should be "28"
+      expect(getLastDayNumberOfMonth(2021, 2)).toBe('28');
+      // April 2021 has 30 days, so output should be "30"
+      expect(getLastDayNumberOfMonth(2021, 4)).toBe('30');
+    });
+
+    it('should handle month values greater than 12 (e.g., 13)', () => {
+      // Month 13 should be treated as January of the next year
+      expect(getLastDayNumberOfMonth(2023, 13)).toBe('31');
+    });
+
+    it('should handle month value of 0 (January)', () => {
+      expect(getLastDayNumberOfMonth(2023, 1)).toBe('31');
     });
   });
 });

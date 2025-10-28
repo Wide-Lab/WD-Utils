@@ -71,9 +71,9 @@ export const getFirstDayOfMonth = () => {
  * @returns {string} The last day of the previous month in the format YYYY-MM-DD.
  */
 export const getLastDayPreviousMonth = () => {
-  const date = new Date(); // current date
-  date.setDate(1); // going to 1st of the month
-  date.setHours(-1); // going to last hour before this date even started.
+  const now = new Date();
+  // Get the last day of the previous month
+  const date = new Date(now.getFullYear(), now.getMonth(), 0);
 
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -81,6 +81,29 @@ export const getLastDayPreviousMonth = () => {
   const day = String(date.getDate()).padStart(2, '0');
 
   return `${year}-${smonth}-${day}`;
+};
+
+/**
+ * Returns the last day number of a given month and year as a padded two-digit string.
+ * @param year - The year as a number
+ * @param month - The month as a number (1-12)
+ * @returns A string representing the last day number of the month padded with leading zeros (e.g., "31")
+ * @example
+ * ```typescript
+ * getLastDayNumberOfMonth(2023, 12) // returns "31"
+ * getLastDayNumberOfMonth(2024, 2)  // returns "29"
+ * ```
+ */
+export const getLastDayNumberOfMonth = (year: number, month: number) => {
+  const isDecember = month >= 12;
+
+  const date = new Date(
+    isDecember ? year + 1 : year,
+    isDecember ? 0 : month,
+    0,
+  );
+
+  return String(date.getDate()).padStart(2, '0');
 };
 
 /**
