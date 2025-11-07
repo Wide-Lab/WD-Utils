@@ -1,3 +1,5 @@
+import { truncDecimals } from './Numbers';
+
 /**
  * A mapping of file extensions to their corresponding MIME types.
  *
@@ -213,4 +215,36 @@ export const extensionToUTI = (extension: string) => {
 export const getBlob = async (fileUri: string) => {
   const resp = await fetch(fileUri);
   return await resp.blob();
+};
+
+/**
+ * Formats a byte count into a human-readable string using 1024-based units.
+ *
+ * @param bytes - The number of bytes to format. Expected to be a non-negative number.
+ * @returns A string containing the numeric value rounded to two decimal places
+ *          (trailing zeros trimmed) followed by a space and the unit ("B", "KB", "MB", "GB").
+ *
+ * @remarks
+ * - Returns "0 B" when `bytes` is 0.
+ * - Uses 1024 as the unit base.
+ * - Supported units: B, KB, MB, GB. Values that require units larger than GB may yield an undefined unit suffix
+ *   because only four units are defined in the implementation.
+ *
+ * @example
+ * formatFileSize(0);        // "0 B"
+ * @example
+ * formatFileSize(1024);     // "1 KB"
+ * @example
+ * formatFileSize(1536);     // "1.5 KB"
+ * @example
+ * formatFileSize(1048576);  // "1 MB"
+ */
+export const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 B';
+
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return truncDecimals(bytes / Math.pow(k, i)) + ' ' + sizes[i];
 };
