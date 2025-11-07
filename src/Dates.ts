@@ -1,4 +1,3 @@
-import { WDNumbers } from '.';
 import { padTo2Digits } from './Numbers';
 
 /**
@@ -304,7 +303,17 @@ export const formatTime = dateToTime;
  */
 export const dateToJS = (date: Date) => {
   const year = date.getFullYear();
-  const month = WDNumbers.padTo2Digits(date.getMonth() + 1);
-  const day = WDNumbers.padTo2Digits(date.getDate());
+  const month = padTo2Digits(date.getMonth() + 1);
+  const day = padTo2Digits(date.getDate());
   return `${year}-${month}-${day}`;
 };
+
+/**
+ * Converts a JavaScript `Date` object to a string in the format `YYYY-MM-DD HH:MM:SS` or `YYYY-MM-DD HH:MM`.
+ *
+ * @param date - The `Date` object to be converted.
+ * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
+ * @returns A string representing the date in `YYYY-MM-DD HH:MM:SS` or `YYYY-MM-DD HH:MM` format.
+ */
+export const dateToDateTime = (date: Date, hideSecond = false) =>
+  `${dateToJS(date)} ${dateToTime(date, hideSecond)}`;

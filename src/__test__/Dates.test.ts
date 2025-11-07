@@ -2,6 +2,7 @@ import {
   dateBRToJS,
   dateToBR,
   dateToBRDate,
+  dateToDateTime,
   dateToJS,
   dateToTime,
   dateUSAtoBR,
@@ -390,6 +391,46 @@ describe('utils/Date', () => {
 
     it('should handle month value of 0 (January)', () => {
       expect(getLastDayNumberOfMonth(2023, 1)).toBe('31');
+    });
+
+    it('should handle month value of 0 (December of previous year)', () => {
+      expect(getLastDayNumberOfMonth(2023, 0)).toBe('31');
+    });
+
+    describe('dateToDateTime', () => {
+      it('should format date with seconds', () => {
+        const date = new Date(2023, 9, 14, 14, 30, 15); // 2023-10-14 14:30:15
+        expect(dateToDateTime(date)).toBe('2023-10-14 14:30:15');
+      });
+
+      it('should format date without seconds when hideSecond is true', () => {
+        const date = new Date(2023, 9, 14, 14, 30, 15); // 2023-10-14 14:30:15
+        expect(dateToDateTime(date, true)).toBe('2023-10-14 14:30');
+      });
+
+      it('should pad single digit hours, minutes and seconds correctly', () => {
+        const date = new Date(2023, 0, 5, 8, 5, 7); // 2023-01-05 08:05:07
+        expect(dateToDateTime(date)).toBe('2023-01-05 08:05:07');
+        expect(dateToDateTime(date, true)).toBe('2023-01-05 08:05');
+      });
+
+      it('should handle midnight time correctly with and without seconds', () => {
+        const date = new Date(2023, 0, 1, 0, 0, 0); // 2023-01-01 00:00:00
+        expect(dateToDateTime(date)).toBe('2023-01-01 00:00:00');
+        expect(dateToDateTime(date, true)).toBe('2023-01-01 00:00');
+      });
+
+      it('should handle noon time correctly with and without seconds', () => {
+        const date = new Date(2023, 0, 1, 12, 0, 12); // 2023-01-01 12:00:12
+        expect(dateToDateTime(date)).toBe('2023-01-01 12:00:12');
+        expect(dateToDateTime(date, true)).toBe('2023-01-01 12:00');
+      });
+
+      it('should handle time near midnight with and without seconds', () => {
+        const date = new Date(2023, 0, 1, 23, 59, 59); // 2023-01-01 23:59:59
+        expect(dateToDateTime(date)).toBe('2023-01-01 23:59:59');
+        expect(dateToDateTime(date, true)).toBe('2023-01-01 23:59');
+      });
     });
   });
 });
