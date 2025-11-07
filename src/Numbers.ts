@@ -63,3 +63,15 @@ export const interpolate = (
   // Calculate the interpolated output
   return normalizedInput * outputRange + outputStart;
 };
+
+/**
+ * Truncates a number to a specified number of decimal places without rounding.
+ *
+ * @param num - The number to truncate.
+ * @param decimalPlaces - The number of decimal places to keep. Defaults to 2.
+ * @returns The truncated number with the specified number of decimal places.
+ */
+export const truncDecimals = (num: number, decimalPlaces = 2) => {
+  const factor = Math.pow(10, decimalPlaces);
+  return Math.trunc(num * factor) / factor;
+};

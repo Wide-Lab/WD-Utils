@@ -1,4 +1,10 @@
-import { interpolate, isEven, numberClamp, padTo2Digits } from '../Numbers';
+import {
+  interpolate,
+  isEven,
+  numberClamp,
+  padTo2Digits,
+  truncDecimals,
+} from '../Numbers';
 
 describe('utils/Numbers', () => {
   describe('isEven', () => {
@@ -93,6 +99,35 @@ describe('utils/Numbers', () => {
         expect(interpolate(0, -10, 10, -100, 100)).toBe(0);
         expect(interpolate(-5, -10, 10, -100, 100)).toBe(-50);
         expect(interpolate(5, -10, 10, -100, 100)).toBe(50);
+      });
+
+      describe('truncDecimals', () => {
+        test('truncates to 2 decimal places by default', () => {
+          expect(truncDecimals(3.14159)).toBe(3.14);
+          expect(truncDecimals(2.999)).toBe(2.99);
+          expect(truncDecimals(-1.23789)).toBe(-1.23);
+        });
+
+        test('truncates to specified decimal places', () => {
+          expect(truncDecimals(3.14159, 3)).toBe(3.141);
+          expect(truncDecimals(2.999, 1)).toBe(2.9);
+          expect(truncDecimals(-1.23789, 4)).toBe(-1.2378);
+        });
+
+        test('handles whole numbers', () => {
+          expect(truncDecimals(5)).toBe(5);
+          expect(truncDecimals(100, 3)).toBe(100);
+        });
+
+        test('handles zero', () => {
+          expect(truncDecimals(0)).toBe(0);
+          expect(truncDecimals(0, 5)).toBe(0);
+        });
+
+        test('handles very small numbers', () => {
+          expect(truncDecimals(0.0000123, 5)).toBe(0.00001);
+          expect(truncDecimals(0.0000123, 7)).toBe(0.0000123);
+        });
       });
     });
   });
