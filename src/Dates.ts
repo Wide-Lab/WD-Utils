@@ -317,3 +317,25 @@ export const dateToJS = (date: Date) => {
  */
 export const dateToDateTime = (date: Date, hideSecond = false) =>
   `${dateToJS(date)} ${dateToTime(date, hideSecond)}`;
+
+/**
+ * Converte uma data JavaScript para o formato brasileiro "DD/MM/YYYY".
+ *
+ * @param {Date} date - Objeto de data a ser formatado.
+ * @returns {string} Data formatada no padrão brasileiro.
+ * @throws {Error} Se a data for inválida.
+ *
+ * @example
+ * formatDateToBR(new Date(2025, 10, 10)); // "10/11/2025"
+ */
+export const formatDateToBR = (date: Date): string => {
+  if (!date || !(date instanceof Date) || Number.isNaN(date.getTime())) {
+    throw new Error('Data inválida');
+  }
+
+  const day = padTo2Digits(date.getDate());
+  const month = padTo2Digits(date.getMonth() + 1);
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};

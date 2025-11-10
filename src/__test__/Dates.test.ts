@@ -6,6 +6,7 @@ import {
   dateToJS,
   dateToTime,
   dateUSAtoBR,
+  formatDateToBR,
   getFirstDayOfMonth,
   getLastDayNumberOfMonth,
   getLastDayPreviousMonth,
@@ -411,6 +412,44 @@ describe('utils/Date', () => {
         expect(dateToDateTime(date)).toBe('2023-01-01 23:59:59');
         expect(dateToDateTime(date, true)).toBe('2023-01-01 23:59');
       });
+    });
+  });
+
+  describe('formatDateToBR', () => {
+    it('deve formatar corretamente uma data válida', () => {
+      const date = new Date(2025, 10, 10); // 10 de novembro de 2025
+      expect(formatDateToBR(date)).toBe('10/11/2025');
+    });
+
+    it('deve adicionar zeros à esquerda em dias e meses menores que 10', () => {
+      const date = new Date(2025, 0, 5); // 5 de janeiro de 2025
+      expect(formatDateToBR(date)).toBe('05/01/2025');
+    });
+
+    it('deve formatar corretamente o último dia do ano', () => {
+      const date = new Date(2025, 11, 31); // 31 de dezembro de 2025
+      expect(formatDateToBR(date)).toBe('31/12/2025');
+    });
+
+    it('deve lançar erro para data inválida (new Date("invalid"))', () => {
+      const invalidDate = new Date('invalid');
+      expect(() => formatDateToBR(invalidDate)).toThrow('Data inválida');
+    });
+
+    it('deve funcionar corretamente com datas antigas', () => {
+      const date = new Date(1999, 11, 31);
+      expect(formatDateToBR(date)).toBe('31/12/1999');
+    });
+
+    it('deve funcionar corretamente com datas futuras', () => {
+      const date = new Date(2100, 0, 1);
+      expect(formatDateToBR(date)).toBe('01/01/2100');
+    });
+
+    it('deve retornar o mesmo valor para objetos Date clonados', () => {
+      const original = new Date(2024, 6, 15);
+      const clone = new Date(original.getTime());
+      expect(formatDateToBR(original)).toBe(formatDateToBR(clone));
     });
   });
 });
