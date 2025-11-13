@@ -293,6 +293,13 @@ export const dateToTime = (date: Date, hideSecond = false) => {
   return dateArray.join(':');
 };
 
+/**
+ * Formats a given Date object into a time string.
+ *
+ * @param date - The Date object to format.
+ * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
+ * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
+ */
 export const formatTime = dateToTime;
 
 /**
@@ -338,4 +345,31 @@ export const formatDateToBR = (date: Date): string => {
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;
+};
+
+/**
+ * Converte uma data no formato C# /Date(1731320280000-0300)/ para um objeto JavaScript Date.
+ *
+ * @param csharpDate String no padrão /Date(<timestamp><offset>)/
+ * @returns Instância de Date correspondente
+ */
+export const parseCSharpDate = (csharpDate: string): Date => {
+  const match = csharpDate?.match(/\((\d+)([+-]\d{4})\)/);
+
+  if (!match) {
+    throw new Error(`Formato de data inválido: ${csharpDate}`);
+  }
+
+  const [, timestampStr, offsetStr] = match;
+
+  const timestamp = Number(timestampStr);
+  const offset = Number(offsetStr);
+
+  const offsetHours = Math.trunc(offset / 100);
+  const offsetMinutes = offset % 100;
+
+  const utcTimestamp =
+    timestamp - offsetHours * ONE_HOUR - offsetMinutes * ONE_MINUTE;
+
+  return new Date(utcTimestamp);
 };

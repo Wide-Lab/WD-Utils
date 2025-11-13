@@ -12,6 +12,7 @@ import {
   getLastDayPreviousMonth,
   getToday,
   getYesterday,
+  parseCSharpDate,
 } from '../Dates';
 
 describe('utils/Date', () => {
@@ -450,6 +451,84 @@ describe('utils/Date', () => {
       const original = new Date(2024, 6, 15);
       const clone = new Date(original.getTime());
       expect(formatDateToBR(original)).toBe(formatDateToBR(clone));
+    });
+  });
+
+  describe('parseCSharpDate', () => {
+    it('deve converter data com offset negativo (-0300)', () => {
+      const input = '/Date(1731320280000-0300)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(1731320280000 + 3 * 60 * 60 * 1000); // +3h no UTC
+      expect(result.getTime()).toBe(expected.getTime());
+    });
+
+    it('deve converter data com offset positivo (+0200)', () => {
+      const input = '/Date(1731320280000+0200)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(1731320280000 - 2 * 60 * 60 * 1000); // -2h no UTC
+      expect(result.getTime()).toBe(expected.getTime());
+    });
+
+    it('deve converter corretamente quando o offset possui minutos (ex: -0330)', () => {
+      const input = '/Date(1731320280000-0330)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(1731320280000 + (3 * 60 + 30) * 60 * 1000); // +3h30 UTC
+      expect(result.getTime()).toBe(expected.getTime());
+    });
+
+    it('deve converter corretamente quando o offset possui minutos positivos (+0545)', () => {
+      const input = '/Date(1731320280000+0545)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(1731320280000 - (5 * 60 + 45) * 60 * 1000); // -5h45 UTC
+      expect(result.getTime()).toBe(expected.getTime());
+    });
+
+    it('deve lidar com timestamp zero corretamente', () => {
+      const input = '/Date(0-0000)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(0);
+      expect(result.getTime()).toBe(expected.getTime());
+    });
+
+    it('deve aceitar offset +0000 e não alterar o valor', () => {
+      const input = '/Date(1731320280000+0000)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(1731320280000);
+      expect(result.getTime()).toBe(expected.getTime());
+    });
+
+    it('deve lançar erro quando o formato for inválido', () => {
+      const invalidInputs = [
+        '/Date(ABC)/',
+        '/Date(1731320280000)/', // sem offset
+        '/Date(1731320280000-030)/', // offset inválido (3 dígitos)
+        '1731320280000-0300',
+        '/Date1731320280000-0300/',
+        '',
+        null as any,
+        undefined as any,
+      ];
+
+      invalidInputs.forEach((value) => {
+        expect(() => parseCSharpDate(value)).toThrow(
+          /Formato de data inválido/i,
+        );
+      });
+    });
+
+    it('deve converter corretamente valores muito grandes', () => {
+      const input = '/Date(9999999999999-0200)/';
+      const result = parseCSharpDate(input);
+
+      const expected = new Date(9999999999999 + 2 * 60 * 60 * 1000);
+
+      expect(result.getTime()).toBe(expected.getTime());
     });
   });
 });
