@@ -2,6 +2,7 @@ import {
   extensionToMimeType,
   extensionToUTI,
   formatFileSize,
+  getBlobFromUri,
   getFileNameExtension,
   mimeTypeToExtension,
 } from '../Files';
@@ -171,6 +172,51 @@ describe('mimeTypeToExtension', () => {
         const beyondPB = PB * 1024;
         expect(formatFileSize(beyondPB)).toBe('1 EB');
       });
+    });
+  });
+
+  describe('getBlobFromUri', () => {
+    beforeEach(() => {
+      global.fetch = jest.fn();
+    });
+
+    it('deve retornar um Blob quando a requisição for bem sucedida', async () => {
+      const fakeBlob = new Blob(['conteúdo']);
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        blob: () => Promise.resolve(fakeBlob),
+      });
+
+      const result = await getBlobFromUri('https://example.com/file.txt');
+
+      expect(result).toBe(fakeBlob);
+      expect(fetch).toHaveBeenCalledWith('https://example.com/file.txt');
+    });
+
+    it('deve lançar erro quando a URI for vazia', async () => {
+      await expect(getBlobFromUri('')).rejects.toThrow('URI inválida');
+    });
+
+    it('deve lançar erro quando fetch retornar erro HTTP', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      await expect(
+        getBlobFromUri('https://example.com/file.txt'),
+      ).rejects.toThrow('Falha ao buscar o arquivo: 404 Not Found');
+    });
+
+    it('deve lançar erro quando fetch rejeitar', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(
+        new Error('Network failure'),
+      );
+
+      await expect(
+        getBlobFromUri('https://example.com/file.txt'),
+      ).rejects.toThrow('Network failure');
     });
   });
 });

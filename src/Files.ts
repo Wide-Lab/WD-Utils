@@ -208,14 +208,32 @@ export const extensionToUTI = (extension: string) => {
 };
 
 /**
- * Gets a Blob object from the URI of a file
- * @param fileUri - The URI of the file to be converted to Blob
- * @returns A Blob object representing the file
+ * Converte a URI de um arquivo em um Blob utilizando fetch.
+ *
+ * @param uri Caminho ou URL do arquivo.
+ * @returns Promise contendo o Blob correspondente ao conteúdo baixado.
+ * @throws Erro caso o fetch falhe ou a URI seja inválida.
  */
-export const getBlob = async (fileUri: string) => {
-  const resp = await fetch(fileUri);
-  return await resp.blob();
+export const getBlobFromUri = async (uri: string) => {
+  if (!uri || typeof uri !== 'string') {
+    throw new Error('URI inválida: é necessário fornecer uma string.');
+  }
+
+  const response = await fetch(uri);
+
+  if (!response.ok) {
+    throw new Error(
+      `Falha ao buscar o arquivo: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  return response.blob();
 };
+
+/**
+ * @deprecated Use getBlobFromUri ao invés dessa
+ */
+export const getBlob = getBlobFromUri;
 
 /**
  * Formats a byte count into a human-readable string using 1024-based units.
