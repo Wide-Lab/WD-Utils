@@ -10,7 +10,9 @@ import {
   getFirstDayOfMonth,
   getLastDayNumberOfMonth,
   getLastDayPreviousMonth,
+  getNowTime,
   getToday,
+  getTodayBR,
   getYesterday,
   parseCSharpDate,
 } from '../Dates';
@@ -529,6 +531,58 @@ describe('utils/Date', () => {
       const expected = new Date(9999999999999 + 2 * 60 * 60 * 1000);
 
       expect(result.getTime()).toBe(expected.getTime());
+    });
+  });
+
+  describe('getTodayBR', () => {
+    it('deve retornar a data atual no formato brasileiro', () => {
+      const mockDate = new Date('2023-10-14T12:00:00Z');
+
+      const spy = jest
+        .spyOn(global, 'Date')
+        .mockImplementation(() => mockDate as any);
+
+      expect(getTodayBR()).toBe('14/10/2023');
+
+      spy.mockRestore();
+    });
+
+    it('deve lidar corretamente com meses e dias de um dígito', () => {
+      const mockDate = new Date('2023-01-05T04:00:00Z');
+
+      const spy = jest
+        .spyOn(global, 'Date')
+        .mockImplementation(() => mockDate as any);
+
+      expect(getTodayBR()).toBe('05/01/2023');
+
+      spy.mockRestore();
+    });
+  });
+
+  describe('getNowTime', () => {
+    it('deve retornar a hora atual no formato HH:MM', () => {
+      const mockDate = new Date(2023, 0, 1, 14, 5, 30);
+
+      const spy = jest
+        .spyOn(global, 'Date')
+        .mockImplementation(() => mockDate as any);
+
+      expect(getNowTime()).toBe('14:05');
+
+      spy.mockRestore();
+    });
+
+    it('deve preencher zeros corretamente em horas/minutos de um dígito', () => {
+      const mockDate = new Date(2023, 0, 1, 8, 3, 9);
+
+      const spy = jest
+        .spyOn(global, 'Date')
+        .mockImplementation(() => mockDate as any);
+
+      expect(getNowTime()).toBe('08:03');
+
+      spy.mockRestore();
     });
   });
 });
