@@ -194,35 +194,58 @@ export const getInitials = (fullName: string) => {
 };
 
 /**
- * Extracts and formats the first and second names from a given full name string.
+ * Extrai e formata um nome completo em um formato abreviado.
  *
- * @param name - The full name string to process.
- * @returns A formatted string containing the first name and either the second name or the initial of the last name.
+ * A função processa uma string de nome removendo espaços em excesso e
+ * preposições comuns (des, dos, das, de, e), retornando o nome formatado
+ * com a inicial do segundo nome.
+ *
+ * @param name - O nome completo a ser formatado
+ * @returns O nome formatado. Possíveis retornos:
+ *   - Se apenas 1 parte: retorna a primeira parte
+ *   - Se 2 partes: retorna "Primeiro Segundo"
+ *   - Se 3+ partes: retorna "Primeiro I. Último" (onde I é a inicial do segundo)
  *
  * @example
- * ```typescript
- * getFirstSecondName("John Doe Smith"); // "John D. Smith"
- * getFirstSecondName("Jane"); // "Jane"
- * getFirstSecondName("Alice Bob"); // "Alice B."
- * getFirstSecondName("Charlie Brown Brown"); // "Charlie B."
- * ```
+ * extractFormattedName("João dos Santos Silva")
+ * // retorna "João S. Silva"
+ *
+ * @example
+ * extractFormattedName("Maria de Jesus")
+ * // retorna "Maria Jesus"
+ *
+ * @example
+ * extractFormattedName("Pedro")
+ * // retorna "Pedro"
  */
 export const extractFormattedName = (name: string) => {
-  const nameParts = name.replace(/\s+/g, ' ').trim().split(' ');
+  // Normaliza espaços múltiplos em um único espaço, remove preposições comuns
+  // (des, dos, das, de, e) e divide o nome em partes
+  const nameParts = name
+    .replace(/\sdes?\s|\sdos?\s|\sdas?\s|\se\s/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .split(' ');
 
+  // Se houver apenas uma parte no nome, retorna ela formatada
   if (nameParts.length < 2) {
     return nameParts[0] || '';
   }
 
+  // Extrai o primeiro nome e a inicial do segundo nome
   const [firstName, secondName] = nameParts;
   const secondNameLetter = secondName[0];
+
+  // Obtém o último nome (último elemento do array)
   const lastName = nameParts[nameParts.length - 1];
 
+  // Se houver apenas 2 partes, retorna "Primeiro Último"
   if (nameParts.length < 3) {
-    return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}.`;
+    return `${ucfirst(firstName)} ${ucfirst(lastName)}`;
   }
 
-  return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}. ${lastName}`;
+  // Se houver 3 ou mais partes, retorna "Primeiro I. Último"
+  return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}. ${ucfirst(lastName)}`;
 };
 
 /**
@@ -253,7 +276,7 @@ export const isContentMatchingSearch = (
  * @param b - The second string to compare.
  * @returns `true` if the strings are equal after removing accents, converting to lowercase, and spaces, otherwise `false`.
  */
-export const compareStrings = <T extends string>(a: T, b: T) => {
+export const compareStrings = <T extends string>(a: T, b: NoInfer<T>) => {
   return convertString(a) === convertString(b);
 };
 

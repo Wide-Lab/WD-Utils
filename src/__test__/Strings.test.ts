@@ -217,22 +217,88 @@ describe('utils/String', () => {
     it('deve retornar o primeiro e segundo nome seguidos pela inicial do último', () => {
       expect(extractFormattedName('John Doe Smith')).toBe('John D. Smith');
       expect(extractFormattedName('Jane Mary Doe')).toBe('Jane M. Doe');
-      expect(extractFormattedName('John Doe')).toBe('John D.');
+      expect(extractFormattedName('John Doe')).toBe('John Doe');
     });
 
     it('deve retornar o primeiro nome seguido da inicial do último se ambos forem iguais', () => {
-      expect(extractFormattedName('John John')).toBe('John J.');
-      expect(extractFormattedName('Jane Jane')).toBe('Jane J.');
+      expect(extractFormattedName('John John')).toBe('John John');
+      expect(extractFormattedName('Jane Jane')).toBe('Jane Jane');
     });
 
     it('deve lidar com espaços extras', () => {
-      expect(extractFormattedName('  John  Doe  ')).toBe('John D.');
-      expect(extractFormattedName('  Jane   Doe  ')).toBe('Jane D.');
+      expect(extractFormattedName('  John  Doe  ')).toBe('John Doe');
+      expect(extractFormattedName('  Jane   Doe  ')).toBe('Jane Doe');
     });
 
     it('deve retornar string vazia para entrada vazia', () => {
       expect(extractFormattedName('')).toBe('');
       expect(extractFormattedName('    ')).toBe('');
+    });
+
+    it('deve formatar "emanuelle dos santos" corretamente', () => {
+      expect(extractFormattedName('emanuelle dos santos')).toBe(
+        'Emanuelle Santos',
+      );
+    });
+
+    it('deve formatar "fabiana da cruz" corretamente', () => {
+      expect(extractFormattedName('fabiana da cruz')).toBe('Fabiana Cruz');
+    });
+
+    it('deve formatar "camila gonçalvez" corretamente', () => {
+      expect(extractFormattedName('camila gonçalvez')).toBe('Camila Gonçalvez');
+    });
+
+    it('deve formatar "maria do canto" corretamente', () => {
+      expect(extractFormattedName('maria do canto')).toBe('Maria Canto');
+    });
+
+    it('deve formatar "fiorentina das cruzes" corretamente', () => {
+      expect(extractFormattedName('fiorentina das cruzes')).toBe(
+        'Fiorentina Cruzes',
+      );
+    });
+
+    it('deve formatar "leopoldo de brança" corretamente', () => {
+      expect(extractFormattedName('leopoldo de brança')).toBe(
+        'Leopoldo Brança',
+      );
+    });
+
+    it('deve formatar "emanuelle dos santos extra" corretamente', () => {
+      expect(extractFormattedName('emanuelle dos santos extra')).toBe(
+        'Emanuelle S. Extra',
+      );
+    });
+
+    it('deve formatar "fabiana da cruz extra" corretamente', () => {
+      expect(extractFormattedName('fabiana da cruz extra')).toBe(
+        'Fabiana C. Extra',
+      );
+    });
+
+    it('deve formatar "maria do canto extra" corretamente', () => {
+      expect(extractFormattedName('maria do canto extra')).toBe(
+        'Maria C. Extra',
+      );
+    });
+
+    it('deve formatar "fiorentina das cruzes extra" corretamente', () => {
+      expect(extractFormattedName('fiorentina das cruzes extra')).toBe(
+        'Fiorentina C. Extra',
+      );
+    });
+
+    it('deve formatar "leopoldo de brança neves" corretamente', () => {
+      expect(extractFormattedName('leopoldo de brança neves')).toBe(
+        'Leopoldo B. Neves',
+      );
+    });
+
+    it('deve formatar "richardison silva e silva" corretamente', () => {
+      expect(extractFormattedName('richardison silva e silva')).toBe(
+        'Richardison S. Silva',
+      );
     });
   });
 
@@ -285,33 +351,33 @@ describe('utils/String', () => {
     });
 
     it('deve retornar falso para strings diferentes', () => {
-      expect(compareStrings('hello', 'world')).toBe(false);
-      expect(compareStrings('Test', 'testing')).toBe(false);
+      expect(compareStrings('hello' as string, 'world')).toBe(false);
+      expect(compareStrings('Test' as string, 'testing')).toBe(false);
     });
 
     it('deve retornar verdadeiro para strings iguais após conversão', () => {
-      expect(compareStrings('hello ', 'hello')).toBe(true);
-      expect(compareStrings('  Test', 'test')).toBe(true);
+      expect(compareStrings('hello ' as string, 'hello')).toBe(true);
+      expect(compareStrings('  Test' as string, 'test')).toBe(true);
     });
 
     it('deve lidar com diferenças de maiúsculas/minúsculas', () => {
-      expect(compareStrings('HELLO', 'hello')).toBe(true);
-      expect(compareStrings('TeSt', 'test')).toBe(true);
+      expect(compareStrings('HELLO' as string, 'hello')).toBe(true);
+      expect(compareStrings('TeSt' as string, 'test')).toBe(true);
     });
 
     it('deve lidar com espaços corretamente', () => {
-      expect(compareStrings('hello world', 'helloworld')).toBe(true);
-      expect(compareStrings('Type Script', 'typescript')).toBe(true);
+      expect(compareStrings('hello world' as string, 'helloworld')).toBe(true);
+      expect(compareStrings('Type Script' as string, 'typescript')).toBe(true);
     });
 
     it('deve lidar corretamente com caracteres acentuados', () => {
-      expect(compareStrings('café', 'cafe')).toBe(true);
-      expect(compareStrings('jalapeño', 'jalapeno')).toBe(true);
+      expect(compareStrings('café' as string, 'cafe')).toBe(true);
+      expect(compareStrings('jalapeño' as string, 'jalapeno')).toBe(true);
     });
 
     it('deve lidar corretamente com caracteres especiais', () => {
-      expect(compareStrings('hello-world', 'hello_world')).toBe(true);
-      expect(compareStrings('Type-Script', 'Type_Script')).toBe(true);
+      expect(compareStrings('hello-world' as string, 'hello_world')).toBe(true);
+      expect(compareStrings('Type-Script' as string, 'Type_Script')).toBe(true);
     });
   });
 
