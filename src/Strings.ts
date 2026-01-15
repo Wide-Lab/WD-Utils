@@ -1,4 +1,25 @@
 /**
+ * Substitui caracteres em uma string com base em um mapeamento fornecido.
+ *
+ * @param value - A string na qual os caracteres serão substituídos.
+ * @param map - Um objeto que mapeia os caracteres a serem substituídos para seus respectivos valores.
+ *               As chaves representam os caracteres a serem substituídos e os valores representam
+ *               os caracteres que substituirão as chaves.
+ * @returns A string resultante após a substituição dos caracteres.
+ */
+export function replaceCharacters(
+  value: string,
+  map: { [key: string]: string },
+): string {
+  // Itera sobre o mapeamento e substitui os caracteres correspondentes.
+  for (const pattern in map) {
+    value = value.replace(new RegExp(map[pattern], 'g'), pattern);
+  }
+
+  return value;
+}
+
+/**
  * Remove accents and especial characters from a string
  * @param value - The string from which accents and especial characters will be removed
  * @returns The string without accents and especial characters
@@ -23,12 +44,7 @@ export const accentsRemove = (value: string): string => {
     n: 'ñ',
   };
 
-  // Itera sobre o mapeamento e substitui os caracteres correspondentes.
-  for (const pattern in map) {
-    value = value.replace(new RegExp(map[pattern], 'g'), pattern);
-  }
-
-  return value;
+  return replaceCharacters(value, map);
 };
 
 /**
@@ -142,36 +158,32 @@ export const specialCharactersConvert = (value: string): string => {
     ÿ: '&yuml;',
   };
 
-  // Itera sobre o mapeamento e substitui os caracteres especiais HTML por suas formas originais.
-  for (var pattern in map) {
-    value = value.replace(new RegExp(map[pattern], 'g'), pattern);
-  }
-
-  return value;
+  return replaceCharacters(value, map);
 };
 
 /**
- * Capitalize the first letter of the word or sentence and lowercase the rest
- * @param word - The word or setence to format
- * @returns The word or setence whit the first letter capitalized and the rest in lowercase
- */
-export const ucfirst = (word: string) =>
-  !word ? '' : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-
-export const capitalizeFirstLetter = ucfirst;
-
-/**
- * Capitalizes the first letter of each word in a text.
+ * Converte a primeira letra de um texto para maiúsculas com opção de capitalizar cada palavra.
  *
- * @param text - The text to be formatted.
- * @returns The text with the first letter of each word capitalized.
+ * @param text - O texto a ser convertido
+ * @param everyWord - Se verdadeiro, capitaliza a primeira letra de cada palavra ou após hífens e pontos. Padrão é falso.
+ * @returns O texto convertido em maiúsculas. Retorna uma string vazia se o texto for vazio ou nulo.
+ *
  */
-export const ucwords = (text: string) =>
-  (text || '')
-    .toLowerCase()
-    .replace(/(^|[ -\.])[a-záàâãéèêíïóôõöúçñ]/g, (s) => s.toUpperCase());
+export function uppercaseFirst(text: string, everyWord = false) {
+  if (!text) {
+    return '';
+  }
 
-export const capitalizeAllFirstLetter = ucwords;
+  const lowerText = text.toLowerCase();
+
+  if (everyWord) {
+    return lowerText.replace(/(^|[ -\.])[a-záàâãéèêíïóôõöúçñ]/g, (s) =>
+      s.toUpperCase(),
+    );
+  }
+
+  return lowerText.charAt(0).toUpperCase() + lowerText.slice(1);
+}
 
 /**
  * Get the initial letters of the first name and last name from a full name.
@@ -241,11 +253,11 @@ export const extractFormattedName = (name: string) => {
 
   // Se houver apenas 2 partes, retorna "Primeiro Último"
   if (nameParts.length < 3) {
-    return `${ucfirst(firstName)} ${ucfirst(lastName)}`;
+    return `${uppercaseFirst(firstName)} ${uppercaseFirst(lastName)}`;
   }
 
   // Se houver 3 ou mais partes, retorna "Primeiro I. Último"
-  return `${ucfirst(firstName)} ${secondNameLetter.toUpperCase()}. ${ucfirst(lastName)}`;
+  return `${uppercaseFirst(firstName)} ${secondNameLetter.toUpperCase()}. ${uppercaseFirst(lastName)}`;
 };
 
 /**
@@ -362,3 +374,23 @@ export const isStringWebLink = (text: string): boolean => {
   const pattern = regexValidator;
   return pattern.test(text);
 };
+
+// TODO Remover essas funções futuramente
+
+/**
+ * @deprecated Use **uppercase** no lugar
+ */
+export const ucfirst = (word: string) => uppercaseFirst(word);
+/**
+ * @deprecated Use **uppercase** no lugar
+ */
+export const capitalizeFirstLetter = (word: string) => uppercaseFirst(word);
+/**
+ * @deprecated Use **uppercase** no lugar
+ */
+export const ucwords = (text: string) => uppercaseFirst(text, true);
+/**
+ * @deprecated Use **uppercase** no lugar
+ */
+export const capitalizeAllFirstLetter = (text: string) =>
+  uppercaseFirst(text, true);

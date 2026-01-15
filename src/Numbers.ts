@@ -23,8 +23,8 @@ export const numberClamp = (value: number, min: number, max: number) =>
  * @param maxLength - The desired length of the resulting string. Defaults to 2.
  * @returns The padded string representation of the number.
  */
-export const padTo2Digits = (num: number, maxLength = 2) =>
-  num.toString().padStart(maxLength, '0');
+export const padTo2Digits = (num: number | string, maxLength = 2) =>
+  String(num).padStart(maxLength, '0');
 
 /**
  * Interpolates a given input number from one range to another.

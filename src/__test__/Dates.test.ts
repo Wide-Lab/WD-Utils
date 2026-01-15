@@ -6,6 +6,7 @@ import {
   dateToJS,
   dateToTime,
   dateUSAtoBR,
+  formatDate,
   formatDateToBR,
   getFirstDayOfMonth,
   getLastDayNumberOfMonth,
@@ -309,36 +310,166 @@ describe('utils/Date', () => {
       expect(dateToBRDate(date, false)).toBe('14/10/2023  12:00');
       expect(dateToBRDate(date, true, false)).toBe('14/10/2023');
     });
+  });
 
-    describe('dateToJS', () => {
+  describe('formatDate', () => {
+    describe('format to USA', () => {
+      it('deve formatar a data no formato padrão JS (YYYY-MM-DD)', () => {
+        const date = new Date(2023, 9, 14); // Outubro 14, 2023
+        expect(formatDate(date)).toBe('2023-10-14');
+      });
+
+      it('deve formatar a data no formato USA (MM/DD/YYYY)', () => {
+        const date = new Date(2023, 9, 14); // Outubro 14, 2023
+        expect(formatDate(date, 'USA')).toBe('10/14/2023');
+      });
+
+      it('deve formatar a data no formato BR (DD/MM/YYYY)', () => {
+        const date = new Date(2023, 9, 14); // Outubro 14, 2023
+        expect(formatDate(date, 'BR')).toBe('14/10/2023');
+      });
+
+      it('deve formatar a data com hora no formato USA', () => {
+        const date = new Date(2023, 9, 14, 14, 30, 45); // Outubro 14, 2023 14:30:45
+        expect(formatDate(date, 'USA', true)).toBe('10/14/2023 14:30');
+      });
+
+      it('deve formatar a data com hora e segundos no formato USA', () => {
+        const date = new Date(2023, 9, 14, 14, 30, 45); // Outubro 14, 2023 14:30:45
+        expect(formatDate(date, 'USA', 'andSeconds')).toBe(
+          '10/14/2023 14:30:45',
+        );
+      });
+
+      it('deve lançar erro para data inválida', () => {
+        const invalidDate = new Date('invalid');
+        expect(() => formatDate(invalidDate)).toThrow('Data inválida');
+      });
+
+      it('deve lidar com meses e dias de um dígito no formato USA', () => {
+        const date = new Date(2023, 0, 5); // Janeiro 5, 2023
+        expect(formatDate(date, 'USA')).toBe('01/05/2023');
+      });
+
+      it('deve lidar com o final do ano no formato USA', () => {
+        const date = new Date(2023, 11, 31); // Dezembro 31, 2023
+        expect(formatDate(date, 'USA')).toBe('12/31/2023');
+      });
+    });
+
+    describe('date to JS', () => {
       it('deve retornar a data correta no formato YYYY-MM-DD', () => {
         const date = new Date(2023, 9, 14);
-        const result = dateToJS(date);
+        const result = formatDate(date);
         expect(result).toBe('2023-10-14');
       });
 
       it('deve lidar corretamente com meses e dias de um dígito', () => {
         const date = new Date(2023, 0, 5);
-        const result = dateToJS(date);
+        const result = formatDate(date);
         expect(result).toBe('2023-01-05');
       });
 
       it('deve lidar corretamente com o final do ano', () => {
         const date = new Date(2023, 11, 31);
-        const result = dateToJS(date);
+        const result = formatDate(date);
         expect(result).toBe('2023-12-31');
       });
 
       it('deve lidar corretamente com o início do ano', () => {
         const date = new Date(2023, 0, 1);
-        const result = dateToJS(date);
+        const result = formatDate(date);
         expect(result).toBe('2023-01-01');
       });
 
       it('deve lidar corretamente com anos bissextos', () => {
         const date = new Date(2024, 1, 29);
-        const result = dateToJS(date);
+        const result = formatDate(date);
         expect(result).toBe('2024-02-29');
+      });
+    });
+
+    describe('date to JS with Time', () => {
+      it('deve formatar a data com segundos', () => {
+        const date = new Date(2023, 9, 14, 14, 30, 15);
+        expect(formatDate(date, 'JS', 'andSeconds')).toBe(
+          '2023-10-14 14:30:15',
+        );
+      });
+
+      it('deve formatar a data sem segundos quando hideSecond for true', () => {
+        const date = new Date(2023, 9, 14, 14, 30, 15);
+        expect(formatDate(date, 'JS', true)).toBe('2023-10-14 14:30');
+      });
+
+      it('deve preencher horas, minutos e segundos de um dígito corretamente', () => {
+        const date = new Date(2023, 0, 5, 8, 5, 7);
+        expect(formatDate(date, 'JS', 'andSeconds')).toBe(
+          '2023-01-05 08:05:07',
+        );
+        expect(formatDate(date, 'JS', true)).toBe('2023-01-05 08:05');
+      });
+
+      it('deve lidar corretamente com hora da meia-noite com e sem segundos', () => {
+        const date = new Date(2023, 0, 1, 0, 0, 0);
+        expect(formatDate(date, 'JS', 'andSeconds')).toBe(
+          '2023-01-01 00:00:00',
+        );
+        expect(formatDate(date, 'JS', true)).toBe('2023-01-01 00:00');
+      });
+
+      it('deve lidar corretamente com hora do meio-dia com e sem segundos', () => {
+        const date = new Date(2023, 0, 1, 12, 0, 12);
+        expect(formatDate(date, 'JS', 'andSeconds')).toBe(
+          '2023-01-01 12:00:12',
+        );
+        expect(formatDate(date, 'JS', true)).toBe('2023-01-01 12:00');
+      });
+
+      it('deve lidar corretamente com hora próxima da meia-noite com e sem segundos', () => {
+        const date = new Date(2023, 0, 1, 23, 59, 59);
+        expect(formatDate(date, 'JS', 'andSeconds')).toBe(
+          '2023-01-01 23:59:59',
+        );
+        expect(formatDate(date, 'JS', true)).toBe('2023-01-01 23:59');
+      });
+    });
+
+    describe('date to BR', () => {
+      it('deve formatar corretamente uma data válida', () => {
+        const date = new Date(2025, 10, 10); // 10 de novembro de 2025
+        expect(formatDate(date, 'BR')).toBe('10/11/2025');
+      });
+
+      it('deve adicionar zeros à esquerda em dias e meses menores que 10', () => {
+        const date = new Date(2025, 0, 5); // 5 de janeiro de 2025
+        expect(formatDate(date, 'BR')).toBe('05/01/2025');
+      });
+
+      it('deve formatar corretamente o último dia do ano', () => {
+        const date = new Date(2025, 11, 31); // 31 de dezembro de 2025
+        expect(formatDate(date, 'BR')).toBe('31/12/2025');
+      });
+
+      it('deve lançar erro para data inválida (new Date("invalid"))', () => {
+        const invalidDate = new Date('invalid');
+        expect(() => formatDate(invalidDate, 'BR')).toThrow('Data inválida');
+      });
+
+      it('deve funcionar corretamente com datas antigas', () => {
+        const date = new Date(1999, 11, 31);
+        expect(formatDate(date, 'BR')).toBe('31/12/1999');
+      });
+
+      it('deve funcionar corretamente com datas futuras', () => {
+        const date = new Date(2100, 0, 1);
+        expect(formatDate(date, 'BR')).toBe('01/01/2100');
+      });
+
+      it('deve retornar o mesmo valor para objetos Date clonados', () => {
+        const original = new Date(2024, 6, 15);
+        const clone = new Date(original.getTime());
+        expect(formatDate(original, 'BR')).toBe(formatDate(clone, 'BR'));
       });
     });
   });
@@ -379,80 +510,6 @@ describe('utils/Date', () => {
 
     it('deve lidar com valor de mês 0 (dezembro do ano anterior)', () => {
       expect(getLastDayNumberOfMonth(2023, 0)).toBe('31');
-    });
-
-    describe('dateToDateTime', () => {
-      it('deve formatar a data com segundos', () => {
-        const date = new Date(2023, 9, 14, 14, 30, 15);
-        expect(dateToDateTime(date)).toBe('2023-10-14 14:30:15');
-      });
-
-      it('deve formatar a data sem segundos quando hideSecond for true', () => {
-        const date = new Date(2023, 9, 14, 14, 30, 15);
-        expect(dateToDateTime(date, true)).toBe('2023-10-14 14:30');
-      });
-
-      it('deve preencher horas, minutos e segundos de um dígito corretamente', () => {
-        const date = new Date(2023, 0, 5, 8, 5, 7);
-        expect(dateToDateTime(date)).toBe('2023-01-05 08:05:07');
-        expect(dateToDateTime(date, true)).toBe('2023-01-05 08:05');
-      });
-
-      it('deve lidar corretamente com hora da meia-noite com e sem segundos', () => {
-        const date = new Date(2023, 0, 1, 0, 0, 0);
-        expect(dateToDateTime(date)).toBe('2023-01-01 00:00:00');
-        expect(dateToDateTime(date, true)).toBe('2023-01-01 00:00');
-      });
-
-      it('deve lidar corretamente com hora do meio-dia com e sem segundos', () => {
-        const date = new Date(2023, 0, 1, 12, 0, 12);
-        expect(dateToDateTime(date)).toBe('2023-01-01 12:00:12');
-        expect(dateToDateTime(date, true)).toBe('2023-01-01 12:00');
-      });
-
-      it('deve lidar corretamente com hora próxima da meia-noite com e sem segundos', () => {
-        const date = new Date(2023, 0, 1, 23, 59, 59);
-        expect(dateToDateTime(date)).toBe('2023-01-01 23:59:59');
-        expect(dateToDateTime(date, true)).toBe('2023-01-01 23:59');
-      });
-    });
-  });
-
-  describe('formatDateToBR', () => {
-    it('deve formatar corretamente uma data válida', () => {
-      const date = new Date(2025, 10, 10); // 10 de novembro de 2025
-      expect(formatDateToBR(date)).toBe('10/11/2025');
-    });
-
-    it('deve adicionar zeros à esquerda em dias e meses menores que 10', () => {
-      const date = new Date(2025, 0, 5); // 5 de janeiro de 2025
-      expect(formatDateToBR(date)).toBe('05/01/2025');
-    });
-
-    it('deve formatar corretamente o último dia do ano', () => {
-      const date = new Date(2025, 11, 31); // 31 de dezembro de 2025
-      expect(formatDateToBR(date)).toBe('31/12/2025');
-    });
-
-    it('deve lançar erro para data inválida (new Date("invalid"))', () => {
-      const invalidDate = new Date('invalid');
-      expect(() => formatDateToBR(invalidDate)).toThrow('Data inválida');
-    });
-
-    it('deve funcionar corretamente com datas antigas', () => {
-      const date = new Date(1999, 11, 31);
-      expect(formatDateToBR(date)).toBe('31/12/1999');
-    });
-
-    it('deve funcionar corretamente com datas futuras', () => {
-      const date = new Date(2100, 0, 1);
-      expect(formatDateToBR(date)).toBe('01/01/2100');
-    });
-
-    it('deve retornar o mesmo valor para objetos Date clonados', () => {
-      const original = new Date(2024, 6, 15);
-      const clone = new Date(original.getTime());
-      expect(formatDateToBR(original)).toBe(formatDateToBR(clone));
     });
   });
 
@@ -583,6 +640,115 @@ describe('utils/Date', () => {
       expect(getNowTime()).toBe('08:03');
 
       spy.mockRestore();
+    });
+  });
+});
+
+// TODO Remover essses testes futuramente
+describe('deprecated utils/Date', () => {
+  describe('dateToJS', () => {
+    it('deve retornar a data correta no formato YYYY-MM-DD', () => {
+      const date = new Date(2023, 9, 14);
+      const result = dateToJS(date);
+      expect(result).toBe('2023-10-14');
+    });
+
+    it('deve lidar corretamente com meses e dias de um dígito', () => {
+      const date = new Date(2023, 0, 5);
+      const result = dateToJS(date);
+      expect(result).toBe('2023-01-05');
+    });
+
+    it('deve lidar corretamente com o final do ano', () => {
+      const date = new Date(2023, 11, 31);
+      const result = dateToJS(date);
+      expect(result).toBe('2023-12-31');
+    });
+
+    it('deve lidar corretamente com o início do ano', () => {
+      const date = new Date(2023, 0, 1);
+      const result = dateToJS(date);
+      expect(result).toBe('2023-01-01');
+    });
+
+    it('deve lidar corretamente com anos bissextos', () => {
+      const date = new Date(2024, 1, 29);
+      const result = dateToJS(date);
+      expect(result).toBe('2024-02-29');
+    });
+  });
+
+  describe('dateToDateTime', () => {
+    it('deve formatar a data com segundos', () => {
+      const date = new Date(2023, 9, 14, 14, 30, 15);
+      expect(dateToDateTime(date)).toBe('2023-10-14 14:30:15');
+    });
+
+    it('deve formatar a data sem segundos quando hideSecond for true', () => {
+      const date = new Date(2023, 9, 14, 14, 30, 15);
+      expect(dateToDateTime(date, true)).toBe('2023-10-14 14:30');
+    });
+
+    it('deve preencher horas, minutos e segundos de um dígito corretamente', () => {
+      const date = new Date(2023, 0, 5, 8, 5, 7);
+      expect(dateToDateTime(date)).toBe('2023-01-05 08:05:07');
+      expect(dateToDateTime(date, true)).toBe('2023-01-05 08:05');
+    });
+
+    it('deve lidar corretamente com hora da meia-noite com e sem segundos', () => {
+      const date = new Date(2023, 0, 1, 0, 0, 0);
+      expect(dateToDateTime(date)).toBe('2023-01-01 00:00:00');
+      expect(dateToDateTime(date, true)).toBe('2023-01-01 00:00');
+    });
+
+    it('deve lidar corretamente com hora do meio-dia com e sem segundos', () => {
+      const date = new Date(2023, 0, 1, 12, 0, 12);
+      expect(dateToDateTime(date)).toBe('2023-01-01 12:00:12');
+      expect(dateToDateTime(date, true)).toBe('2023-01-01 12:00');
+    });
+
+    it('deve lidar corretamente com hora próxima da meia-noite com e sem segundos', () => {
+      const date = new Date(2023, 0, 1, 23, 59, 59);
+      expect(dateToDateTime(date)).toBe('2023-01-01 23:59:59');
+      expect(dateToDateTime(date, true)).toBe('2023-01-01 23:59');
+    });
+  });
+
+  describe('formatDateToBR', () => {
+    it('deve formatar corretamente uma data válida', () => {
+      const date = new Date(2025, 10, 10); // 10 de novembro de 2025
+      expect(formatDateToBR(date)).toBe('10/11/2025');
+    });
+
+    it('deve adicionar zeros à esquerda em dias e meses menores que 10', () => {
+      const date = new Date(2025, 0, 5); // 5 de janeiro de 2025
+      expect(formatDateToBR(date)).toBe('05/01/2025');
+    });
+
+    it('deve formatar corretamente o último dia do ano', () => {
+      const date = new Date(2025, 11, 31); // 31 de dezembro de 2025
+      expect(formatDateToBR(date)).toBe('31/12/2025');
+    });
+
+    it('deve lançar erro para data inválida (new Date("invalid"))', () => {
+      const invalidDate = new Date('invalid');
+      expect(() => formatDateToBR(invalidDate)).toThrow('Data inválida');
+    });
+
+    it('deve funcionar corretamente com datas antigas', () => {
+      const date = new Date(1999, 11, 31);
+      expect(formatDateToBR(date)).toBe('31/12/1999');
+    });
+
+    it('deve funcionar corretamente com datas futuras', () => {
+      const date = new Date(2100, 0, 1);
+      expect(formatDateToBR(date)).toBe('01/01/2100');
+    });
+
+    it('deve retornar o mesmo valor para objetos Date clonados', () => {
+      const original = new Date(2024, 6, 15);
+      const clone = new Date(original.getTime());
+      expect(formatDateToBR(original)).toBe(formatDateToBR(clone));
     });
   });
 });

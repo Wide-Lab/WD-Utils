@@ -8,8 +8,8 @@ import { padTo2Digits } from './Numbers';
 export const getToday = () => {
   const date = new Date();
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = padTo2Digits(date.getMonth() + 1);
+  const day = padTo2Digits(date.getDate());
   return `${year}-${month}-${day}`;
 };
 
@@ -33,13 +33,10 @@ export const getYesterday = () => {
   );
 
   const year = yesterdayDate.getFullYear();
-  const month = yesterdayDate.getMonth() + 1;
-  const day = yesterdayDate.getDate();
+  const month = padTo2Digits(yesterdayDate.getMonth() + 1);
+  const day = padTo2Digits(yesterdayDate.getDate());
 
-  const smonth = String(month).padStart(2, '0');
-  const sday = String(day).padStart(2, '0');
-
-  return `${year}-${smonth}-${sday}`;
+  return `${year}-${month}-${day}`;
 };
 
 /**
@@ -54,8 +51,7 @@ export const getFirstDayOfMonth = () => {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const smonth = String(month).padStart(2, '0');
-  return `${year}-${smonth}-01`;
+  return `${year}-${padTo2Digits(month)}-01`;
 };
 
 /**
@@ -75,11 +71,10 @@ export const getLastDayPreviousMonth = () => {
   const date = new Date(now.getFullYear(), now.getMonth(), 0);
 
   const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const smonth = String(month).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = padTo2Digits(date.getMonth() + 1);
+  const day = padTo2Digits(date.getDate());
 
-  return `${year}-${smonth}-${day}`;
+  return `${year}-${month}-${day}`;
 };
 
 /**
@@ -102,7 +97,7 @@ export const getLastDayNumberOfMonth = (year: number, month: number) => {
     0,
   );
 
-  return String(date.getDate()).padStart(2, '0');
+  return padTo2Digits(date.getDate());
 };
 
 /**
@@ -111,6 +106,40 @@ export const getLastDayNumberOfMonth = (year: number, month: number) => {
  * @returns The current date in the 'DD/MM/YYYY' format.
  */
 export const getTodayBR = () => dateToBR(getToday());
+
+/**
+ * Get the current hour and minute separated by colon
+ * @returns The curent time in the format `hh:mm`
+ */
+export const getNowTime = () => formatTime(new Date(), true);
+
+export function formatDate(
+  date: Date,
+  format: 'JS' | 'USA' | 'BR' = 'JS',
+  withTime: boolean | 'andSeconds' = false,
+) {
+  if (!date || !(date instanceof Date) || Number.isNaN(date.getTime())) {
+    throw new Error('Data inválida');
+  }
+
+  const year = date.getFullYear();
+  const month = padTo2Digits(date.getMonth() + 1);
+  const day = padTo2Digits(date.getDate());
+
+  const time = !withTime
+    ? ''
+    : ' ' + formatTime(date, withTime !== 'andSeconds');
+
+  if (format === 'USA') {
+    return `${month}/${day}/${year}${time}`;
+  }
+
+  if (format === 'BR') {
+    return `${day}/${month}/${year}${time}`;
+  }
+
+  return `${year}-${month}-${day}${time}`;
+}
 
 /**
  * Convert a date in 'MM/DD/YYYY' format to the Brazilian format 'DD/MM/YYYY'.
@@ -220,10 +249,61 @@ export const dateBRToJS = (date: string) => {
 };
 
 /**
- * Get the current hour and minute separated by colon
- * @returns The curent time in the format `hh:mm`
+ * Formats a given Date object into a time string.
+ *
+ * @param date - The Date object to format.
+ * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
+ * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
  */
-export const getNowTime = () => formatTime(new Date(), true);
+export const dateToTime = (date: Date, hideSecond = false) => {
+  const dateArray = [
+    padTo2Digits(date.getHours()),
+    padTo2Digits(date.getMinutes()),
+    padTo2Digits(date.getSeconds()),
+  ];
+
+  if (hideSecond) {
+    dateArray.pop();
+  }
+
+  return dateArray.join(':');
+};
+
+/**
+ * Formats a given Date object into a time string.
+ *
+ * @param date - The Date object to format.
+ * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
+ * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
+ */
+export const formatTime = dateToTime;
+
+/**
+ * Converte uma data no formato C# /Date(1731320280000-0300)/ para um objeto JavaScript Date.
+ *
+ * @param csharpDate String no padrão /Date(<timestamp><offset>)/
+ * @returns Instância de Date correspondente
+ */
+export const parseCSharpDate = (csharpDate: string): Date => {
+  const match = csharpDate?.match(/\((\d+)([+-]\d{4})\)/);
+
+  if (!match) {
+    throw new Error(`Formato de data inválido: ${csharpDate}`);
+  }
+
+  const [, timestampStr, offsetStr] = match;
+
+  const timestamp = Number(timestampStr);
+  const offset = Number(offsetStr);
+
+  const offsetHours = Math.trunc(offset / 100);
+  const offsetMinutes = offset % 100;
+
+  const utcTimestamp =
+    timestamp - offsetHours * ONE_HOUR - offsetMinutes * ONE_MINUTE;
+
+  return new Date(utcTimestamp);
+};
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -272,104 +352,18 @@ export const dayNames = [
 
 export const dayNamesShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
+// TODO Remover essas funções futuramente
+
 /**
- * Formats a given Date object into a time string.
- *
- * @param date - The Date object to format.
- * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
- * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
+ * @deprecated Use **formatDate** no lugar dessa
  */
-export const dateToTime = (date: Date, hideSecond = false) => {
-  const dateArray = [
-    padTo2Digits(date.getHours()),
-    padTo2Digits(date.getMinutes()),
-    padTo2Digits(date.getSeconds()),
-  ];
-
-  if (hideSecond) {
-    dateArray.pop();
-  }
-
-  return dateArray.join(':');
-};
-
+export const dateToJS = formatDate;
 /**
- * Formats a given Date object into a time string.
- *
- * @param date - The Date object to format.
- * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
- * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
- */
-export const formatTime = dateToTime;
-
-/**
- * Converts a JavaScript `Date` object to a string in the format `YYYY-MM-DD`.
- *
- * @param date - The `Date` object to be converted.
- * @returns A string representing the date in `YYYY-MM-DD` format.
- */
-export const dateToJS = (date: Date) => {
-  const year = date.getFullYear();
-  const month = padTo2Digits(date.getMonth() + 1);
-  const day = padTo2Digits(date.getDate());
-  return `${year}-${month}-${day}`;
-};
-
-/**
- * Converts a JavaScript `Date` object to a string in the format `YYYY-MM-DD HH:MM:SS` or `YYYY-MM-DD HH:MM`.
- *
- * @param date - The `Date` object to be converted.
- * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
- * @returns A string representing the date in `YYYY-MM-DD HH:MM:SS` or `YYYY-MM-DD HH:MM` format.
+ * @deprecated Use **formatDate(date, 'JS', hideSecond ? true : 'andSeconds')** no lugar dessa
  */
 export const dateToDateTime = (date: Date, hideSecond = false) =>
-  `${dateToJS(date)} ${dateToTime(date, hideSecond)}`;
-
+  formatDate(date, 'JS', hideSecond ? true : 'andSeconds');
 /**
- * Converte uma data JavaScript para o formato brasileiro "DD/MM/YYYY".
- *
- * @param {Date} date - Objeto de data a ser formatado.
- * @returns {string} Data formatada no padrão brasileiro.
- * @throws {Error} Se a data for inválida.
- *
- * @example
- * formatDateToBR(new Date(2025, 10, 10)); // "10/11/2025"
+ * @deprecated Use **formatDate(date, 'BR')** no lugar dessa
  */
-export const formatDateToBR = (date: Date): string => {
-  if (!date || !(date instanceof Date) || Number.isNaN(date.getTime())) {
-    throw new Error('Data inválida');
-  }
-
-  const day = padTo2Digits(date.getDate());
-  const month = padTo2Digits(date.getMonth() + 1);
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
-};
-
-/**
- * Converte uma data no formato C# /Date(1731320280000-0300)/ para um objeto JavaScript Date.
- *
- * @param csharpDate String no padrão /Date(<timestamp><offset>)/
- * @returns Instância de Date correspondente
- */
-export const parseCSharpDate = (csharpDate: string): Date => {
-  const match = csharpDate?.match(/\((\d+)([+-]\d{4})\)/);
-
-  if (!match) {
-    throw new Error(`Formato de data inválido: ${csharpDate}`);
-  }
-
-  const [, timestampStr, offsetStr] = match;
-
-  const timestamp = Number(timestampStr);
-  const offset = Number(offsetStr);
-
-  const offsetHours = Math.trunc(offset / 100);
-  const offsetMinutes = offset % 100;
-
-  const utcTimestamp =
-    timestamp - offsetHours * ONE_HOUR - offsetMinutes * ONE_MINUTE;
-
-  return new Date(utcTimestamp);
-};
+export const formatDateToBR = (date: Date): string => formatDate(date, 'BR');

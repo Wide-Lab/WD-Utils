@@ -25,7 +25,7 @@ export const hexToRgb = (hex: string): [number, number, number] => {
 export const decColorToHex = (component: number): string => {
   const clampedComponent = numberClamp(component, 0, 255);
   const hex = clampedComponent.toString(16).toLocaleUpperCase();
-  return hex.length === 1 ? '0' + hex : hex;
+  return hex.padStart(2, '0');
 };
 
 /**

@@ -1,5 +1,7 @@
 import {
   accentsRemove,
+  capitalizeAllFirstLetter,
+  capitalizeFirstLetter,
   compareStrings,
   convertString,
   extractFormattedName,
@@ -11,6 +13,7 @@ import {
   specialCharactersConvert,
   ucfirst,
   ucwords,
+  uppercaseFirst,
 } from '../Strings';
 
 describe('utils/String', () => {
@@ -114,71 +117,6 @@ describe('utils/String', () => {
 
     it('deve lidar com strings vazias', () => {
       expect(specialCharactersConvert('')).toBe('');
-    });
-  });
-
-  describe('ucfirst', () => {
-    it('deve retornar string vazia para entrada vazia', () =>
-      expect(ucfirst('')).toBe(''));
-
-    it('deve capitalizar a primeira letra de "feliz"', () =>
-      expect(ucfirst('feliz')).toBe('Feliz'));
-    it('deve capitalizar a primeira letra de "ímpeto"', () =>
-      expect(ucfirst('ímpeto')).toBe('Ímpeto'));
-
-    it('deve capitalizar a primeira palavra de uma frase', () =>
-      expect(ucfirst('as palavras são a voz do coração')).toBe(
-        'As palavras são a voz do coração',
-      ));
-
-    it('deve capitalizar a primeira palavra de outra frase', () =>
-      expect(ucfirst('é o silêncio dos bons')).toBe('É o silêncio dos bons'));
-  });
-
-  describe('ucwords', () => {
-    it('deve retornar string vazia para entrada vazia', () =>
-      expect(ucwords('')).toBe(''));
-
-    it('deve capitalizar a primeira letra de "feliz"', () =>
-      expect(ucwords('feliz')).toBe('Feliz'));
-    it('deve capitalizar a primeira letra de "ímpeto"', () =>
-      expect(ucwords('ímpeto')).toBe('Ímpeto'));
-
-    it('deve capitalizar a primeira letra de cada palavra em uma frase', () =>
-      expect(ucwords('a missa começará à meia-noite')).toBe(
-        'A Missa Começará À Meia-Noite',
-      ));
-
-    it('deve capitalizar a primeira letra de cada palavra em outra frase', () =>
-      expect(ucwords('palavras não bastam, não dá pra entender')).toBe(
-        'Palavras Não Bastam, Não Dá Pra Entender',
-      ));
-
-    it('deve capitalizar a primeira letra de cada palavra com pontos no nome', () => {
-      expect(ucwords('a.m.c textil-ltda')).toBe('A.M.C Textil-Ltda');
-      expect(ucwords('j.r.r tolkien')).toBe('J.R.R Tolkien');
-      expect(ucwords('u.s.a corporation')).toBe('U.S.A Corporation');
-    });
-
-    it('deve lidar com casos mistos com pontos e hífens', () => {
-      expect(ucwords('a.b.c-d.e.f')).toBe('A.B.C-D.E.F');
-      expect(ucwords('x.y.z company-ltd')).toBe('X.Y.Z Company-Ltd');
-    });
-
-    it('deve lidar com múltiplos espaços e pontos', () => {
-      expect(ucwords('  a.b.c   textil-ltda  ')).toBe(
-        '  A.B.C   Textil-Ltda  ',
-      );
-      expect(ucwords('  j.r.r   tolkien  ')).toBe('  J.R.R   Tolkien  ');
-    });
-
-    it('deve retornar uma string vazia para uma entrada vazia', () => {
-      expect(ucwords('')).toBe('');
-    });
-
-    it('deve lidar com palavras únicas com pontos', () => {
-      expect(ucwords('a.b.c')).toBe('A.B.C');
-      expect(ucwords('x.y.z')).toBe('X.Y.Z');
     });
   });
 
@@ -582,6 +520,156 @@ describe('utils/String', () => {
 
     it('deve lidar com strings sem acentos ou espaços', () => {
       expect(convertString('abc')).toBe('abc');
+    });
+  });
+
+  describe('uppercaseFirst', () => {
+    describe('first word only', () => {
+      it('deve retornar string vazia para entrada vazia', () =>
+        expect(uppercaseFirst('')).toBe(''));
+
+      it('deve capitalizar a primeira letra de "feliz"', () =>
+        expect(uppercaseFirst('feliz')).toBe('Feliz'));
+      it('deve capitalizar a primeira letra de "ímpeto"', () =>
+        expect(uppercaseFirst('ímpeto')).toBe('Ímpeto'));
+
+      it('deve capitalizar a primeira palavra de uma frase', () =>
+        expect(uppercaseFirst('as palavras são a voz do coração')).toBe(
+          'As palavras são a voz do coração',
+        ));
+
+      it('deve capitalizar a primeira palavra de outra frase', () =>
+        expect(uppercaseFirst('é o silêncio dos bons')).toBe(
+          'É o silêncio dos bons',
+        ));
+    });
+
+    describe('all words', () => {
+      it('deve retornar string vazia para entrada vazia', () =>
+        expect(uppercaseFirst('', true)).toBe(''));
+      it('deve capitalizar a primeira letra de "feliz"', () =>
+        expect(uppercaseFirst('feliz', true)).toBe('Feliz'));
+      it('deve capitalizar a primeira letra de "ímpeto"', () =>
+        expect(uppercaseFirst('ímpeto', true)).toBe('Ímpeto'));
+
+      it('deve capitalizar a primeira letra de cada palavra em uma frase', () =>
+        expect(uppercaseFirst('a missa começará à meia-noite', true)).toBe(
+          'A Missa Começará À Meia-Noite',
+        ));
+
+      it('deve capitalizar a primeira letra de cada palavra em outra frase', () =>
+        expect(
+          uppercaseFirst('palavras não bastam, não dá pra entender', true),
+        ).toBe('Palavras Não Bastam, Não Dá Pra Entender'));
+
+      it('deve capitalizar a primeira letra de cada palavra com pontos no nome', () => {
+        expect(uppercaseFirst('a.m.c textil-ltda', true)).toBe(
+          'A.M.C Textil-Ltda',
+        );
+        expect(uppercaseFirst('j.r.r tolkien', true)).toBe('J.R.R Tolkien');
+        expect(uppercaseFirst('u.s.a corporation', true)).toBe(
+          'U.S.A Corporation',
+        );
+      });
+
+      it('deve lidar com casos mistos com pontos e hífens', () => {
+        expect(uppercaseFirst('a.b.c-d.e.f', true)).toBe('A.B.C-D.E.F');
+        expect(uppercaseFirst('x.y.z company-ltd', true)).toBe(
+          'X.Y.Z Company-Ltd',
+        );
+      });
+
+      it('deve lidar com múltiplos espaços e pontos', () => {
+        expect(uppercaseFirst('  a.b.c   textil-ltda  ', true)).toBe(
+          '  A.B.C   Textil-Ltda  ',
+        );
+        expect(uppercaseFirst('  j.r.r   tolkien  ', true)).toBe(
+          '  J.R.R   Tolkien  ',
+        );
+      });
+
+      it('deve retornar uma string vazia para uma entrada vazia', () => {
+        expect(uppercaseFirst('', true)).toBe('');
+      });
+
+      it('deve lidar com palavras únicas com pontos', () => {
+        expect(uppercaseFirst('a.b.c', true)).toBe('A.B.C');
+        expect(uppercaseFirst('x.y.z', true)).toBe('X.Y.Z');
+      });
+    });
+  });
+});
+
+// TODO Remover esses testes futuramente
+
+describe('deprecated utils/String', () => {
+  describe('ucfirst', () => {
+    it('deve retornar string vazia para entrada vazia', () =>
+      expect(ucfirst('')).toBe(''));
+
+    it('deve capitalizar a primeira letra de "feliz"', () =>
+      expect(capitalizeFirstLetter('feliz')).toBe('Feliz'));
+    it('deve capitalizar a primeira letra de "feliz"', () =>
+      expect(ucfirst('feliz')).toBe('Feliz'));
+    it('deve capitalizar a primeira letra de "ímpeto"', () =>
+      expect(ucfirst('ímpeto')).toBe('Ímpeto'));
+
+    it('deve capitalizar a primeira palavra de uma frase', () =>
+      expect(ucfirst('as palavras são a voz do coração')).toBe(
+        'As palavras são a voz do coração',
+      ));
+
+    it('deve capitalizar a primeira palavra de outra frase', () =>
+      expect(ucfirst('é o silêncio dos bons')).toBe('É o silêncio dos bons'));
+  });
+
+  describe('ucwords', () => {
+    it('deve retornar string vazia para entrada vazia', () =>
+      expect(ucwords('')).toBe(''));
+
+    it('deve capitalizar a primeira letra de "feliz"', () =>
+      expect(capitalizeAllFirstLetter('feliz')).toBe('Feliz'));
+
+    it('deve capitalizar a primeira letra de "feliz"', () =>
+      expect(ucwords('feliz')).toBe('Feliz'));
+    it('deve capitalizar a primeira letra de "ímpeto"', () =>
+      expect(ucwords('ímpeto')).toBe('Ímpeto'));
+
+    it('deve capitalizar a primeira letra de cada palavra em uma frase', () =>
+      expect(ucwords('a missa começará à meia-noite')).toBe(
+        'A Missa Começará À Meia-Noite',
+      ));
+
+    it('deve capitalizar a primeira letra de cada palavra em outra frase', () =>
+      expect(ucwords('palavras não bastam, não dá pra entender')).toBe(
+        'Palavras Não Bastam, Não Dá Pra Entender',
+      ));
+
+    it('deve capitalizar a primeira letra de cada palavra com pontos no nome', () => {
+      expect(ucwords('a.m.c textil-ltda')).toBe('A.M.C Textil-Ltda');
+      expect(ucwords('j.r.r tolkien')).toBe('J.R.R Tolkien');
+      expect(ucwords('u.s.a corporation')).toBe('U.S.A Corporation');
+    });
+
+    it('deve lidar com casos mistos com pontos e hífens', () => {
+      expect(ucwords('a.b.c-d.e.f')).toBe('A.B.C-D.E.F');
+      expect(ucwords('x.y.z company-ltd')).toBe('X.Y.Z Company-Ltd');
+    });
+
+    it('deve lidar com múltiplos espaços e pontos', () => {
+      expect(ucwords('  a.b.c   textil-ltda  ')).toBe(
+        '  A.B.C   Textil-Ltda  ',
+      );
+      expect(ucwords('  j.r.r   tolkien  ')).toBe('  J.R.R   Tolkien  ');
+    });
+
+    it('deve retornar uma string vazia para uma entrada vazia', () => {
+      expect(ucwords('')).toBe('');
+    });
+
+    it('deve lidar com palavras únicas com pontos', () => {
+      expect(ucwords('a.b.c')).toBe('A.B.C');
+      expect(ucwords('x.y.z')).toBe('X.Y.Z');
     });
   });
 });

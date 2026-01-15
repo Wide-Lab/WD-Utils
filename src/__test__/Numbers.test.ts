@@ -32,6 +32,31 @@ describe('utils/Numbers', () => {
       expect(numberClamp(2, 0, 1)).toBe(1);
       expect(numberClamp(-3, -1, 1)).toBe(-1);
     });
+
+    it('deve limitar números decimais corretamente', () => {
+      expect(numberClamp(0.25, 0, 1)).toBe(0.25);
+      expect(numberClamp(0.75, 0, 1)).toBe(0.75);
+      expect(numberClamp(1.5, 0, 1)).toBe(1);
+      expect(numberClamp(-0.5, 0, 1)).toBe(0);
+    });
+
+    it('deve limitar com intervalos de números decimais', () => {
+      expect(numberClamp(2.5, 1.5, 3.5)).toBe(2.5);
+      expect(numberClamp(0.5, 1.5, 3.5)).toBe(1.5);
+      expect(numberClamp(4.5, 1.5, 3.5)).toBe(3.5);
+    });
+
+    it('deve limitar números decimais negativos', () => {
+      expect(numberClamp(-2.5, -3.5, -1.5)).toBe(-2.5);
+      expect(numberClamp(-4.5, -3.5, -1.5)).toBe(-3.5);
+      expect(numberClamp(-0.5, -3.5, -1.5)).toBe(-1.5);
+    });
+
+    it('deve limitar com intervalos mistos positivos e negativos em decimais', () => {
+      expect(numberClamp(-0.5, -1.5, 1.5)).toBe(-0.5);
+      expect(numberClamp(2.25, -1.5, 1.5)).toBe(1.5);
+      expect(numberClamp(-2.75, -1.5, 1.5)).toBe(-1.5);
+    });
   });
 
   describe('padTo2Digits', () => {
