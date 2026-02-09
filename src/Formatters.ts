@@ -72,7 +72,7 @@ export const formatDate = (value?: string | Date) => {
 
 /**
  * Formats an input string into a time format, specifically hours and minutes, in the format HH:MM.
- * @param {} [value] - The input string to be formatted. If not provided, an empty string is returned.
+ * @param value - The input string to be formatted. If not provided, an empty string is returned.
  * @returns The formatted time string in the format HH:MM.
  * @example
  * formatHourMinute('1234'); // returns '12:34'
@@ -94,7 +94,7 @@ export const formatHourMinute = (value: string) => {
 /**
  * Formats a date and time string from a given value.
  *
- * @param {} [value] - The value to format. Can be a Date object or a string.
+ * @param value - The value to format. Can be a Date object or a string.
  * @returns The formatted date and time string.
  */
 export const formatDateTime = (value?: string | Date) => {

@@ -1,17 +1,13 @@
 import { padTo2Digits } from './Numbers';
 
+///-----------------------///
+/// CURRENT DATE AND TIME ///
+///-----------------------///
+
 /**
- * Get the current date in the 'YYYY-MM-DD' format.
- *
- * @returns The current date in the 'YYYY-MM-DD' format.
+ * @deprecated use `toString(new Date())` instead
  */
-export const getToday = () => {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = padTo2Digits(date.getMonth() + 1);
-  const day = padTo2Digits(date.getDate());
-  return `${year}-${month}-${day}`;
-};
+export const getToday = () => toString(new Date());
 
 /**
  * Returns a string representing yesterday's date in the format YYYY-MM-DD.
@@ -19,7 +15,7 @@ export const getToday = () => {
  * This function creates a new Date object, subtracts 1 from the current day to get yesterday's date,
  * and then formats the date into a string with leading zeros for the month and day if necessary.
  *
- * @returns {string} A string representing yesterday's date in the format YYYY-MM-DD.
+ * @returns A string representing yesterday's date in the format YYYY-MM-DD.
  */
 export const getYesterday = () => {
   const today = new Date();
@@ -45,7 +41,7 @@ export const getYesterday = () => {
  * This function returns a string representing the first day of the current month in the format 'YYYY-MM-DD'.
  * It uses the Date object to get the current year and month, and then formats the month as a 2-digit string with a leading zero if necessary.
  *
- * @returns {string} - A string representing the first day of the current month in the format 'YYYY-MM-DD'.
+ * @returns A string representing the first day of the current month in the format 'YYYY-MM-DD'.
  */
 export const getFirstDayOfMonth = () => {
   const date = new Date();
@@ -63,7 +59,7 @@ export const getFirstDayOfMonth = () => {
  * last day of the previous month. It then formats the date as a string in
  * the format YYYY-MM-DD.
  *
- * @returns {string} The last day of the previous month in the format YYYY-MM-DD.
+ * @returns The last day of the previous month in the format YYYY-MM-DD.
  */
 export const getLastDayPreviousMonth = () => {
   const now = new Date();
@@ -101,19 +97,61 @@ export const getLastDayNumberOfMonth = (year: number, month: number) => {
 };
 
 /**
- * Get the current date in the Brazilian format 'DD/MM/YYYY'.
- *
- * @returns The current date in the 'DD/MM/YYYY' format.
+ * @deprecated use `toDate(getToday(), 'BR')` instead
  */
-export const getTodayBR = () => dateToBR(getToday());
+export const getTodayBR = () => toString(new Date(), 'BR');
 
 /**
- * Get the current hour and minute separated by colon
- * @returns The curent time in the format `hh:mm`
+ * @deprecated use `toTime(new Date(), true)` instead
  */
-export const getNowTime = () => formatTime(new Date(), true);
+export const getNowTime = () => toTime(new Date(), true);
 
-export function formatDate(
+export const isLeapYear = (year: number) => {
+  if (!Number.isInteger(year) || year < 1) {
+    return false;
+  }
+
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+};
+
+export const daysInMonth = (month: number, year: number) => {
+  switch (month) {
+    case 2:
+      return isLeapYear(year) ? 29 : 28;
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      return 30;
+    default:
+      return 31;
+  }
+};
+
+///-----------------------///
+///    DATE CONVERTERS    ///
+///-----------------------///
+
+/**
+ * @deprecated use `toString` instead
+ */
+export const formatDate = toString;
+
+/**
+ * Converts a Date object to a formatted string representation.
+ * @param date - The Date object to convert. Must be a valid Date instance.
+ * @param format - The date format to use. Defaults to 'JS'.
+ *   - 'JS': ISO 8601 format (YYYY-MM-DD)
+ *   - 'USA': US format (MM/DD/YYYY)
+ *   - 'BR': Brazilian format (DD/MM/YYYY)
+ * @param withTime - Whether to include time in the output. Defaults to false.
+ *   - false: Date only
+ *   - true: Date with time (HH:MM:SS)
+ *   - 'andSeconds': Date with time including seconds
+ * @returns A formatted date string according to the specified format and time settings.
+ * @throws {Error} If the provided date is invalid, not a Date instance, or NaN.
+ */
+export function toString(
   date: Date,
   format: 'JS' | 'USA' | 'BR' = 'JS',
   withTime: boolean | 'andSeconds' = false,
@@ -126,9 +164,7 @@ export function formatDate(
   const month = padTo2Digits(date.getMonth() + 1);
   const day = padTo2Digits(date.getDate());
 
-  const time = !withTime
-    ? ''
-    : ' ' + formatTime(date, withTime !== 'andSeconds');
+  const time = !withTime ? '' : ' ' + toTime(date, withTime !== 'andSeconds');
 
   if (format === 'USA') {
     return `${month}/${day}/${year}${time}`;
@@ -142,53 +178,98 @@ export function formatDate(
 }
 
 /**
- * Convert a date in 'MM/DD/YYYY' format to the Brazilian format 'DD/MM/YYYY'.
- *
- * @param date - The date in 'MM/DD/YYYY' format.
- * @returns The date in the Brazilian 'DD/MM/YYYY' format.
- * @throws An error if the date is in an invalid format.
+ * @deprecated ao invés desse utilize:
+ * ```js
+ * toString(toDate(date, 'USA'), 'BR')
+ * ```
  */
-export const dateUSAtoBR = (date: string) => {
-  if (!date) {
-    return '';
-  }
-
-  const dateParts = date.split('/');
-
-  if (!dateParts.length || dateParts.length !== 3) {
-    throw new Error(`Invalid date ${date}`);
-  }
-
-  const [month, day, year] = dateParts;
-
-  if (!day || !month || !year) {
-    throw new Error(`Invalid date ${date}`);
-  }
-
-  return `${day}/${month}/${year}`;
-};
+export const dateUSAtoBR = (date: string) =>
+  toString(toDate(date, 'USA'), 'BR');
 
 /**
- * Convert a date in 'YYYY-MM-DD' format to the Brazilian format 'DD/MM/YYYY'.
- *
- * @param date - The date in 'YYYY-MM-DD' format.
- * @returns The date in the Brazilian 'DD/MM/YYYY' format.
+ * @deprecated ao invés desse utilize:
+ * ```js
+ * toString(toDate(date), 'BR')
+ * ```
  */
-export const dateToBR = (date: string) => {
-  if (!date) {
-    return '';
+export const dateToBR = (date: string) => toString(toDate(date), 'BR');
+
+/**
+ * Converte uma string de data em um objeto Date, validando formato, valores
+ * de dia/mês/ano e regras de ano bissexto.
+ *
+ * Formatos suportados:
+ * - 'JS'  → YYYY-MM-DD (Padrão)
+ * - 'BR'  → DD/MM/YYYY
+ * - 'USA' → MM/DD/YYYY
+ *
+ * Lança erro caso a data seja inválida ou não respeite o formato informado.
+ *
+ * @param value String representando a data.
+ * @param inputFormat Formato da data de entrada.
+ * @returns Objeto Date correspondente à data informada.
+ *
+ * @throws Error Quando a data é inválida.
+ *
+ * @example
+ * stringToDate('2024-02-29'); // JS (ano bissexto)
+ *
+ * @example
+ * stringToDate('31/12/2023', 'BR');
+ *
+ * @example
+ * stringToDate('12/31/2023', 'USA');
+ */
+export function toDate(value: string, inputFormat: 'JS' | 'BR' | 'USA' = 'JS') {
+  let day: number;
+  let month: number;
+  let year: number;
+
+  if (typeof value !== 'string' || !value.trim()) {
+    throw new Error('Data inválida');
   }
 
-  const dateParts = date.split('-');
-
-  if (dateParts.length !== 3) {
-    return '';
+  if (inputFormat === 'BR') {
+    const parts = value.split('/');
+    if (parts.length !== 3) throw new Error('Data inválida');
+    const [_day, _month, _year] = parts;
+    day = Number(_day);
+    month = Number(_month);
+    year = Number(_year);
+  } else if (inputFormat === 'USA') {
+    const parts = value.split('/');
+    if (parts.length !== 3) throw new Error('Data inválida');
+    const [_month, _day, _year] = parts;
+    day = Number(_day);
+    month = Number(_month);
+    year = Number(_year);
+  } else {
+    const parts = value.split('-');
+    if (parts.length !== 3) throw new Error('Data inválida');
+    const [_year, _month, _day] = parts;
+    day = Number(_day);
+    month = Number(_month);
+    year = Number(_year);
   }
 
-  const [year, month, day] = dateParts;
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day) ||
+    year < 1 ||
+    month < 1 ||
+    month > 12 ||
+    day < 1
+  ) {
+    throw new Error('Data inválida');
+  }
 
-  return `${padTo2Digits(Number(day))}/${padTo2Digits(Number(month))}/${year}`;
-};
+  if (day > daysInMonth(month, year)) {
+    throw new Error('Data inválida');
+  }
+
+  return new Date(year, month - 1, day);
+}
 
 /**
  * Converts a date string to a Brazilian date format (DD/MM/YYYY) with optional time.
@@ -213,7 +294,7 @@ export const dateToBRDate = (
   const month = String(dateTime.getMonth() + 1).padStart(2, '0');
   const day = String(dateTime.getDate()).padStart(2, '0');
 
-  const time = formatTime(dateTime, !showSeconds);
+  const time = toTime(dateTime, !showSeconds);
 
   if (!showTime) {
     return `${day}/${month}/${year}`;
@@ -223,30 +304,12 @@ export const dateToBRDate = (
 };
 
 /**
- * Convert a date in the Brazilian format 'DD/MM/YYYY' to the 'YYYY-MM-DD' format.
- *
- * @param date - The date in the 'DD/MM/YYYY' format.
- * @returns The date in the 'YYYY-MM-DD' format.
+ * @deprecated ao invés desse utilize:
+ * ```js
+ * toString(toDate(date, 'BR'))
+ * ```
  */
-export const dateBRToJS = (date: string) => {
-  if (!date) {
-    return '';
-  }
-
-  const dateParts = date.split('/');
-
-  if (dateParts.length !== 3) {
-    return '';
-  }
-
-  const [day, month, year] = dateParts;
-
-  if (!day || !month || !year) {
-    return '';
-  }
-
-  return `${year}-${month}-${day}`;
-};
+export const dateBRToJS = (date: string) => toString(toDate(date, 'BR'));
 
 /**
  * Formats a given Date object into a time string.
@@ -255,7 +318,7 @@ export const dateBRToJS = (date: string) => {
  * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
  * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
  */
-export const dateToTime = (date: Date, hideSecond = false) => {
+export const toTime = (date: Date, hideSecond = false) => {
   const dateArray = [
     padTo2Digits(date.getHours()),
     padTo2Digits(date.getMinutes()),
@@ -268,15 +331,6 @@ export const dateToTime = (date: Date, hideSecond = false) => {
 
   return dateArray.join(':');
 };
-
-/**
- * Formats a given Date object into a time string.
- *
- * @param date - The Date object to format.
- * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
- * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
- */
-export const formatTime = dateToTime;
 
 /**
  * Converte uma data no formato C# /Date(1731320280000-0300)/ para um objeto JavaScript Date.
@@ -304,6 +358,10 @@ export const parseCSharpDate = (csharpDate: string): Date => {
 
   return new Date(utcTimestamp);
 };
+
+///-----------------------///
+///     STATIC VALUES     ///
+///-----------------------///
 
 export const ONE_SECOND = 1000;
 export const ONE_MINUTE = ONE_SECOND * 60;
@@ -351,19 +409,3 @@ export const dayNames = [
 ];
 
 export const dayNamesShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-
-// TODO Remover essas funções futuramente
-
-/**
- * @deprecated Use **formatDate** no lugar dessa
- */
-export const dateToJS = formatDate;
-/**
- * @deprecated Use **formatDate(date, 'JS', hideSecond ? true : 'andSeconds')** no lugar dessa
- */
-export const dateToDateTime = (date: Date, hideSecond = false) =>
-  formatDate(date, 'JS', hideSecond ? true : 'andSeconds');
-/**
- * @deprecated Use **formatDate(date, 'BR')** no lugar dessa
- */
-export const formatDateToBR = (date: Date): string => formatDate(date, 'BR');
