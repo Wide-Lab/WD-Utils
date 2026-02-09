@@ -27,37 +27,37 @@ Aqui está um exemplo de como utilizar a biblioteca em seu projeto:
 
 ```typescript
 import {
-  Formatters,
-  Validators,
-  Numbers,
-  Colors,
-  Strings,
-  Dates,
+  WDFormatters,
+  WDValidators,
+  WDNumbers,
+  WDColors,
+  WDStrings,
+  WDDates,
 } from 'widelab-utils';
 
 // Exemplo de formatação de CPF
-const formattedCPF = Formatters.formatCPF('12345678900');
+const formattedCPF = WDFormatters.formatCPF('12345678900');
 // Resultado: 123.456.789-00
 
 // Exemplo de validação de e-mail
-const isValidEmail = Validators.validateEmail('example@domain.com');
+const isValidEmail = WDValidators.validateEmail('example@domain.com');
 // Resultado: true
 
 // Exemplo de cálculo de número par
-const isEven = Numbers.isEven(4);
+const isEven = WDNumbers.isEven(4);
 // Resultado: true
 
 // Exemplo de manipulação de cores
-const hexToRgb = Colors.hexToRgb('#FF5733');
+const hexToRgb = WDColors.hexToRgb('#FF5733');
 // Resultado: [255, 87, 51]
 
 // Exemplo de remoção de acentos
-const noAccents = Strings.accentsRemove('Olá, mundo!');
+const noAccents = WDStrings.accentsRemove('Olá, mundo!');
 // Resultado: Ola, mundo!
 
 // Exemplo de formatação de data
-const formattedDate = Dates.dateBRToJS('12/05/2025');
-// Resultado: 2025-05-12
+const formattedDate = WDDates.toString(new Date(2026, 03, 09));
+// Resultado: 2026-02-08
 
 console.log(
   formattedCPF,
