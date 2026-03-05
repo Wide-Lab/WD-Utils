@@ -230,21 +230,21 @@ export function toDate(value: string, inputFormat: 'JS' | 'BR' | 'USA' = 'JS') {
   }
 
   if (inputFormat === 'BR') {
-    const parts = value.split('/');
+    const parts = value.slice(0, 10).split('/');
     if (parts.length !== 3) throw new Error('Data inválida');
     const [_day, _month, _year] = parts;
     day = Number(_day);
     month = Number(_month);
     year = Number(_year);
   } else if (inputFormat === 'USA') {
-    const parts = value.split('/');
+    const parts = value.slice(0, 10).split('/');
     if (parts.length !== 3) throw new Error('Data inválida');
     const [_month, _day, _year] = parts;
     day = Number(_day);
     month = Number(_month);
     year = Number(_year);
   } else {
-    const parts = value.split('-');
+    const parts = value.slice(0, 10).split('-');
     if (parts.length !== 3) throw new Error('Data inválida');
     const [_year, _month, _day] = parts;
     day = Number(_day);

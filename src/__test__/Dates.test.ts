@@ -538,6 +538,11 @@ describe('utils/Date', () => {
         const date = toDate('2024-01-15');
         expect(date).toEqual(new Date(2024, 0, 15));
       });
+
+      it('deve converter corretamente uma data com hora de março', () => {
+        const date = toDate('2026-03-05T14:54:17.417Z');
+        expect(date).toEqual(new Date(2026, 2, 5));
+      });
     });
 
     /**
