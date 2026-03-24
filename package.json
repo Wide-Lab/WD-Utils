@@ -31,15 +31,17 @@
   "author": "Leonardo Noro - Widelab",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
     "@eslint/js": "^9.38.0",
     "@types/jest": "^29.5.14",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.4.0",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "3.6.2",
-    "standard-version": "^9.5.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "tsup": "^8.3.6",
@@ -53,5 +55,10 @@
   "bugs": {
     "url": "https://github.com/Wide-Lab/WD-Utils/issues"
   },
-  "homepage": "https://github.com/Wide-Lab/WD-Utils#readme"
+  "homepage": "https://github.com/Wide-Lab/WD-Utils#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
