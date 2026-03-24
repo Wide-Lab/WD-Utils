@@ -1,9 +1,18 @@
 import { numberClamp } from './Numbers';
 
 /**
- * Converts a hexadecimal color to its RGB component
- * @param color Hexadecimal color to be converted
- * @returns An array containing the R, G and B components (0-255) of the color
+ * Converte uma cor hexadecimal para seus componentes RGB.
+ *
+ * Esta função analisa uma string hexadecimal de cor e extrai os valores vermelho, verde e azul.
+ * Suporta formatos de 6 dígitos (RRGGBB). Se a string não for válida, retorna [0, 0, 0].
+ *
+ * @param color - A cor hexadecimal a ser convertida (ex: "#FF0000" ou "FF0000").
+ * @returns Um array contendo os componentes R, G e B (0-255) da cor.
+ *
+ * @example
+ * hexToRgb("#FF0000"); // retorna [255, 0, 0]
+ * hexToRgb("00FF00"); // retorna [0, 255, 0]
+ * hexToRgb("invalid"); // retorna [0, 0, 0]
  */
 export const hexToRgb = (hex: string): [number, number, number] => {
   const shorthandRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
@@ -18,9 +27,18 @@ export const hexToRgb = (hex: string): [number, number, number] => {
 };
 
 /**
- * Converts a color component value to its hexadeciaml representation
- * @param component - The value of the color component (0-255).
- * @returns A hexadeciaml representation of the color component
+ * Converte um valor de componente de cor para sua representação hexadecimal.
+ *
+ * Esta função limita o componente entre 0 e 255 e converte para hexadecimal maiúsculo,
+ * preenchendo com zero à esquerda se necessário.
+ *
+ * @param component - O valor do componente de cor (0-255).
+ * @returns A representação hexadecimal do componente de cor (ex: "FF").
+ *
+ * @example
+ * decColorToHex(255); // retorna "FF"
+ * decColorToHex(0); // retorna "00"
+ * decColorToHex(128); // retorna "80"
  */
 export const decColorToHex = (component: number): string => {
   const clampedComponent = numberClamp(component, 0, 255);
@@ -29,10 +47,18 @@ export const decColorToHex = (component: number): string => {
 };
 
 /**
- * Apply a shading to a color component (R, G or B) based on a percentage value
- * @param component - The color component to be shaded (0-255).
- * @param percent - The percentage value of shading (-100 a 100).
- * @returns The shaded color component in the interval [0, 255].
+ * Aplica um sombreamento a um componente de cor (R, G ou B) com base em uma porcentagem.
+ *
+ * Esta função ajusta o brilho do componente multiplicando pelo fator (1 + percentual/100)
+ * e limita o resultado entre 0 e 255.
+ *
+ * @param component - O componente de cor a ser sombreado (0-255).
+ * @param percent - A porcentagem de sombreamento (-100 a 100). Valores positivos clareiam, negativos escurecem.
+ * @returns O componente de cor sombreado no intervalo [0, 255].
+ *
+ * @example
+ * shadeColorComponent(128, 50); // retorna 192 (mais claro)
+ * shadeColorComponent(128, -50); // retorna 64 (mais escuro)
  */
 export const shadeColorComponent = (
   component: number,
@@ -40,10 +66,17 @@ export const shadeColorComponent = (
 ): number => numberClamp(Math.round(component * (1 + percent / 100)), 0, 255);
 
 /**
- * Shades a hexadecimal color by changing its luminosity based on a percentage value
- * @param color - The hexadecimal color to shade
- * @param percent - The percentage value of shading (-100 a 100).
- * @returns The shaded hexadecimal color
+ * Sombreia uma cor hexadecimal alterando sua luminosidade com base em uma porcentagem.
+ *
+ * Esta função converte a cor para RGB, aplica sombreamento a cada componente e reconverte para hexadecimal.
+ *
+ * @param color - A cor hexadecimal a ser sombreada.
+ * @param percent - A porcentagem de sombreamento (-100 a 100).
+ * @returns A cor hexadecimal sombreada.
+ *
+ * @example
+ * shadeHexColor("#808080", 50); // retorna uma cor mais clara
+ * shadeHexColor("#808080", -50); // retorna uma cor mais escura
  */
 export const shadeHexColor = (color: string, percent: number) => {
   const [R, G, B] = hexToRgb(color);
@@ -57,10 +90,17 @@ export const shadeHexColor = (color: string, percent: number) => {
 };
 
 /**
- * Generates a color palette based on a reference color, using the shading variations
- * @param baseColor - The reference color in hexadecimal format
- * @returns An object that represents the color palette, where the keys are indexes (from 50 to 900)
- * and the values are shaded colors based on the reference color
+ * Gera uma paleta de cores baseada em uma cor de referência, usando variações de sombreamento.
+ *
+ * Esta função cria uma paleta com índices de 50 a 900, onde cada índice corresponde a uma variação
+ * da cor base através de sombreamento. O índice 600 é a cor base.
+ *
+ * @param baseColor - A cor de referência em formato hexadecimal.
+ * @returns Um objeto que representa a paleta de cores, onde as chaves são índices (de 50 a 900)
+ * e os valores são cores sombreadas baseadas na cor de referência.
+ *
+ * @example
+ * generatePalette("#FF0000"); // retorna {50: "#FF8080", 100: "#FF6666", ..., 600: "#FF0000", ...}
  */
 export const generatePalette = (
   baseColor: string,
@@ -81,11 +121,17 @@ export const generatePalette = (
 };
 
 /**
- * Converts an RGB color string to an array of RGB values.
+ * Converte uma string de cor RGB em um array de valores RGB.
  *
- * @param  rgb - The RGB color string (e.g., "rgb(255, 0, 0)").
- * @returns An array containing the RGB values.
- * @throws  If the provided string is not a valid RGB color.
+ * Esta função analisa uma string no formato "rgb(r, g, b)" e extrai os valores numéricos.
+ *
+ * @param rgb - A string de cor RGB (ex: "rgb(255, 0, 0)").
+ * @returns Um array contendo os valores RGB.
+ * @throws Lança um erro se a string fornecida não for uma cor RGB válida.
+ *
+ * @example
+ * parseRgbToArray("rgb(255, 0, 0)"); // retorna [255, 0, 0]
+ * parseRgbToArray("rgb(0, 255, 0)"); // retorna [0, 255, 0]
  */
 export const parseRgbToArray = (rgb: string): [number, number, number] => {
   const result = rgb.match(/-?\d+/g);

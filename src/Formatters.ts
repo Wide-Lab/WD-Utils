@@ -7,9 +7,16 @@
 import { padTo2Digits } from './Numbers';
 
 /**
- * Applyes a mask to the CPF and returns in `###.###.###-##` format
- * @param cpf - The CPF number to be formatted
- * @returns The formatted CPF
+ * Aplica uma máscara ao CPF e retorna no formato `###.###.###-##`.
+ *
+ * Esta função remove caracteres não numéricos, insere pontos e traço nos locais apropriados,
+ * e limita a 11 dígitos.
+ *
+ * @param cpf - O número do CPF a ser formatado.
+ * @returns O CPF formatado.
+ *
+ * @example
+ * formatCPF('12345678901'); // retorna '123.456.789-01'
  */
 export const formatCPF = (cpf?: string | number) =>
   String(cpf)
@@ -20,9 +27,16 @@ export const formatCPF = (cpf?: string | number) =>
     .replace(/(-\d{2})\d+?$/, '$1'); // Mantém apenas os 2 últimos dígitos
 
 /**
- * Applies a maks to the CNPJ and returns in `##.###.###/####-##` format
- * @param cnpj - The CNPJ number to be formatted
- * @returns The formatted CNPJ
+ * Aplica uma máscara ao CNPJ e retorna no formato `##.###.###/####-##`.
+ *
+ * Esta função remove caracteres não numéricos, insere pontos, barra e traço nos locais apropriados,
+ * e limita a 14 dígitos.
+ *
+ * @param cnpj - O número do CNPJ a ser formatado.
+ * @returns O CNPJ formatado.
+ *
+ * @example
+ * formatCNPJ('12345678000123'); // retorna '12.345.678/0001-23'
  */
 export const formatCNPJ = (cnpj?: string | number) =>
   String(cnpj)
@@ -34,9 +48,15 @@ export const formatCNPJ = (cnpj?: string | number) =>
     .replace(/(-\d{2})\d+?$/, '$1'); // Mantém apenas os 2 últimos dígitos
 
 /**
- * Applies a mask to the CEP and returns in `#####-###` format
- * @param value - The CEP number to be formatted
- * @returns The formated CEP
+ * Aplica uma máscara ao CEP e retorna no formato `#####-###`.
+ *
+ * Esta função remove caracteres não numéricos, limita a 8 dígitos e insere o traço.
+ *
+ * @param value - O número do CEP a ser formatado.
+ * @returns O CEP formatado.
+ *
+ * @example
+ * formatCEP('12345678'); // retorna '12345-678'
  */
 export const formatCEP = (value?: string) =>
   String(value)
@@ -45,9 +65,17 @@ export const formatCEP = (value?: string) =>
     .replace(/^(\d{5})(\d)/, '$1-$2'); // Insere traço após os primeiros 5 dígitos
 
 /**
- * Applies a mask to the date and returns in `dd/mm/aaaa` format
- * @param value - The date to be formatted
- * @returns The formated date
+ * Aplica uma máscara à data e retorna no formato `dd/mm/aaaa`.
+ *
+ * Esta função remove caracteres não numéricos, limita a 8 dígitos e insere barras.
+ * Também suporta objetos Date.
+ *
+ * @param value - A data a ser formatada.
+ * @returns A data formatada.
+ *
+ * @example
+ * formatDate('15102023'); // retorna '15/10/2023'
+ * formatDate(new Date('2023-10-15')); // retorna '15/10/2023'
  */
 export const formatDate = (value?: string | Date) => {
   if (!value) {
@@ -71,14 +99,18 @@ export const formatDate = (value?: string | Date) => {
 };
 
 /**
- * Formats an input string into a time format, specifically hours and minutes, in the format HH:MM.
- * @param value - The input string to be formatted. If not provided, an empty string is returned.
- * @returns The formatted time string in the format HH:MM.
+ * Formata uma string de entrada em um formato de hora, especificamente horas e minutos, no formato HH:MM.
+ *
+ * Esta função remove caracteres não numéricos, limita a 4 dígitos e insere dois pontos.
+ *
+ * @param value - A string de entrada a ser formatada. Se não fornecida, retorna uma string vazia.
+ * @returns A string de tempo formatada no formato HH:MM.
+ *
  * @example
- * formatHourMinute('1234'); // returns '12:34'
- * formatHourMinute('12345'); // returns '12:34' (ignores extra digits)
- * formatHourMinute('abc1234'); // returns '12:34' (removes non-digit characters)
- * formatHourMinute(''); // returns ''
+ * formatHourMinute('1234'); // retorna '12:34'
+ * formatHourMinute('12345'); // retorna '12:34' (ignora dígitos extras)
+ * formatHourMinute('abc1234'); // retorna '12:34' (remove caracteres não numéricos)
+ * formatHourMinute(''); // retorna ''
  */
 export const formatHourMinute = (value: string) => {
   if (!value) {
@@ -87,15 +119,20 @@ export const formatHourMinute = (value: string) => {
 
   return String(value)
     .replace(/\D/g, '')
-    .substring(0, 4) // Limita a 8 dígitos
-    .replace(/(\d)(\d{2})$/, '$1:$2'); // Insere barra após os primeiros 2 dígitos
+    .substring(0, 4) // Limita a 4 dígitos
+    .replace(/(\d)(\d{2})$/, '$1:$2'); // Insere dois pontos após o primeiro dígito
 };
 
 /**
- * Formats a date and time string from a given value.
+ * Formata uma string de data e hora.
  *
- * @param value - The value to format. Can be a Date object or a string.
- * @returns The formatted date and time string.
+ * Esta função converte uma string de data em uma string de data e hora formatada.
+ *
+ * @param value - O valor a ser formatado. Pode ser um objeto Date ou uma string.
+ * @returns A string de data e hora formatada.
+ *
+ * @example
+ * formatDateTime('2023-10-15T10:30:00'); // retorna '15/10/2023 10:30:00'
  */
 export const formatDateTime = (value?: string | Date) => {
   if (!value) {
@@ -116,14 +153,21 @@ export const formatDateTime = (value?: string | Date) => {
     .substring(0, 12) // Limita a 12 dígitos
     .replace(/(\d{2})(\d)/, '$1/$2') // Insere barra após os primeiros 2 dígitos
     .replace(/(\d{2})(\d)/, '$1/$2') // Insere barra após os próximos 2 dígitos
-    .replace(/(\d{4})(\d)/, '$1 $2') // Insere barra após os próximos 2 dígitos
-    .replace(/(\d{4}) (\d{2})(\d)/, '$1 $2:$3'); // Insere barra após os próximos 2 dígitos
+    .replace(/(\d{4})(\d)/, '$1 $2') // Insere espaço após os próximos 4 dígitos
+    .replace(/(\d{4}) (\d{2})(\d)/, '$1 $2:$3'); // Insere dois pontos
 };
 
 /**
- * Applies a mask to the telephone number and returns in `(##) #####-####` format
- * @param value - The telephone number to be formatted
- * @returns The formatted telephone number
+ * Aplica uma máscara ao número de telefone e retorna no formato `(##) #####-####`.
+ *
+ * Esta função remove caracteres não numéricos, remove zero à esquerda, limita a 11 dígitos
+ * e insere parênteses, espaço e traço.
+ *
+ * @param value - O número de telefone a ser formatado.
+ * @returns O número de telefone formatado.
+ *
+ * @example
+ * formatPhone('11987654321'); // retorna '(11) 98765-4321'
  */
 export const formatPhone = (value?: string) =>
   String(value)
@@ -135,9 +179,15 @@ export const formatPhone = (value?: string) =>
     .replace(/-(\d)(\d{4})/, '$1-$2'); // Mantém o traço e insere traço após os 2 últimos dígitos
 
 /**
- * Formats a numeric value for Brazilian currency in `R$ #.###,##` format
- * @param value - The value to be formatted
- * @returns The value formatted as Brazilian currency
+ * Formata um valor numérico para moeda brasileira no formato `R$ #.###,##`.
+ *
+ * Esta função usa a API de internacionalização para formatar o valor como moeda brasileira.
+ *
+ * @param value - O valor a ser formatado.
+ * @returns O valor formatado como moeda brasileira.
+ *
+ * @example
+ * formatCurrency(1234.56); // retorna 'R$ 1.234,56'
  */
 export const formatCurrency = (value: number) =>
   value

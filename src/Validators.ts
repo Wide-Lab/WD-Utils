@@ -16,9 +16,16 @@ const verifierDigitCPF = (digits: string) => {
 };
 
 /**
- * Validates a CPF number
- * @param  cpf - The CPF number to validate
- * @returns - Returns true if the CPF is valid, false otherwise
+ * Valida um número de CPF.
+ *
+ * Esta função verifica se o CPF fornecido é válido, incluindo verificação de dígitos verificadores e rejeição de CPFs com todos os dígitos iguais.
+ *
+ * @param cpf - O número do CPF a ser validado.
+ * @returns Retorna true se o CPF for válido, false caso contrário.
+ *
+ * @example
+ * validateCPF('12345678901'); // retorna false (CPF inválido)
+ * validateCPF('11111111111'); // retorna false (todos dígitos iguais)
  */
 export const validateCPF = (cpf: string): boolean => {
   cpf = cpf.replace(/\D/g, '');
@@ -58,9 +65,16 @@ const verifierDigitCNPJ = (digits: string) => {
 };
 
 /**
- * Validates a CNPJ number
- * @param  cnpj - The CNPJ number to validate
- * @returns - Returns true if the CNPJ is valid, false otherwise
+ * Valida um número de CNPJ.
+ *
+ * Esta função verifica se o CNPJ fornecido é válido, incluindo verificação de dígitos verificadores e rejeição de CNPJs com todos os dígitos iguais.
+ *
+ * @param cnpj - O número do CNPJ a ser validado.
+ * @returns Retorna true se o CNPJ for válido, false caso contrário.
+ *
+ * @example
+ * validateCNPJ('12345678000123'); // retorna false (CNPJ inválido)
+ * validateCNPJ('11111111111111'); // retorna false (todos dígitos iguais)
  */
 export const validateCNPJ = (cnpj: string): boolean => {
   cnpj = cnpj.replace(/\D/g, '');
@@ -80,13 +94,17 @@ export const validateCNPJ = (cnpj: string): boolean => {
 };
 
 /**
- * Validates if the given email string is in a proper email format.
+ * Valida se a string de email fornecida está em um formato de email adequado.
  *
- * The email format is checked against a regular expression pattern that ensures
- * the email contains valid characters, an '@' symbol, and a domain.
+ * O formato do email é verificado contra um padrão de expressão regular que garante
+ * que o email contenha caracteres válidos, um símbolo '@', e um domínio.
  *
- * @param email - The email string to validate.
- * @returns `true` if the email is in a valid format, `false` otherwise.
+ * @param email - A string de email a ser validada.
+ * @returns `true` se o email estiver em um formato válido, `false` caso contrário.
+ *
+ * @example
+ * validateEmail('user@example.com'); // retorna true
+ * validateEmail('invalid-email'); // retorna false
  */
 export const validateEmail = (email: string) =>
   !!email.match(
@@ -94,15 +112,18 @@ export const validateEmail = (email: string) =>
   );
 
 /**
- * Validates a birth date string in the format "dd/mm/yyyy".
+ * Valida uma string de data de nascimento no formato "dd/mm/yyyy".
  *
- * @param {string} dateString - The birth date string to validate.
- * @returns {boolean} True if the date string is valid, false otherwise.
+ * Esta função verifica se a string de data está no formato correto e se representa uma data válida,
+ * incluindo verificação de anos bissextos.
+ *
+ * @param dateString - A string de data de nascimento a ser validada.
+ * @returns True se a string de data for válida, false caso contrário.
  *
  * @example
- * validateBirthDate("12/05/1990"); // returns true
- * validateBirthDate("30/02/1990"); // returns false (February only has 28 or 29 days)
- * validateBirthDate("abc/def/ghi"); // returns false (invalid format)
+ * validateBirthDate("12/05/1990"); // retorna true
+ * validateBirthDate("30/02/1990"); // retorna false (fevereiro só tem 28 ou 29 dias)
+ * validateBirthDate("abc/def/ghi"); // retorna false (formato inválido)
  */
 export const validateBirthDate = (dateString: string) => {
   // Verifica se o padrão bate com dd/mm/aaaa

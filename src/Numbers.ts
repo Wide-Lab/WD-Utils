@@ -1,41 +1,70 @@
 /**
- * Checks if a given number is even.
+ * Verifica se um número dado é par.
  *
- * @param n - The number to be checked for evenness.
- * @returns `true` if the number is even, `false` otherwise.
+ * Esta função determina se o número fornecido é par, ou seja, se é divisível por 2 sem resto.
+ *
+ * @param n - O número a ser verificado quanto à paridade.
+ * @returns `true` se o número for par, `false` caso contrário.
+ *
+ * @example
+ * isEven(4); // retorna true
+ * isEven(5); // retorna false
  */
 export const isEven = (n: number) => n % 2 === 0;
 
 /**
- * Ensures that a value is within a especific range
- * @param value - The value to check and change
- * @param min - The minimum value allowed
- * @param max - The maximum value allowed
- * @returns The ajusted value within the range [min, max].
+ * Garante que um valor esteja dentro de um intervalo específico.
+ *
+ * Esta função limita o valor fornecido entre os valores mínimo e máximo especificados.
+ * Se o valor for menor que o mínimo, retorna o mínimo. Se for maior que o máximo, retorna o máximo.
+ * Caso contrário, retorna o valor original.
+ *
+ * @param value - O valor a ser verificado e ajustado.
+ * @param min - O valor mínimo permitido.
+ * @param max - O valor máximo permitido.
+ * @returns O valor ajustado dentro do intervalo [min, max].
+ *
+ * @example
+ * numberClamp(5, 0, 10); // retorna 5
+ * numberClamp(-1, 0, 10); // retorna 0
+ * numberClamp(15, 0, 10); // retorna 10
  */
 export const numberClamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
 /**
- * Pads a number with leading zeros to ensure it has at least the specified number of digits.
+ * Preenche um número com zeros à esquerda para garantir que tenha pelo menos o número especificado de dígitos.
  *
- * @param num - The number to pad.
- * @param maxLength - The desired length of the resulting string. Defaults to 2.
- * @returns The padded string representation of the number.
+ * Esta função converte o número em string e adiciona zeros à esquerda até atingir o comprimento desejado.
+ *
+ * @param num - O número a ser preenchido.
+ * @param maxLength - O comprimento desejado da string resultante. O padrão é 2.
+ * @returns A representação em string do número preenchido com zeros à esquerda.
+ *
+ * @example
+ * padTo2Digits(5, 3); // retorna "005"
+ * padTo2Digits(123, 2); // retorna "123"
  */
 export const padTo2Digits = (num: number | string, maxLength = 2) =>
   String(num).padStart(maxLength, '0');
 
 /**
- * Interpolates a given input number from one range to another.
+ * Interpola um valor de entrada de um intervalo para outro.
  *
- * @param input - The input number to be interpolated.
- * @param inputStart - The start of the input range.
- * @param inputEnd - The end of the input range.
- * @param outputStart - The start of the output range.
- * @param outputEnd - The end of the output range.
- * @returns The interpolated number within the output range.
- * @throws Will throw an error if the inputStart and inputEnd are the same.
+ * Esta função mapeia um valor de entrada de um intervalo de origem para um intervalo de destino,
+ * mantendo a proporção relativa. O valor de entrada é limitado ao intervalo de entrada antes da interpolação.
+ *
+ * @param input - O valor de entrada a ser interpolado.
+ * @param inputStart - O início do intervalo de entrada.
+ * @param inputEnd - O fim do intervalo de entrada.
+ * @param outputStart - O início do intervalo de saída.
+ * @param outputEnd - O fim do intervalo de saída.
+ * @returns O valor interpolado dentro do intervalo de saída.
+ * @throws Lança um erro se inputStart e inputEnd forem iguais.
+ *
+ * @example
+ * interpolate(5, 0, 10, 0, 100); // retorna 50
+ * interpolate(2.5, 0, 10, 0, 100); // retorna 25
  */
 export const interpolate = (
   input: number,
@@ -65,11 +94,17 @@ export const interpolate = (
 };
 
 /**
- * Truncates a number to a specified number of decimal places without rounding.
+ * Trunca um número para um número especificado de casas decimais sem arredondamento.
  *
- * @param num - The number to truncate.
- * @param decimalPlaces - The number of decimal places to keep. Defaults to 2.
- * @returns The truncated number with the specified number of decimal places.
+ * Esta função remove as casas decimais além do número especificado, sem arredondar o valor.
+ *
+ * @param num - O número a ser truncado.
+ * @param decimalPlaces - O número de casas decimais a serem mantidas. O padrão é 2.
+ * @returns O número truncado com o número especificado de casas decimais.
+ *
+ * @example
+ * truncDecimals(3.14159, 2); // retorna 3.14
+ * truncDecimals(10.999, 1); // retorna 10.9
  */
 export const truncDecimals = (num: number, decimalPlaces = 2) => {
   const factor = Math.pow(10, decimalPlaces);

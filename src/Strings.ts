@@ -20,9 +20,16 @@ export function replaceCharacters(
 }
 
 /**
- * Remove accents and especial characters from a string
- * @param value - The string from which accents and especial characters will be removed
- * @returns The string without accents and especial characters
+ * Remove acentos e caracteres especiais de uma string.
+ *
+ * Esta função converte caracteres acentuados e especiais para suas formas básicas,
+ * removendo acentos, cedilhas, etc.
+ *
+ * @param value - A string da qual acentos e caracteres especiais serão removidos.
+ * @returns A string sem acentos e caracteres especiais.
+ *
+ * @example
+ * accentsRemove('café naïve résumé'); // retorna 'cafe naive resume'
  */
 export const accentsRemove = (value: string): string => {
   // Mapeia os caracteres a serem substituídos e seus equivalentes.
@@ -48,9 +55,15 @@ export const accentsRemove = (value: string): string => {
 };
 
 /**
- * Converts HTML special characters to their original form in the string
- * @param value - The string containing HTML special characters
- * @returns The string with the special character converted to their original form
+ * Converte caracteres especiais HTML para sua forma original na string.
+ *
+ * Esta função substitui entidades HTML por seus caracteres correspondentes.
+ *
+ * @param value - A string contendo caracteres especiais HTML.
+ * @returns A string com os caracteres especiais convertidos para sua forma original.
+ *
+ * @example
+ * specialCharactersConvert('café &amp; naïve'); // retorna 'café & naïve'
  */
 export const specialCharactersConvert = (value: string): string => {
   // Mapeia os caracteres especiais HTML e suas formas originais.
@@ -186,10 +199,16 @@ export function uppercaseFirst(text: string, everyWord = false) {
 }
 
 /**
- * Get the initial letters of the first name and last name from a full name.
+ * Obtém as iniciais das primeiras e últimas letras do nome de um nome completo.
  *
- * @param name - The full name.
- * @returns The initial letters of the first name and last name, or an empty string if the name is invalid.
+ * Esta função divide o nome em partes, pega a primeira letra do primeiro nome e a primeira letra do último nome.
+ *
+ * @param name - O nome completo.
+ * @returns As iniciais das primeiras e últimas letras do nome, ou uma string vazia se o nome for inválido.
+ *
+ * @example
+ * getInitials('João Silva'); // retorna 'JS'
+ * getInitials('Maria Santos Pereira'); // retorna 'MP'
  */
 export const getInitials = (fullName: string) => {
   if (!fullName) {
@@ -261,20 +280,31 @@ export const extractFormattedName = (name: string) => {
 };
 
 /**
- * Removes accents, converts to lowercase, and removes spaces from a string.
+ * Remove acentos, converte para minúsculas e remove espaços de uma string.
  *
- * @param value - The input string.
- * @returns A modified string with accents removed, converted to lowercase, and spaces removed.
+ * Esta função combina remoção de acentos, conversão para minúsculas e remoção de espaços.
+ *
+ * @param value - A string de entrada.
+ * @returns Uma string modificada com acentos removidos, convertida para minúsculas e espaços removidos.
+ *
+ * @example
+ * convertString('Café naïve'); // retorna 'cafenaive'
  */
 export const convertString = (value: string): string =>
   accentsRemove(value.toLowerCase().replace(/\s/g, '')).replace(/-+/g, '-');
 
 /**
- * Check if a search string is present in the content string, ignoring case, accents, and spaces.
+ * Verifica se uma string de busca está presente na string de conteúdo, ignorando maiúsculas, acentos e espaços.
  *
- * @param content - The content string to search within.
- * @param search - The search string to look for in the content.
- * @returns `true` if the search string is found in the content, `false` otherwise.
+ * Esta função converte ambas as strings usando convertString e verifica se a busca está incluída no conteúdo.
+ *
+ * @param content - A string de conteúdo a ser pesquisada.
+ * @param search - A string de busca a ser localizada no conteúdo.
+ * @returns `true` se a string de busca for encontrada no conteúdo, `false` caso contrário.
+ *
+ * @example
+ * isContentMatchingSearch('Café naïve', 'cafe'); // retorna true
+ * isContentMatchingSearch('Hello world', 'goodbye'); // retorna false
  */
 export const isContentMatchingSearch = (
   content: string,
@@ -282,23 +312,35 @@ export const isContentMatchingSearch = (
 ): boolean => convertString(content).includes(convertString(search));
 
 /**
- * Compare two strings while ignoring case, accents, and spaces.
+ * Compara duas strings ignorando maiúsculas, acentos e espaços.
  *
- * @param a - The first string to compare.
- * @param b - The second string to compare.
- * @returns `true` if the strings are equal after removing accents, converting to lowercase, and spaces, otherwise `false`.
+ * Esta função converte ambas as strings usando convertString e as compara.
+ *
+ * @param a - A primeira string a ser comparada.
+ * @param b - A segunda string a ser comparada.
+ * @returns `true` se as strings forem iguais após remover acentos, converter para minúsculas e remover espaços, caso contrário `false`.
+ *
+ * @example
+ * compareStrings('Café', 'cafe'); // retorna true
+ * compareStrings('Hello', 'world'); // retorna false
  */
 export const compareStrings = <T extends string>(a: T, b: NoInfer<T>) => {
   return convertString(a) === convertString(b);
 };
 
 /**
- * Returns the appropriate form of a word based on the given count.
+ * Retorna a forma apropriada de uma palavra baseada na contagem fornecida.
  *
- * @param singularWord - The singular form of the word.
- * @param pluralWord - The plural form of the word.
- * @param count - The count to determine which form to use.
- * @returns The singular form if the count is 1, otherwise the plural form.
+ * Esta função retorna a forma singular se a contagem for 1, caso contrário a forma plural.
+ *
+ * @param singularWord - A forma singular da palavra.
+ * @param pluralWord - A forma plural da palavra.
+ * @param count - A contagem para determinar qual forma usar.
+ * @returns A forma singular se a contagem for maior que 1, caso contrário a forma plural.
+ *
+ * @example
+ * pluralizeWord('item', 'items', 1); // retorna 'item'
+ * pluralizeWord('item', 'items', 2); // retorna 'items'
  */
 export const pluralizeWord = (
   singularWord: string,
@@ -307,14 +349,19 @@ export const pluralizeWord = (
 ) => (count > 1 ? pluralWord : singularWord);
 
 /**
- * Replaces a portion of a string between the specified start and end indices with a new value.
+ * Substitui uma porção de uma string entre os índices inicial e final especificados por um novo valor.
  *
- * @param text - The original string.
- * @param selection - An object containing the start and end indices of the portion to be replaced.
- * @param selection.start - The starting index of the portion to be replaced.
- * @param selection.end - The ending index of the portion to be replaced.
- * @param value - The new value to insert between the specified indices.
- * @returns The modified string with the specified portion replaced by the new value.
+ * Esta função substitui o texto entre start e end pelo valor fornecido.
+ *
+ * @param text - A string original.
+ * @param selection - Um objeto contendo os índices inicial e final da porção a ser substituída.
+ * @param selection.start - O índice inicial da porção a ser substituída.
+ * @param selection.end - O índice final da porção a ser substituída.
+ * @param value - O novo valor a ser inserido entre os índices especificados.
+ * @returns A string modificada com a porção especificada substituída pelo novo valor.
+ *
+ * @example
+ * replaceBetween('Hello world', { start: 6, end: 11 }, 'TypeScript'); // retorna 'Hello TypeScript'
  */
 export const replaceBetween = (
   text: string,

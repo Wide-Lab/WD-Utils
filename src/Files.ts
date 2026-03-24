@@ -1,26 +1,26 @@
 import { truncDecimals } from './Numbers';
 
 /**
- * A mapping of file extensions to their corresponding MIME types.
+ * Um mapeamento de extensões de arquivo para seus tipos MIME correspondentes.
  *
- * This object provides a comprehensive list of common file extensions
- * and their associated MIME types, which can be used for file type
- * identification and handling in various applications.
+ * Este objeto fornece uma lista abrangente de extensões de arquivo comuns
+ * e seus tipos MIME associados, que podem ser usados para identificação de tipo de arquivo
+ * e manipulação em várias aplicações.
  *
- * Example usage:
+ * Exemplo de uso:
  * ```typescript
- * const mimeType = types['jpg']; // Returns 'image/jpeg'
+ * const mimeType = types['jpg']; // Retorna 'image/jpeg'
  * ```
  *
- * Supported file extensions include, but are not limited to:
- * - Video formats: `3g2`, `3gp`, `avi`, `mp4`, `webm`, etc.
- * - Audio formats: `aac`, `mp3`, `wav`, `ogg`, etc.
- * - Image formats: `bmp`, `gif`, `jpeg`, `png`, `svg`, etc.
- * - Document formats: `doc`, `pdf`, `txt`, `xlsx`, etc.
- * - Archive formats: `zip`, `rar`, `7z`, etc.
- * - Web formats: `html`, `css`, `js`, `json`, etc.
+ * Extensões de arquivo suportadas incluem, mas não se limitam a:
+ * - Formatos de vídeo: `3g2`, `3gp`, `avi`, `mp4`, `webm`, etc.
+ * - Formatos de áudio: `aac`, `mp3`, `wav`, `ogg`, etc.
+ * - Formatos de imagem: `bmp`, `gif`, `jpeg`, `png`, `svg`, etc.
+ * - Formatos de documento: `doc`, `pdf`, `txt`, `xlsx`, etc.
+ * - Formatos de arquivo: `zip`, `rar`, `7z`, etc.
+ * - Formatos web: `html`, `css`, `js`, `json`, etc.
  *
- * > It's crucial that the order of the items in the list is not changed.
+ * > É crucial que a ordem dos itens na lista não seja alterada.
  * @constant
  */
 const mimeTypesExtensions = {
@@ -118,10 +118,16 @@ const mimeTypesExtensions = {
 
 /**
  * Converte a extensão de um arquivo em seu tipo MIME correspondente.
- * Converts a file's extension to its corresponding MIME type
- * @param extension - The file's extension
+ *
+ * Esta função busca no mapeamento de tipos MIME a extensão fornecida e retorna o tipo correspondente.
+ * Se não encontrar, retorna 'text/plain'.
+ *
+ * @param extension - A extensão do arquivo (sem ponto).
  * @returns O tipo MIME correspondente à extensão ou 'text/plain' se não for encontrado.
- * @returns The MIME type corresponding to the extension or 'text/plain' if not found
+ *
+ * @example
+ * extensionToMimeType('jpg'); // retorna 'image/jpeg'
+ * extensionToMimeType('txt'); // retorna 'text/plain'
  */
 export const extensionToMimeType = (extension: string): string => {
   const typeValue =
@@ -135,16 +141,19 @@ export const extensionToMimeType = (extension: string): string => {
 };
 
 /**
- * Converts a MIME type to its corresponding file extension.
+ * Converte um tipo MIME em sua extensão de arquivo correspondente.
  *
- * This function iterates through a mapping of file extensions to MIME types
- * and returns the file extension that matches the provided MIME type. If no
- * match is found, it attempts to extract the extension from the MIME type
- * string by splitting it at the '/' character.
+ * Esta função itera através de um mapeamento de extensões de arquivo para tipos MIME
+ * e retorna a extensão de arquivo que corresponde ao tipo MIME fornecido. Se não encontrar correspondência,
+ * tenta extrair a extensão da string do tipo MIME dividindo-a em '/'.
  *
- * @param mimeType - The MIME type to convert (e.g., "image/png").
- * @returns The corresponding file extension (e.g., "png"). If no match is found,
- *          the function returns the part of the MIME type after the '/' character.
+ * @param mimeType - O tipo MIME a ser convertido (ex: "image/png").
+ * @returns A extensão de arquivo correspondente (ex: "png"). Se não encontrar correspondência,
+ *          a função retorna a parte do tipo MIME após a '/'.
+ *
+ * @example
+ * mimeTypeToExtension('image/png'); // retorna 'png'
+ * mimeTypeToExtension('application/json'); // retorna 'json'
  */
 export const mimeTypeToExtension = (mimeType: string): string => {
   for (const [extension, type] of Object.entries(mimeTypesExtensions)) {
@@ -159,9 +168,18 @@ export const mimeTypeToExtension = (mimeType: string): string => {
 };
 
 /**
- * Gets a extension of a file name
- * @param fileName - The name of the file to be converted
- * @returns The file extension (without the dot), or an empty string if there is no extension
+ * Obtém a extensão de um nome de arquivo.
+ *
+ * Esta função divide o nome do arquivo por pontos e retorna a última parte como extensão,
+ * removendo o ponto. Se não houver extensão, retorna uma string vazia.
+ *
+ * @param fileName - O nome do arquivo a ser convertido.
+ * @returns A extensão do arquivo (sem o ponto), ou uma string vazia se não houver extensão.
+ *
+ * @example
+ * getFileNameExtension('document.pdf'); // retorna 'pdf'
+ * getFileNameExtension('image.png'); // retorna 'png'
+ * getFileNameExtension('file'); // retorna ''
  */
 export const getFileNameExtension = (fileName: string) => {
   const fileNameParts = fileName.split('.');
@@ -175,16 +193,17 @@ export const getFileNameExtension = (fileName: string) => {
 };
 
 /**
- * Converts a file extension to its corresponding Uniform Type Identifier (UTI).
+ * Converte uma extensão de arquivo em seu Identificador de Tipo Uniforme (UTI) correspondente.
  *
- * @param extension - The file extension (e.g., 'pdf', 'doc', 'xlsx').
- * @returns The corresponding UTI string if the extension is recognized, otherwise `undefined`.
+ * Esta função mapeia extensões de arquivo comuns para seus UTIs correspondentes,
+ * usados principalmente em sistemas Apple.
+ *
+ * @param extension - A extensão do arquivo (ex: 'pdf', 'doc', 'xlsx').
+ * @returns A string UTI correspondente se a extensão for reconhecida, caso contrário `undefined`.
  *
  * @example
- * ```typescript
- * const uti = extensionToUTI('pdf');
- * console.log(uti); // Output: 'com.adobe.pdf'
- * ```
+ * extensionToUTI('pdf'); // retorna 'com.adobe.pdf'
+ * extensionToUTI('docx'); // retorna 'com.microsoft.word.document'
  */
 export const extensionToUTI = (extension: string) => {
   const UTItypes = {
@@ -210,9 +229,14 @@ export const extensionToUTI = (extension: string) => {
 /**
  * Converte a URI de um arquivo em um Blob utilizando fetch.
  *
+ * Esta função faz uma requisição fetch para a URI fornecida e retorna o conteúdo como um Blob.
+ *
  * @param uri Caminho ou URL do arquivo.
  * @returns Promise contendo o Blob correspondente ao conteúdo baixado.
  * @throws Erro caso o fetch falhe ou a URI seja inválida.
+ *
+ * @example
+ * getBlobFromUri('https://example.com/image.png'); // retorna Promise<Blob>
  */
 export const getBlobFromUri = async (uri: string) => {
   if (!uri || typeof uri !== 'string') {
@@ -236,17 +260,20 @@ export const getBlobFromUri = async (uri: string) => {
 export const getBlob = getBlobFromUri;
 
 /**
- * Formats a byte count into a human-readable string using 1024-based units.
+ * Formata um tamanho de arquivo em bytes em uma string legível por humanos usando unidades baseadas em 1024.
  *
- * @param bytes - The number of bytes to format. Expected to be a non-negative number.
- * @returns A string containing the numeric value rounded to two decimal places
- *          (trailing zeros trimmed) followed by a space and the unit ("B", "KB", "MB", "GB").
+ * Esta função converte um número de bytes em uma string com o valor numérico arredondado para duas casas decimais
+ * (zeros à direita removidos) seguido de um espaço e da unidade ("B", "KB", "MB", "GB").
+ *
+ * @param bytes - O número de bytes a ser formatado. Espera-se um número não negativo.
+ * @returns Uma string contendo o valor numérico arredondado para duas casas decimais
+ *          (zeros à direita removidos) seguido de um espaço e da unidade ("B", "KB", "MB", "GB").
  *
  * @remarks
- * - Returns "0 B" when `bytes` is 0.
- * - Uses 1024 as the unit base.
- * - Supported units: B, KB, MB, GB. Values that require units larger than GB may yield an undefined unit suffix
- *   because only four units are defined in the implementation.
+ * - Retorna "0 B" quando `bytes` é 0.
+ * - Usa 1024 como base da unidade.
+ * - Unidades suportadas: B, KB, MB, GB. Valores que requerem unidades maiores que GB podem resultar em um sufixo de unidade indefinido
+ *   porque apenas quatro unidades são definidas na implementação.
  *
  * @example
  * formatFileSize(0);        // "0 B"

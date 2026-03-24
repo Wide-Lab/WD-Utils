@@ -5,17 +5,20 @@ import { padTo2Digits } from './Numbers';
 ///-----------------------///
 
 /**
- * @deprecated use `toString(new Date())` instead
+ * @deprecated Use `toString(new Date())` instead
  */
 export const getToday = () => toString(new Date());
 
 /**
- * Returns a string representing yesterday's date in the format YYYY-MM-DD.
+ * Retorna uma string representando a data de ontem no formato YYYY-MM-DD.
  *
- * This function creates a new Date object, subtracts 1 from the current day to get yesterday's date,
- * and then formats the date into a string with leading zeros for the month and day if necessary.
+ * Esta função cria um novo objeto Date, subtrai 1 do dia atual para obter ontem,
+ * e então formata a data em uma string com zeros à esquerda para o mês e dia se necessário.
  *
- * @returns A string representing yesterday's date in the format YYYY-MM-DD.
+ * @returns Uma string representando a data de ontem no formato YYYY-MM-DD.
+ *
+ * @example
+ * getYesterday(); // retorna "2023-10-15" se hoje for 2023-10-16
  */
 export const getYesterday = () => {
   const today = new Date();
@@ -36,12 +39,14 @@ export const getYesterday = () => {
 };
 
 /**
- * getFirstDayOfMonth
+ * Retorna uma string representando o primeiro dia do mês atual no formato 'YYYY-MM-DD'.
  *
- * This function returns a string representing the first day of the current month in the format 'YYYY-MM-DD'.
- * It uses the Date object to get the current year and month, and then formats the month as a 2-digit string with a leading zero if necessary.
+ * Esta função usa o objeto Date para obter o ano e mês atuais, e formata o mês como uma string de 2 dígitos com zero à esquerda se necessário.
  *
- * @returns A string representing the first day of the current month in the format 'YYYY-MM-DD'.
+ * @returns Uma string representando o primeiro dia do mês atual no formato 'YYYY-MM-DD'.
+ *
+ * @example
+ * getFirstDayOfMonth(); // retorna "2023-10-01" se for outubro de 2023
  */
 export const getFirstDayOfMonth = () => {
   const date = new Date();
@@ -51,15 +56,17 @@ export const getFirstDayOfMonth = () => {
 };
 
 /**
- * Gets the last day of the previous month in the format YYYY-MM-DD.
+ * Obtém o último dia do mês anterior no formato YYYY-MM-DD.
  *
- * This function creates a new `Date` object representing the current date,
- * then sets the date to the 1st of the current month and adjusts the hours
- * to the last hour of the previous day, effectively moving the date to the
- * last day of the previous month. It then formats the date as a string in
- * the format YYYY-MM-DD.
+ * Esta função cria um novo objeto `Date` representando a data atual,
+ * então define a data como o 1º do mês atual e ajusta as horas para a última hora do dia anterior,
+ * movendo efetivamente a data para o último dia do mês anterior. Em seguida, formata a data como uma string no
+ * formato YYYY-MM-DD.
  *
- * @returns The last day of the previous month in the format YYYY-MM-DD.
+ * @returns O último dia do mês anterior no formato YYYY-MM-DD.
+ *
+ * @example
+ * getLastDayPreviousMonth(); // retorna "2023-09-30" se for outubro de 2023
  */
 export const getLastDayPreviousMonth = () => {
   const now = new Date();
@@ -74,15 +81,15 @@ export const getLastDayPreviousMonth = () => {
 };
 
 /**
- * Returns the last day number of a given month and year as a padded two-digit string.
- * @param year - The year as a number
- * @param month - The month as a number (1-12)
- * @returns A string representing the last day number of the month padded with leading zeros (e.g., "31")
+ * Retorna o último número do dia de um mês e ano dados como uma string de dois dígitos preenchida com zeros à esquerda.
+ *
+ * @param year - O ano como um número.
+ * @param month - O mês como um número (1-12).
+ * @returns Uma string representando o último número do dia do mês preenchido com zeros à esquerda (ex: "31").
+ *
  * @example
- * ```typescript
- * getLastDayNumberOfMonth(2023, 12) // returns "31"
- * getLastDayNumberOfMonth(2024, 2)  // returns "29"
- * ```
+ * getLastDayNumberOfMonth(2023, 12); // retorna "31"
+ * getLastDayNumberOfMonth(2024, 2); // retorna "29" (ano bissexto)
  */
 export const getLastDayNumberOfMonth = (year: number, month: number) => {
   const isDecember = month >= 12;
@@ -97,15 +104,27 @@ export const getLastDayNumberOfMonth = (year: number, month: number) => {
 };
 
 /**
- * @deprecated use `toDate(getToday(), 'BR')` instead
+ * @deprecated Use `toDate(getToday(), 'BR')` instead
  */
 export const getTodayBR = () => toString(new Date(), 'BR');
 
 /**
- * @deprecated use `toTime(new Date(), true)` instead
+ * @deprecated Use `toTime(new Date(), true)` instead
  */
 export const getNowTime = () => toTime(new Date(), true);
 
+/**
+ * Verifica se um ano é bissexto.
+ *
+ * Um ano é bissexto se for divisível por 4, mas não por 100, a menos que também seja divisível por 400.
+ *
+ * @param year - O ano a ser verificado como um número inteiro.
+ * @returns `true` se o ano for bissexto, `false` caso contrário.
+ *
+ * @example
+ * isLeapYear(2024); // retorna true
+ * isLeapYear(2023); // retorna false
+ */
 export const isLeapYear = (year: number) => {
   if (!Number.isInteger(year) || year < 1) {
     return false;
@@ -114,6 +133,20 @@ export const isLeapYear = (year: number) => {
   return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 };
 
+/**
+ * Retorna o número de dias em um mês específico de um ano.
+ *
+ * Esta função considera anos bissextos para fevereiro.
+ *
+ * @param month - O mês como um número (1-12).
+ * @param year - O ano como um número.
+ * @returns O número de dias no mês.
+ *
+ * @example
+ * daysInMonth(2, 2024); // retorna 29 (ano bissexto)
+ * daysInMonth(2, 2023); // retorna 28
+ * daysInMonth(4, 2023); // retorna 30
+ */
 export const daysInMonth = (month: number, year: number) => {
   switch (month) {
     case 2:
@@ -133,23 +166,30 @@ export const daysInMonth = (month: number, year: number) => {
 ///-----------------------///
 
 /**
- * @deprecated use `toString` instead
+ * @deprecated Use `toString` instead
  */
 export const formatDate = toString;
 
 /**
- * Converts a Date object to a formatted string representation.
- * @param date - The Date object to convert. Must be a valid Date instance.
- * @param format - The date format to use. Defaults to 'JS'.
- *   - 'JS': ISO 8601 format (YYYY-MM-DD)
- *   - 'USA': US format (MM/DD/YYYY)
- *   - 'BR': Brazilian format (DD/MM/YYYY)
- * @param withTime - Whether to include time in the output. Defaults to false.
- *   - false: Date only
- *   - true: Date with time (HH:MM:SS)
- *   - 'andSeconds': Date with time including seconds
- * @returns A formatted date string according to the specified format and time settings.
- * @throws {Error} If the provided date is invalid, not a Date instance, or NaN.
+ * Converte um objeto Date em uma string de data formatada.
+ *
+ * Esta função formata um objeto Date em uma string de data, com opções para diferentes formatos e inclusão de tempo.
+ *
+ * @param date - O objeto Date a ser convertido. Deve ser uma instância válida de Date.
+ * @param format - O formato de data a ser usado. Padrão é 'JS'.
+ *   - 'JS': Formato ISO 8601 (YYYY-MM-DD)
+ *   - 'USA': Formato americano (MM/DD/YYYY)
+ *   - 'BR': Formato brasileiro (DD/MM/YYYY)
+ * @param withTime - Se deve incluir tempo na saída. Padrão é false.
+ *   - false: Apenas data
+ *   - true: Data com tempo (HH:MM:SS)
+ *   - 'andSeconds': Data com tempo incluindo segundos
+ * @returns Uma string de data formatada de acordo com o formato e configurações de tempo especificadas.
+ * @throws {Error} Se a data fornecida for inválida, não for uma instância de Date, ou for NaN.
+ *
+ * @example
+ * toString(new Date('2023-10-15')); // retorna "2023-10-15"
+ * toString(new Date('2023-10-15'), 'BR', true); // retorna "15/10/2023 00:00:00"
  */
 export function toString(
   date: Date,
@@ -178,19 +218,13 @@ export function toString(
 }
 
 /**
- * @deprecated ao invés desse utilize:
- * ```js
- * toString(toDate(date, 'USA'), 'BR')
- * ```
+ * @deprecated Use `toString(toDate(date, 'USA'), 'BR')` instead
  */
 export const dateUSAtoBR = (date: string) =>
   toString(toDate(date, 'USA'), 'BR');
 
 /**
- * @deprecated ao invés desse utilize:
- * ```js
- * toString(toDate(date), 'BR')
- * ```
+ * @deprecated Use `toString(toDate(date), 'BR')` instead
  */
 export const dateToBR = (date: string) => toString(toDate(date), 'BR');
 
@@ -212,13 +246,13 @@ export const dateToBR = (date: string) => toString(toDate(date), 'BR');
  * @throws Error Quando a data é inválida.
  *
  * @example
- * stringToDate('2024-02-29'); // JS (ano bissexto)
+ * toDate('2024-02-29'); // JS (ano bissexto)
  *
  * @example
- * stringToDate('31/12/2023', 'BR');
+ * toDate('31/12/2023', 'BR');
  *
  * @example
- * stringToDate('12/31/2023', 'USA');
+ * toDate('12/31/2023', 'USA');
  */
 export function toDate(value: string, inputFormat: 'JS' | 'BR' | 'USA' = 'JS') {
   let day: number;
@@ -272,12 +306,18 @@ export function toDate(value: string, inputFormat: 'JS' | 'BR' | 'USA' = 'JS') {
 }
 
 /**
- * Converts a date string to a Brazilian date format (DD/MM/YYYY) with optional time.
+ * Converte uma string de data em um formato de data brasileiro (DD/MM/YYYY) com tempo opcional.
  *
- * @param date - The date string to be converted.
- * @param showSeconds - Optional. Whether to include seconds in the time. Defaults to true.
- * @param showTime - Optional. Whether to include time in the output. Defaults to true.
- * @returns The formatted date string in Brazilian format.
+ * Esta função converte uma string de data em um formato brasileiro, com opções para incluir segundos no tempo.
+ *
+ * @param date - A string de data a ser convertida.
+ * @param showSeconds - Opcional. Se deve incluir segundos no tempo. Padrão é true.
+ * @param showTime - Opcional. Se deve incluir tempo na saída. Padrão é true.
+ * @returns A string de data e tempo formatada no formato brasileiro.
+ *
+ * @example
+ * dateToBRDate("2023-10-15T10:30:00"); // retorna "15/10/2023 10:30:00"
+ * dateToBRDate("2023-10-15", false, false); // retorna "15/10/2023"
  */
 export const dateToBRDate = (
   date: string,
@@ -304,19 +344,22 @@ export const dateToBRDate = (
 };
 
 /**
- * @deprecated ao invés desse utilize:
- * ```js
- * toString(toDate(date, 'BR'))
- * ```
+ * @deprecated Use `toString(toDate(date, 'BR'))` instead
  */
 export const dateBRToJS = (date: string) => toString(toDate(date, 'BR'));
 
 /**
- * Formats a given Date object into a time string.
+ * Formata um objeto Date fornecido em uma string de tempo.
  *
- * @param date - The Date object to format.
- * @param hideSecond - Optional boolean to hide the seconds in the formatted string. Defaults to false.
- * @returns A string representing the formatted time in "HH:MM:SS" or "HH:MM" format.
+ * Esta função extrai as horas, minutos e segundos de um objeto Date e os formata em uma string.
+ *
+ * @param date - O objeto Date a ser formatado.
+ * @param hideSecond - Opcional. Booleano para ocultar os segundos na string formatada. Padrão é false.
+ * @returns Uma string representando o tempo formatado em "HH:MM:SS" ou "HH:MM".
+ *
+ * @example
+ * toTime(new Date('2023-10-15T10:30:45')); // retorna "10:30:45"
+ * toTime(new Date('2023-10-15T10:30:45'), true); // retorna "10:30"
  */
 export const toTime = (date: Date, hideSecond = false) => {
   const dateArray = [
@@ -335,8 +378,14 @@ export const toTime = (date: Date, hideSecond = false) => {
 /**
  * Converte uma data no formato C# /Date(1731320280000-0300)/ para um objeto JavaScript Date.
  *
+ * Esta função analisa uma string no padrão /Date(<timestamp><offset>)/ usado pelo C#,
+ * converte o timestamp para UTC e ajusta pelo offset de fuso horário.
+ *
  * @param csharpDate String no padrão /Date(<timestamp><offset>)/
  * @returns Instância de Date correspondente
+ *
+ * @example
+ * parseCSharpDate("/Date(1731320280000-0300)/"); // retorna Date object
  */
 export const parseCSharpDate = (csharpDate: string): Date => {
   const match = csharpDate?.match(/\((\d+)([+-]\d{4})\)/);
