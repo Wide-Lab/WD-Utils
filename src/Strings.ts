@@ -423,21 +423,24 @@ export const isStringWebLink = (text: string): boolean => {
 };
 
 // TODO Remover essas funções futuramente
+//!-----------------------//!
+//!      DEPRECATED       //!
+//!-----------------------//!
 
 /**
- * @deprecated Use **uppercase** no lugar
+ * @deprecated Use `uppercaseFirst(word)` no lugar
  */
 export const ucfirst = (word: string) => uppercaseFirst(word);
 /**
- * @deprecated Use **uppercase** no lugar
+ * @deprecated Use `uppercaseFirst(word)` no lugar
  */
 export const capitalizeFirstLetter = (word: string) => uppercaseFirst(word);
 /**
- * @deprecated Use **uppercase** no lugar
+ * @deprecated Use `uppercaseFirst(text, true)` no lugar
  */
 export const ucwords = (text: string) => uppercaseFirst(text, true);
 /**
- * @deprecated Use **uppercase** no lugar
+ * @deprecated Use `uppercaseFirst(text, true)` no lugar
  */
 export const capitalizeAllFirstLetter = (text: string) =>
   uppercaseFirst(text, true);

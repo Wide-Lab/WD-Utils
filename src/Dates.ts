@@ -5,11 +5,6 @@ import { padTo2Digits } from './Numbers';
 ///-----------------------///
 
 /**
- * @deprecated Use `toString(new Date())` instead
- */
-export const getToday = () => toString(new Date());
-
-/**
  * Retorna uma string representando a data de ontem no formato YYYY-MM-DD.
  *
  * Esta função cria um novo objeto Date, subtrai 1 do dia atual para obter ontem,
@@ -104,16 +99,6 @@ export const getLastDayNumberOfMonth = (year: number, month: number) => {
 };
 
 /**
- * @deprecated Use `toDate(getToday(), 'BR')` instead
- */
-export const getTodayBR = () => toString(new Date(), 'BR');
-
-/**
- * @deprecated Use `toTime(new Date(), true)` instead
- */
-export const getNowTime = () => toTime(new Date(), true);
-
-/**
  * Verifica se um ano é bissexto.
  *
  * Um ano é bissexto se for divisível por 4, mas não por 100, a menos que também seja divisível por 400.
@@ -166,11 +151,6 @@ export const daysInMonth = (month: number, year: number) => {
 ///-----------------------///
 
 /**
- * @deprecated Use `toString` instead
- */
-export const formatDate = toString;
-
-/**
  * Converte um objeto Date em uma string de data formatada.
  *
  * Esta função formata um objeto Date em uma string de data, com opções para diferentes formatos e inclusão de tempo.
@@ -216,17 +196,6 @@ export function toString(
 
   return `${year}-${month}-${day}${time}`;
 }
-
-/**
- * @deprecated Use `toString(toDate(date, 'USA'), 'BR')` instead
- */
-export const dateUSAtoBR = (date: string) =>
-  toString(toDate(date, 'USA'), 'BR');
-
-/**
- * @deprecated Use `toString(toDate(date), 'BR')` instead
- */
-export const dateToBR = (date: string) => toString(toDate(date), 'BR');
 
 /**
  * Converte uma string de data em um objeto Date, validando formato, valores
@@ -344,11 +313,6 @@ export const dateToBRDate = (
 };
 
 /**
- * @deprecated Use `toString(toDate(date, 'BR'))` instead
- */
-export const dateBRToJS = (date: string) => toString(toDate(date, 'BR'));
-
-/**
  * Formata um objeto Date fornecido em uma string de tempo.
  *
  * Esta função extrai as horas, minutos e segundos de um objeto Date e os formata em uma string.
@@ -458,3 +422,44 @@ export const dayNames = [
 ];
 
 export const dayNamesShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+// TODO Remover essas funções futuramente
+//!-----------------------//!
+//!      DEPRECATED       //!
+//!-----------------------//!
+
+/**
+ * @deprecated Use `toString(new Date())` no lugar
+ */
+export const getToday = () => toString(new Date());
+
+/**
+ * @deprecated Use `toString(new Date(), 'BR')` no lugar
+ */
+export const getTodayBR = () => toString(new Date(), 'BR');
+
+/**
+ * @deprecated Use `toTime(new Date(), true)` no lugar
+ */
+export const getNowTime = () => toTime(new Date(), true);
+
+/**
+ * @deprecated Use `toString` no lugar
+ */
+export const formatDate = toString;
+
+/**
+ * @deprecated Use `toString(toDate(date, 'USA'), 'BR')` no lugar
+ */
+export const dateUSAtoBR = (date: string) =>
+  toString(toDate(date, 'USA'), 'BR');
+
+/**
+ * @deprecated Use `toString(toDate(date), 'BR')` no lugar
+ */
+export const dateToBR = (date: string) => toString(toDate(date), 'BR');
+
+/**
+ * @deprecated Use `toString(toDate(date, 'BR'))` no lugar
+ */
+export const dateBRToJS = (date: string) => toString(toDate(date, 'BR'));
